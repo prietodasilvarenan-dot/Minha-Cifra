@@ -25,7 +25,7 @@ export const PasswordArea: React.FC = () => {
         value={password}
         onChangeText={setPassword}
         placeholder='Digite sua Senha'
-        //secureTextEntry
+        secureTextEntry
       />
     );
 }
@@ -38,8 +38,8 @@ export const ConfirmPasswordArea: React.FC = () => {
         style={styles.input}
         value={confirmPassword}
         onChangeText={setConfirmPassword}
-        placeholder='Digite sua Senha'
-        //secureTextEntry
+        placeholder='Confirme sua Senha'
+        secureTextEntry
       />
     );
 }
