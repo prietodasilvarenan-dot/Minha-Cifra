@@ -10,8 +10,9 @@ export default function SignUp() {
       <Text>Minha Cifra</Text>
       <EmailArea/>
       <PasswordArea/>
-      <PasswordArea/>
-      <ButtonSign/>
+      <ConfirmPasswordArea/>
+
+      <ButtonSignUp/>
     </View>
   );
 }
@@ -39,12 +40,26 @@ const PasswordArea: React.FC = () => {
       value={password}
       onChangeText={setPassword}
       placeholder='Digite sua Senha'
-      keyboardType='default'
+      //secureTextEntry
     />
   );
 }
 
-const ButtonSign: React.FC = () => {
+const ConfirmPasswordArea: React.FC = () => {
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+
+  return (
+    <TextInput
+      style={styles.input}
+      value={confirmPassword}
+      onChangeText={setConfirmPassword}
+      placeholder='Digite sua Senha'
+      //secureTextEntry
+    />
+  );
+}
+
+const ButtonSignUp: React.FC = () => {
   return(
     <TouchableOpacity 
       style={styles.buttonAuth}
