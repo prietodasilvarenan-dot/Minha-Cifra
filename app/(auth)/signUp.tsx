@@ -1,15 +1,17 @@
 
+import { router } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default function SignUp() {
   
   return (
     <View style={styles.container}>
+      <Text>Minha Cifra</Text>
       <EmailArea/>
       <PasswordArea/>
       <PasswordArea/>
-
+      <ButtonSign/>
     </View>
   );
 }
@@ -42,6 +44,16 @@ const PasswordArea: React.FC = () => {
   );
 }
 
+const ButtonSign: React.FC = () => {
+  return(
+    <TouchableOpacity 
+      style={styles.buttonAuth}
+      onPress={() => router.push( '/signIn')}>
+      <Text style={styles.textButtonAuth}>Cadastrar</Text>
+    </TouchableOpacity>
+  )
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -53,5 +65,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     borderRadius: 5,
+  },
+  buttonAuth: {
+    backgroundColor: '#0018a4',
+    alignItems: 'center',
+    padding: 5,
+  },
+  textButtonAuth:{
+    color: '#ffffff',
+    fontSize: 22,
   },
 });
