@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { Text, TouchableOpacity } from 'react-native';
-import { styles } from '../stylesSignUp';
+import { styles } from '../styles/stylesSignUp';
 
 
 export const ButtonSignUp: React.FC = () => {

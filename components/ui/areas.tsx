@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { TextInput } from 'react-native';
-import { styles } from '../stylesSignUp';
+import { styles } from '../styles/stylesSignUp';
 
 export const EmailArea: React.FC = () => {
     const [email, setEmail] = useState<string>("");
