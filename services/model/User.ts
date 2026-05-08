@@ -6,4 +6,12 @@ class User {
         this.email = email
         this.password = password
     }
+
+    public getEmail(){
+        return this.email;
+    }
+
+    public getPassword(){
+        return this.password;
+    }
 }

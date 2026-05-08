@@ -2,7 +2,7 @@
 import { Text, View } from 'react-native';
 import { styles } from '../../components/styles/stylesSign';
 import { EmailArea, PasswordArea } from '../../components/ui/areas';
-import { ButtonSignUp } from '../../components/ui/buttons';
+import { ButtonSignIn } from '../../components/ui/buttons';
 
 export default function SignIn() {
   
@@ -11,7 +11,7 @@ export default function SignIn() {
       <Text>Minha Cifra</Text>
       <EmailArea/>
       <PasswordArea/>
-      <ButtonSignUp/>
+      <ButtonSignIn/>
     </View>
   );
 }
