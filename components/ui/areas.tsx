@@ -2,42 +2,41 @@ import { useState } from 'react';
 import { TextInput } from 'react-native';
 import { styles } from '../styles/stylesSign';
 
-export const EmailArea: React.FC = () => {
-  const [email, setEmail] = useState<string>("");
+interface AreaProps {
+  value: string;
+  onChangeText: (text: string) => void;
+}
 
+export const EmailArea: React.FC<AreaProps> = ({value, onChangeText}) => {
   return (
     <TextInput
       style={styles.input}
-      value={email}
-      onChangeText={setEmail}
+      value={value}
+      onChangeText={onChangeText}
       placeholder='Digite seu Email'
       keyboardType='email-address'
     />
   );
 }
   
-export const PasswordArea: React.FC = () => {
-  const [password, setPassword] = useState<string>("");
-
+export const PasswordArea: React.FC<AreaProps> = ({value, onChangeText}) => {
   return (
     <TextInput
       style={styles.input}
-      value={password}
-      onChangeText={setPassword}
+      value={value}
+      onChangeText={onChangeText}
       placeholder='Digite sua Senha'
       secureTextEntry
     />
   );
 }
   
-export const ConfirmPasswordArea: React.FC = () => {
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
-
+export const ConfirmPasswordArea: React.FC<AreaProps> = ({value, onChangeText}) => {
   return (
     <TextInput
       style={styles.input}
-      value={confirmPassword}
-      onChangeText={setConfirmPassword}
+      value={value}
+      onChangeText={onChangeText}
       placeholder='Confirme sua Senha'
       secureTextEntry
     />
