@@ -3,16 +3,11 @@ import { useState } from "react";
 import User from "./model/User";
 import { api } from "./api";
 
-export const handleSignUp = async () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-
+export const handleSignUp = async (user: User) => {
     try {
-        const newUser = new User(email, password);
-
         const response = await api.post("/register", {
-            email: newUser.getEmail(),
-            password: newUser.getPassword(),
+            email: user.getEmail(),
+            password: user.getPassword(),
         });
 
         if (response.status === 201) {
