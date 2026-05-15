@@ -1,5 +1,4 @@
 import { router } from "expo-router";
-import { useState } from "react";
 import User from "./model/User";
 import { api } from "./api";
 

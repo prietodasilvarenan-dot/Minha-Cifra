@@ -15,23 +15,26 @@ const db = mysql.createConnection({
 });
 
 app.post("/register", async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password } = req.body; // Recebidos do App
+    const name = email.split("@")[0]; // Pega o nome antes do @ como provisório
+
     try {
         const salt = await bcrypt.genSalt(10);
         const passwordHash = await bcrypt.hash(password, salt);
 
-        const sql = "INSERT INTO users (email, password) VALUES (?, ?)";
-        db.query(sql, [email, passwordHash], (err, result) => {
+        // Usando os nomes exatos do seu novo SQL:
+        const sql =
+            "INSERT INTO Users (name, email, password, created_at) VALUES (?, ?, ?, NOW())";
+
+        db.query(sql, [name, email, passwordHash], (err, result) => {
             if (err) {
                 console.error(err);
-                return res
-                    .status(500)
-                    .json({ error: "Erro ao cadastrar ou e-mail já existe." });
+                return res.status(500).json({ error: "E-mail já cadastrado." });
             }
             return res.status(201).json({ message: "Usuário criado!" });
         });
     } catch (error) {
-        res.status(500).send("Erro interno no servidor.");
+        res.status(500).send("Erro no servidor.");
     }
 });
 
