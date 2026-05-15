@@ -27,6 +27,10 @@ export default function SignUp() {
             Alert.alert("Erro", "Senhas não coincidem!");
             return;
         }
+        if (password.length < 6) {
+            Alert.alert("Erro", "Senha muito curta! Minimo de 6 caracteres.");
+            return;
+        }
         try {
             const newUser = new User(email, password);
 

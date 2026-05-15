@@ -1,11 +1,5 @@
 import React from "react";
-import {
-    View,
-    Text,
-    TouchableOpacity,
-    SafeAreaView,
-    ScrollView,
-} from "react-native";
+import { View, Text, SafeAreaView, ScrollView } from "react-native";
 import { CardHome } from "@/components/ui/cards";
 
 export default function HomeScreen() {
