@@ -17,3 +17,18 @@ export const handleSignUp = async (user: User) => {
         alert("Erro ao cadastrar usuário.");
     }
 };
+
+export const loginUser = async (user: User) =>{
+    try {
+        const response = await api.post("/login", {
+            email: user.getEmail(),
+            password: user.getPassword()
+        });
+
+        return response;
+    }
+    
+    catch(error: any) {
+        throw error;
+    }
+}

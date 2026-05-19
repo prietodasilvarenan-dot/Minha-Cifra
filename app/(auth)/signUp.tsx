@@ -50,6 +50,7 @@ export default function SignUp() {
             Alert.alert("Erro no Cadastro", msg);
         }
     };
+    
     return (
         <View style={styles.container}>
             <Text>Minha Cifra</Text>
