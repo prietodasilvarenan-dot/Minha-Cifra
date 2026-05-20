@@ -2,7 +2,7 @@ import { router } from "expo-router";
 import User from "./model/User";
 import { api } from "./api";
 
-export const handleSignUp = async (user: User) => {
+export const registerUser = async (user: User) => {
     try {
         const response = await api.post("/register", {
             email: user.getEmail(),
