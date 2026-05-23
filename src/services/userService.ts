@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import User from "./model/User";
+import User from "../model/User";
 import { api } from "./api";
 
 export const registerUser = async (user: User) => {

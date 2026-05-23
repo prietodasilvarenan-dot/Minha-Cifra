@@ -3,7 +3,7 @@ import { Text, View, Alert } from "react-native";
 import { styles } from "../../src/components/styles/stylesSign";
 import { EmailArea, PasswordArea} from "../../src/components/ui/areas";
 import { ButtonSignIn } from "../../src/components/ui/buttons";
-import User from "../../src/services/model/User";
+import User from "../../src/model/User";
 import { router } from "expo-router";
 import { loginUser } from "@/src/services/userService";
 

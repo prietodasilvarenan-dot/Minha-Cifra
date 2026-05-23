@@ -4,7 +4,7 @@ import { styles } from "../../src/components/styles/stylesSign";
 import { ConfirmPasswordArea, EmailArea, PasswordArea } from "../../src/components/ui/areas";
 import { ButtonSignUp } from "../../src/components/ui/buttons";
 import { api } from "../../src/services/api";
-import User from "../../src/services/model/User";
+import User from "../../src/model/User";
 import { useRouter } from "expo-router";
 
 export default function SignUp() {
