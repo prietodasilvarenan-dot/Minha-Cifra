@@ -1,50 +1,34 @@
-# Welcome to your Expo app 👋
+# Minha Cifra - Sistema de Gestão Financeira
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+O **Minha Cifra** é um ecossistema completo de gestão financeira pessoal desenvolvido como projeto de conclusão de curso (TCC). O sistema permite que os usuários controlem suas receitas, despesas, faturamento e impostos de forma inteligente, rápida e facil.
+O projeto adota uma arquitetura **Full Stack**, separando totalmente a interface móvel (Frontend) da inteligência de negócios e persistência de dados (Backend).
 
-## Get started
+---
 
-1. Install dependencies
+## Arquitetura do Projeto
 
-   ```bash
-   npm install
-   ```
+O ecossistema é dividido em três camadas principais estruturadas sob o princípio de **Separação de Responsabilidades (SOC)**:
 
-2. Start the app
+1. **Mobile (Frontend):** Desenvolvido em **React Native** com **Expo** (TypeScript), utilizando navegação baseada em arquivos (`expo-router`) e componentes desacoplados.
+2. **API (Backend):** Servidor centralizado em **Node.js** com **Express**, responsável pelas regras de negócio, rotas de autenticação e comunicação segura.
+3. **Banco de Dados (Database):** Sistema gerenciador **MariaDB** estruturado de forma relacional para garantir a integridade dos dados financeiros.
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## Tecnologias Utilizadas
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### Frontend (Mobile)
+* **React Native & Expo** (SDK mais recente)
+* **TypeScript** para tipagem estática e segurança do código
+* **Axios** para requisições HTTP à API Rest
+* **Expo Router** para navegação nativa avançada
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Backend (API)
+* **Node.js** como ambiente de execução
+* **Express** para roteamento HTTP
+* **Bcrypt** para hash seguro de senhas antes da persistência
+* **MySQL2** para driver de conexão com o banco de dados
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### Banco de Dados
+* **MariaDB** (Rodando localmente em ambiente Arch Linux)
+* **DBeaver** como ferramenta de gerenciamento (SGDB)
