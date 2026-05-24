@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { Text, View, Alert } from "react-native";
-import { styles } from "../../src/components/styles/stylesSign";
-import { EmailArea, PasswordArea} from "../../src/components/common/areas";
-import { ButtonSignIn } from "../../src/components/common/buttons";
-import User from "../../src/model/User";
-import { router } from "expo-router";
 import { loginUser } from "@/src/services/userService";
+import { router } from "expo-router";
+import React, { useState } from "react";
+import { Alert, Text, View } from "react-native";
+import { EmailArea, PasswordArea } from "../../src/components/common/areas";
+import { ButtonSignIn } from "../../src/components/common/buttons";
+import { styles } from "../../src/components/styles/stylesSign";
+import User from "../../src/model/User";
 
 export default function SignIn() {
     const [email, setEmail] = useState("");

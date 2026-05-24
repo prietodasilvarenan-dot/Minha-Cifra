@@ -11,9 +11,6 @@ export default function HomeScreen() {
 
                     <View>
                         Itens atuais
-                        item 
-                        item 
-                        item 
                     </View>
                     <TouchableOpacity>
                         Adicionar item
