@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import { Alert, TextInput, TouchableOpacity, View } from "react-native";
-
-// Componentes do seu template Expo
 import ParallaxScrollView from "@/src/components/expo/parallax-scroll-view";
 import { ThemedText } from "@/src/components/expo/themed-text";
 import { ThemedView } from "@/src/components/expo/themed-view";
+import React, { useState } from "react";
+import { Alert, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function Calculator() {
     const [income, setIncome] = useState("");

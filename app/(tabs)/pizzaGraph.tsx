@@ -1,13 +1,10 @@
-import React, { useState } from "react";
-import { Alert, TouchableOpacity, View } from "react-native";
-
-// Componentes do seu template Expo
 import ParallaxScrollView from "@/src/components/expo/parallax-scroll-view";
 import { ThemedText } from "@/src/components/expo/themed-text";
 import { ThemedView } from "@/src/components/expo/themed-view";
+import React, { useState } from "react";
+import { Alert, TouchableOpacity, View } from "react-native";
 
 export default function PizzaGraph() {
-    // Exemplo de dados mockados (Depois virão das despesas salvas no seu MariaDB)
     const [mockData, setMockData] = useState([
         { id: 1, category: "Alimentação", value: 450.00, color: "#DC3545", percentage: 45 },
         { id: 2, category: "Transporte", value: 250.00, color: "#0D6EFD", percentage: 25 },
@@ -36,13 +33,10 @@ export default function PizzaGraph() {
                 Veja o impacto percentual de cada categoria no seu orçamento mensal total.
             </ThemedText>
 
-            {/* Espaço reservado para o componente de biblioteca gráfica (Ex: react-native-svg-charts ou react-native-chart-kit) */}
             <View>
                 <ThemedText type="defaultSemiBold">Gráfico de Proporção</ThemedText>
-                {/* O componente visual do gráfico em si entrará neste bloco através das suas estilizações ou libs externas */}
             </View>
 
-            {/* Legenda Analítica / Lista de Categorias */}
             <View>
                 <ThemedText type="subtitle">Legenda e Valores</ThemedText>
 
@@ -52,7 +46,6 @@ export default function PizzaGraph() {
                         onPress={() => handleCategoryDetails(item.category, item.value)}
                     >
                         <View>
-                            {/* Bloco indicador de cor */}
                             <View /> 
                             
                             <ThemedText type="default">{item.category}</ThemedText>

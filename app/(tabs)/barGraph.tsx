@@ -1,13 +1,10 @@
-import React, { useState } from "react";
-import { Alert, TouchableOpacity, View } from "react-native";
-
-// Componentes do seu template Expo
 import ParallaxScrollView from "@/src/components/expo/parallax-scroll-view";
 import { ThemedText } from "@/src/components/expo/themed-text";
 import { ThemedView } from "@/src/components/expo/themed-view";
+import React, { useState } from "react";
+import { Alert, TouchableOpacity, View } from "react-native";
 
 export default function BarGraph() {
-    // Exemplo de dados mockados (Histórico mensal para comparar evolução de gastos)
     const [monthlyData, setMonthlyData] = useState([
         { id: 1, month: "Jan", total: 850.00 },
         { id: 2, month: "Fev", total: 1100.00 },
@@ -36,14 +33,9 @@ export default function BarGraph() {
             <ThemedText type="default">
                 Acompanhe o comparativo do seu volume total de despesas ao longo dos últimos meses.
             </ThemedText>
-
-            {/* Espaço reservado para a renderização das barras gráficas (Ex: react-native-chart-kit) */}
             <View>
                 <ThemedText type="defaultSemiBold">Gráfico de Histórico</ThemedText>
-                {/* O componente visual das barras verticais ou horizontais entrará aqui via biblioteca ou CSS */}
             </View>
-
-            {/* Detalhamento em Lista */}
             <View>
                 <ThemedText type="subtitle">Valores Acumulados</ThemedText>
 

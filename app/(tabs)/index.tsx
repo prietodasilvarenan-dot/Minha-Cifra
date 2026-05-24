@@ -1,15 +1,12 @@
-import { router } from "expo-router";
-import React, { useState } from "react";
-import { ScrollView, TouchableOpacity, View } from "react-native";
-
-// Componentes do seu template Expo
 import { HelloWave } from "@/src/components/expo/hello-wave";
 import ParallaxScrollView from "@/src/components/expo/parallax-scroll-view";
 import { ThemedText } from "@/src/components/expo/themed-text";
 import { ThemedView } from "@/src/components/expo/themed-view";
+import { router } from "expo-router";
+import React, { useState } from "react";
+import { ScrollView, TouchableOpacity, View } from "react-native";
 
 export default function HomeScreen() {
-    // Estados fictícios para simular os dados vindos da sua API em Node.js
     const [userData, setUserData] = useState({ name: "Renan" });
     const [financials, setFinancials] = useState({
         balance: 1250.00,
@@ -27,7 +24,6 @@ export default function HomeScreen() {
                 </View>
             }>
 
-            {/* Cabeçalho de Boas-Vindas */}
             <ThemedView>
                 <ThemedText type="title">Olá, {userData.name}!</ThemedText>
                 <HelloWave />
@@ -39,7 +35,6 @@ export default function HomeScreen() {
 
             <ScrollView>
                 
-                {/* Bloco 1: Painel de Saldo */}
                 <View>
                     <ThemedText type="defaultSemiBold">Saldo Geral</ThemedText>
                     <ThemedText type="subtitle">R$ {financials.balance.toFixed(2)}</ThemedText>
@@ -66,7 +61,6 @@ export default function HomeScreen() {
                     </TouchableOpacity>
                 </View>
 
-                {/* Bloco 3: Atalhos Rápidos para Recursos Avançados */}
                 <View>
                     <ThemedText type="subtitle">Análise e Impostos</ThemedText>
 

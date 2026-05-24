@@ -1,13 +1,11 @@
-import { Image } from "expo-image";
-import { router } from "expo-router";
-import React from "react";
-import { Alert, TouchableOpacity, View } from "react-native";
-
-// Componentes do seu template Expo
 import { HelloWave } from "@/src/components/expo/hello-wave";
 import ParallaxScrollView from "@/src/components/expo/parallax-scroll-view";
 import { ThemedText } from "@/src/components/expo/themed-text";
 import { ThemedView } from "@/src/components/expo/themed-view";
+import { Image } from "expo-image";
+import { router } from "expo-router";
+import React from "react";
+import { Alert, TouchableOpacity, View } from "react-native";
 
 export default function PerfilScreen() {
     const user = {
