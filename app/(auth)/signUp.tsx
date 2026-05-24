@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Text, View, Alert } from "react-native";
 import { styles } from "../../src/components/styles/stylesSign";
-import { ConfirmPasswordArea, EmailArea, PasswordArea } from "../../src/components/ui/areas";
-import { ButtonSignUp } from "../../src/components/ui/buttons";
+import { ConfirmPasswordArea, EmailArea, PasswordArea } from "../../src/components/common/areas";
+import { ButtonSignUp } from "../../src/components/common/buttons";
 import { api } from "../../src/services/api";
 import User from "../../src/model/User";
 import { useRouter } from "expo-router";

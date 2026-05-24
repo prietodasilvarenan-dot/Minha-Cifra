@@ -1,6 +1,6 @@
+import { CardHome } from "@/src/components/common/cards";
 import React from "react";
-import { View, Text, SafeAreaView, ScrollView } from "react-native";
-import { CardHome } from "@/src/components/ui/cards";
+import { SafeAreaView, ScrollView, Text, View } from "react-native";
 
 export default function HomeScreen() {
     return (
@@ -13,7 +13,7 @@ export default function HomeScreen() {
 
             <ScrollView>
                 <CardHome />
-                <CardHome />
+
             </ScrollView>
         </SafeAreaView>
     );
