@@ -1,32 +1,33 @@
-import { HelloWave } from "@/src/components/expo/hello-wave";
-import ParallaxScrollView from "@/src/components/expo/parallax-scroll-view";
 import { ThemedText } from "@/src/components/expo/themed-text";
 import { ThemedView } from "@/src/components/expo/themed-view";
-import { router } from "expo-router";
-import React, { useState } from "react";
-import { ScrollView, TouchableOpacity, View } from "react-native";
+import { Button } from "@react-navigation/elements";
+import React from "react";
+import { ScrollView, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
-    const [userData, setUserData] = useState({ name: "Renan" });
-    const [financials, setFinancials] = useState({
-        balance: 1250.00,
-        incomeMonth: 2500.00,
-        expenseMonth: 450.00,
-        topCategory: "Alimentação"
-    });
+    interface Items {
+        title: string;
+        value: number;
+        valid: boolean;
+    }
+    const itemsEarn: Items[] = [
+        {title: "Salário", value: 5000, valid: true},
+        {title: "Investimentos", value: 500, valid: true},
+        {title: "FreeLancer", value: 1000, valid: true},
+        {title: "Aniversario", value: 40, valid: true},
+    ]
+    const itemsLost: Items[] = [
+        {title: "Salário", value: -3000, valid: true},
+        {title: "asdçlkjfa", value: -3000, valid: true},
+        {title: "asdasddsadsadsa", value: -3000, valid: true},
+        {title: "Salário", value: -3000, valid: true},
+    ]
 
     return (
-        <ParallaxScrollView
-            headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
-            headerImage={
-                <View>
-                    <ThemedText>🏠</ThemedText>
-                </View>
-            }>
-
+       <SafeAreaView>
             <ThemedView>
-                <ThemedText type="title">Olá, {userData.name}!</ThemedText>
-                <HelloWave />
+                <ThemedText type="title">Olá, User!</ThemedText>
             </ThemedView>
 
             <ThemedText type="default">
@@ -35,46 +36,36 @@ export default function HomeScreen() {
 
             <ScrollView>
                 
+                {/* divisao (card) em relação aos ganhos fixos */}
                 <View>
-                    <ThemedText type="defaultSemiBold">Saldo Geral</ThemedText>
-                    <ThemedText type="subtitle">R$ {financials.balance.toFixed(2)}</ThemedText>
-                    
-                    <View>
-                        <ThemedText>▲ Entradas no mês: R$ {financials.incomeMonth.toFixed(2)}</ThemedText>
-                    </View>
-
-                    <TouchableOpacity>
-                        <ThemedText type="defaultSemiBold">Ajustar Saldo</ThemedText>
-                    </TouchableOpacity>
+                    <ThemedText>Carteira de Ganhos</ThemedText>
+                    {/* text, R$ value */}
+                    {itemsEarn.map((item, index)=>{
+                        return(
+                            <ThemedText key={index}>
+                                {item.title}: R${item.value.toFixed(2)}
+                            </ThemedText>
+                        );
+                    })}
+                    <Button>Ajustar</Button>
                 </View>
 
+
+                {/* divisao (card) em relação aos gastos fixos */}
                 <View>
-                    <ThemedText type="defaultSemiBold">Despesas Mensais</ThemedText>
-                    <ThemedText type="subtitle">R$ {financials.expenseMonth.toFixed(2)}</ThemedText>
-                    
-                    <View>
-                        <ThemedText >▼ Maior consumo: {financials.topCategory}</ThemedText>
-                    </View>
-
-                    <TouchableOpacity>
-                        <ThemedText type="defaultSemiBold">Lançar Despesa</ThemedText>
-                    </TouchableOpacity>
-                </View>
-
-                <View>
-                    <ThemedText type="subtitle">Análise e Impostos</ThemedText>
-
-                    <TouchableOpacity onPress={() => router.push("/calculator")}>
-                        <ThemedText type="default">💼 Simular Imposto de Renda</ThemedText>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => router.push("/pizzaGraph")}>
-                        <ThemedText type="default">📊 Ver Proporção por Categorias</ThemedText>
-                    </TouchableOpacity>
+                    <ThemedText>Carteira de Gastos</ThemedText>
+                    {/* text, R$ value */}
+                    {itemsLost.map((item, index)=>{
+                        return(
+                            <ThemedText key={index}>
+                                {item.title}: R${item.value.toFixed(2)}
+                            </ThemedText>
+                        );
+                    })}
+                    <Button>Ajustar</Button>
                 </View>
 
             </ScrollView>
-
-        </ParallaxScrollView>
+        </SafeAreaView>
     );
 }
