@@ -1,66 +1,146 @@
 import ParallaxScrollView from "@/src/components/expo/parallax-scroll-view";
 import { ThemedText } from "@/src/components/expo/themed-text";
 import { ThemedView } from "@/src/components/expo/themed-view";
-import React, { useState } from "react";
-import { Alert, TouchableOpacity, View } from "react-native";
+import React from "react";
+import { Alert, TouchableOpacity, View, StyleSheet, SafeAreaView } from "react-native";
 
 export default function BarGraph() {
-    const [monthlyData, setMonthlyData] = useState([
-        { id: 1, month: "Jan", total: 850.00 },
-        { id: 2, month: "Fev", total: 1100.00 },
-        { id: 3, month: "Mar", total: 950.00 },
-        { id: 4, month: "Abr", total: 1250.00 },
-        { id: 5, month: "Mai", total: 1000.00 },
-    ]);
+    interface Bar {
+        month: string;
+        earn: number;
+        lost: number;
+        investments: number;
+    }
 
-    const handleMonthDetails = (month: string, total: number) => {
-        Alert.alert("Resumo Mensal", `Total gasto em ${month}: R$ ${total.toFixed(2)}`);
+    const bars: Bar[] = [
+        { month: "Jan", earn: 4000, lost: 3000, investments: 500 },
+        { month: "Fev", earn: 2000, lost: 3500, investments: 100 },
+        { month: "Mar", earn: 5000, lost: 2000, investments: 6000 },
+    ];
+
+    const maxVal = Math.max(...bars.flatMap(b => [b.earn, b.lost, b.investments]));
+
+    const handleDetails = (category: string, month: string, value: number) => {
+        Alert.alert("Detalhes", `${category} em ${month}: R$ ${value.toFixed(2)}`);
     };
 
     return (
-        <ParallaxScrollView
-            headerBackgroundColor={{ light: "#E2E3E5", dark: "#343A40" }}
-            headerImage={
-                <View>
-                    <ThemedText>📉</ThemedText>
+        <SafeAreaView style={styles.container}>
+            <ThemedText type="title" style={styles.title}>Resumo Financeiro</ThemedText>
+
+            {/* legenda do grafico */}
+            <View style={styles.legendContainer}>
+                <View style={styles.legendItem}>
+                    <View style={[styles.legendBox, { backgroundColor: '#4CD964' }]} />
+                    <ThemedText style={styles.legendText}>Ganhos</ThemedText>
                 </View>
-            }>
-
-            <ThemedView>
-                <ThemedText type="title">Evolução Mensal</ThemedText>
-            </ThemedView>
-
-            <ThemedText type="default">
-                Acompanhe o comparativo do seu volume total de despesas ao longo dos últimos meses.
-            </ThemedText>
-            <View>
-                <ThemedText type="defaultSemiBold">Gráfico de Histórico</ThemedText>
+                <View style={styles.legendItem}>
+                    <View style={[styles.legendBox, { backgroundColor: '#FF3B30' }]} />
+                    <ThemedText style={styles.legendText}>Gastos</ThemedText>
+                </View>
+                <View style={styles.legendItem}>
+                    <View style={[styles.legendBox, { backgroundColor: '#5AC8FA' }]} />
+                    <ThemedText style={styles.legendText}>Invest.</ThemedText>
+                </View>
             </View>
-            <View>
-                <ThemedText type="subtitle">Valores Acumulados</ThemedText>
 
-                {monthlyData.map((item) => (
-                    <TouchableOpacity 
-                        key={item.id} 
-                        onPress={() => handleMonthDetails(item.month, item.total)}
-                    >
-                        <View>
-                            <ThemedText type="default">{item.month}</ThemedText>
+            {/* area do grafico */}
+            <View style={styles.chartContainer}>
+                {bars.map((item, index) => (
+                    <View key={index} style={styles.monthGroup}>
+                        
+                        {/* sub-container com as 3 barras lado a lado */}
+                        <View style={styles.barsRow}>
+                            {/* barra de ganhos (earn) */}
+                            <TouchableOpacity 
+                                style={[styles.bar, { 
+                                    height: maxVal > 0 ? (item.earn / maxVal) * 140 : 0, 
+                                    backgroundColor: '#4CD964' 
+                                }]} 
+                                onPress={() => handleDetails("Ganhos", item.month, item.earn)}
+                            />
+
+                            {/* barra de gastos (lost) */}
+                            <TouchableOpacity 
+                                style={[styles.bar, { 
+                                    height: maxVal > 0 ? (item.lost / maxVal) * 140 : 0, 
+                                    backgroundColor: '#FF3B30' 
+                                }]} 
+                                onPress={() => handleDetails("Gastos", item.month, item.lost)}
+                            />
+
+                            {/* barra de investimentos */}
+                            <TouchableOpacity 
+                                style={[styles.bar, { 
+                                    height: maxVal > 0 ? (item.investments / maxVal) * 140 : 0, 
+                                    backgroundColor: '#5AC8FA' 
+                                }]} 
+                                onPress={() => handleDetails("Investimentos", item.month, item.investments)}
+                            />
                         </View>
 
-                        <View>
-                            <ThemedText type="defaultSemiBold">R$ {item.total.toFixed(2)}</ThemedText>
-                        </View>
-                    </TouchableOpacity>
+                        {/* nome do mes abaixo do grupo de barras */}
+                        <ThemedText style={styles.monthLabel}>{item.month}</ThemedText>
+                    </View>
                 ))}
             </View>
-
-            <View>
-                <ThemedText>
-                    * Gráficos de barras são ideais para auditar flutuações sazonais de faturamento e custos.
-                </ThemedText>
-            </View>
-
-        </ParallaxScrollView>
+        </SafeAreaView>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        padding: 20,
+        alignItems: 'center',
+    },
+    title: {
+        marginBottom: 15,
+    },
+    legendContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginBottom: 25,
+        gap: 15,
+    },
+    legendItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 5,
+    },
+    legendBox: {
+        width: 12,
+        height: 12,
+        borderRadius: 3,
+    },
+    legendText: {
+        fontSize: 12,
+    },
+    chartContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-end',
+        width: '100%',
+        height: 200,
+        borderRadius: 12,
+        paddingHorizontal: 15,
+        paddingVertical: 10,
+    },
+    monthGroup: {
+        alignItems: 'center',
+        flex: 1,
+    },
+    barsRow: {
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        gap: 4,
+        height: 140, 
+    },
+    bar: {
+        width: 20,
+    },
+    monthLabel: {
+        fontSize: 14,
+        fontWeight: '600',
+        marginTop: 8,
+    },
+});
