@@ -1,6 +1,4 @@
-import ParallaxScrollView from "@/src/components/expo/parallax-scroll-view";
 import { ThemedText } from "@/src/components/expo/themed-text";
-import { ThemedView } from "@/src/components/expo/themed-view";
 import React from "react";
 import { Alert, TouchableOpacity, View, StyleSheet, SafeAreaView } from "react-native";
 
