@@ -1,16 +1,16 @@
 import { ThemedText } from "@/src/components/expo/themed-text";
-import React from "react";
+import React, { useState } from "react";
 import { Alert, TouchableOpacity, View, StyleSheet, SafeAreaView } from "react-native";
 
 export default function BarGraph() {
-    interface Bar {
+    interface Values {
         month: string;
         earn: number;
         lost: number;
         investments: number;
     }
 
-    const bars: Bar[] = [
+    const bars: Values[] = [
         { month: "Jan", earn: 4000, lost: 3000, investments: 500 },
         { month: "Fev", earn: 2000, lost: 3500, investments: 100 },
         { month: "Mar", earn: 5000, lost: 2000, investments: 6000 },
@@ -22,10 +22,22 @@ export default function BarGraph() {
         Alert.alert("Detalhes", `${category} em ${month}: R$ ${value.toFixed(2)}`);
     };
 
+    const currentDate = new Date();
+    const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth() + 1);
+
+
     return (
         <SafeAreaView style={styles.container}>
             <ThemedText type="title" style={styles.title}>Resumo Financeiro</ThemedText>
 
+            <View>
+                <ThemedText type="subtitle" style={styles.title}>
+                    <TouchableOpacity onPress={() => setCurrentMonth(currentMonth - 1)}> - </TouchableOpacity>
+                    {currentMonth}
+                    <TouchableOpacity onPress={() => setCurrentMonth(currentMonth + 1)}> + </TouchableOpacity>
+                </ThemedText>
+
+            </View>
             {/* legenda do grafico */}
             <View style={styles.legendContainer}>
                 <View style={styles.legendItem}>
