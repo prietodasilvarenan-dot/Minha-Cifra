@@ -1,70 +1,123 @@
-import { ThemedText } from "@/src/components/expo/themed-text";
-import { ThemedView } from "@/src/components/expo/themed-view";
-import { Button } from "@react-navigation/elements";
-import React from "react";
-import { ScrollView, View } from "react-native";
+import { ButtonAjusteDespesas, ButtonAjusteSaldo } from "@/src/components/common/buttons";
+import { getHomeStyles } from "@/src/components/styles/stylesHome";
+import { Feather } from "@expo/vector-icons";
+import { router } from "expo-router";
+import React, { useState } from "react";
+import {
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View,
+    useColorScheme,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
+
+    const isDark = useColorScheme() === "dark";
+    const styles = getHomeStyles(isDark);
+
+    // 👁️ STATE DO OLHO
+    const [hideValues, setHideValues] = useState(false);
+
+    const toggleHideValues = () => {
+        setHideValues(prev => !prev);
+    };
+
     interface Items {
         title: string;
         value: number;
-        valid: boolean;
     }
+
     const itemsEarn: Items[] = [
-        {title: "Salário", value: 5000, valid: true},
-        {title: "Investimentos", value: 500, valid: true},
-        {title: "FreeLancer", value: 1000, valid: true},
-        {title: "Aniversario", value: 40, valid: true},
-    ]
+        { title: "Salário", value: 5000 },
+        { title: "Investimentos", value: 500 },
+        { title: "Freelancer", value: 1000 },
+    ];
+
     const itemsLost: Items[] = [
-        {title: "Salário", value: -3000, valid: true},
-        {title: "asdçlkjfa", value: -3000, valid: true},
-        {title: "asdasddsadsadsa", value: -3000, valid: true},
-        {title: "Salário", value: -3000, valid: true},
-    ]
+        { title: "Aluguel", value: 1200 },
+        { title: "Mercado", value: 500 },
+        { title: "Lazer", value: 250 },
+    ];
 
     return (
-       <SafeAreaView>
-            <ThemedView>
-                <ThemedText type="title">Olá, User!</ThemedText>
-            </ThemedView>
+        <SafeAreaView style={styles.container}>
+            <View style={styles.header}>
+                <Text style={styles.welcome}>
+                    Bem vindo,{"\n"}USER
+                </Text>
 
-            <ThemedText type="default">
-                Aqui está o panorama geral das suas finanças hoje.
-            </ThemedText>
+                <Text style={styles.subtitle}>
+                    Aqui está seu panorama financeiro
+                </Text>
+            </View>
+            <ScrollView style={styles.content}>
+                <View style={styles.card}>
+                    <View style={styles.cardHeader}>
+                        <Text style={styles.cardTitle}>
+                            Carteira de Ganhos
+                        </Text>
+                        <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                            <Text style={styles.cardValue}>
+                                {hideValues ? "••••••" : "R$ 6.500"}
+                            </Text>
+                            <TouchableOpacity onPress={toggleHideValues}>
+                                <Feather
+                                    name={hideValues ? "eye-off" : "eye"}
+                                    size={20}
+                                    color={isDark ? "#fff" : "#000"}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    {itemsEarn.map((item, index) => (
+                        <View style={styles.item} key={index}>
+                            <Text style={styles.itemText}>
+                                {item.title}
+                            </Text>
 
-            <ScrollView>
-                
-                {/* divisao (card) em relação aos ganhos fixos */}
-                <View>
-                    <ThemedText>Carteira de Ganhos</ThemedText>
-                    {/* text, R$ value */}
-                    {itemsEarn.map((item, index)=>{
-                        return(
-                            <ThemedText key={index}>
-                                {item.title}: R${item.value.toFixed(2)}
-                            </ThemedText>
-                        );
-                    })}
-                    <Button>Ajustar</Button>
+                            <Text style={styles.itemValue}>
+                                {hideValues ? "••••" : `R$ ${item.value}`}
+                            </Text>
+                        </View>
+                    ))}
+                    <ButtonAjusteSaldo
+                        onPress={() => router.replace("/signIn")}
+                    />
                 </View>
-
-
-                {/* divisao (card) em relação aos gastos fixos */}
-                <View>
-                    <ThemedText>Carteira de Gastos</ThemedText>
-                    {/* text, R$ value */}
-                    {itemsLost.map((item, index)=>{
-                        return(
-                            <ThemedText key={index}>
-                                {item.title}: R${item.value.toFixed(2)}
-                            </ThemedText>
-                        );
-                    })}
-                    <Button>Ajustar</Button>
+                <View style={styles.card}>
+                    <View style={styles.cardHeader}>
+                        <Text style={styles.cardTitle}>
+                            Carteira de Gastos
+                        </Text>
+                        <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                            <Text style={styles.cardValue}>
+                                {hideValues ? "••••••" : "R$ 1.950"}
+                            </Text>
+                            <TouchableOpacity onPress={toggleHideValues}>
+                                <Feather
+                                    name={hideValues ? "eye-off" : "eye"}
+                                    size={20}
+                                    color={isDark ? "#fff" : "#000"}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    {itemsLost.map((item, index) => (
+                        <View style={styles.item} key={index}>
+                            <Text style={styles.itemText}>
+                                {item.title}
+                            </Text>
+                            <Text style={styles.itemValue}>
+                                {hideValues ? "••••" : `R$ ${item.value}`}
+                            </Text>
+                        </View>
+                    ))}
+                    <ButtonAjusteDespesas
+                        onPress={() => router.replace("/signIn")}
+                    />
                 </View>
-
             </ScrollView>
         </SafeAreaView>
     );

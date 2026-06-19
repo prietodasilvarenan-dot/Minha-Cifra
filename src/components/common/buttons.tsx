@@ -4,7 +4,8 @@ import {
     TouchableOpacity,
     useColorScheme,
 } from "react-native";
-import { getStyles } from "../styles/stylesSign";
+import { getHomeStyles } from "../styles/stylesHome";
+import { getSignStyles } from "../styles/stylesSign";
 
 interface ButtonProps {
     onPress: () => void;
@@ -14,7 +15,7 @@ export const ButtonSignUp: React.FC<ButtonProps> = ({
     onPress,
 }) => {
     const isDark = useColorScheme() === "dark";
-    const styles = getStyles(isDark);
+    const styles = getSignStyles(isDark);
 
     return (
         <TouchableOpacity
@@ -32,7 +33,7 @@ export const ButtonSignIn: React.FC<ButtonProps> = ({
     onPress,
 }) => {
     const isDark = useColorScheme() === "dark";
-    const styles = getStyles(isDark);
+    const styles = getSignStyles(isDark);
 
     return (
         <TouchableOpacity
@@ -41,6 +42,41 @@ export const ButtonSignIn: React.FC<ButtonProps> = ({
         >
             <Text style={styles.textButtonAuth}>
                 Entrar
+            </Text>
+        </TouchableOpacity>
+    );
+};
+
+export const ButtonAjusteDespesas: React.FC<ButtonProps> = ({
+    onPress,
+}) => {
+    const isDark = useColorScheme() === "dark";
+    const styles = getHomeStyles(isDark);
+    return (
+        <TouchableOpacity
+            style={styles.button}
+            onPress={onPress}
+        >
+            <Text style={styles.buttonText}>
+                Ajustar despesas
+            </Text>
+        </TouchableOpacity>
+    );
+};
+
+
+export const ButtonAjusteSaldo: React.FC<ButtonProps> = ({
+    onPress,
+}) => {
+    const isDark = useColorScheme() === "dark";
+    const styles = getHomeStyles(isDark);
+    return (
+        <TouchableOpacity
+            style={styles.button}
+            onPress={onPress}
+        >
+            <Text style={styles.buttonText}>
+                Ajustar saldo
             </Text>
         </TouchableOpacity>
     );

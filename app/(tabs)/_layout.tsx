@@ -1,10 +1,9 @@
-import { Tabs } from "expo-router";
-import React from "react";
-
 import { HapticTab } from "@/src/components/expo/haptic-tab";
-import { IconSymbol } from "@/src/components/expo/icon-symbol";
 import { Colors } from "@/src/constants/theme";
 import { useColorScheme } from "@/src/hooks/use-color-scheme";
+import { Feather } from "@expo/vector-icons";
+import { Tabs } from "expo-router";
+import React from "react";
 
 export default function TabLayout() {
     const colorScheme = useColorScheme();
@@ -12,30 +11,65 @@ export default function TabLayout() {
     return (
         <Tabs
             screenOptions={{
-                tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
                 headerShown: false,
                 tabBarButton: HapticTab,
+                tabBarActiveTintColor: "#006BFF",
+                tabBarInactiveTintColor: "#888",
+                tabBarStyle: {
+                    backgroundColor: Colors[colorScheme ?? "light"].background,
+                    height: 65,
+                    paddingBottom: 8,
+                    paddingTop: 8,
+                    borderTopWidth: 0,
+                    elevation: 12,
+                    shadowColor: "#000",
+                    shadowOpacity: 0.08,
+                    shadowRadius: 10,
+                },
             }}
         >
             <Tabs.Screen
                 name="index"
                 options={{
-                    title: "Home",
+                    title: "Início",
                     tabBarIcon: ({ color }) => (
-                        <IconSymbol size={28} name="house.fill" color={color} />
+                        <Feather name="home" size={24} color={color} />
                     ),
                 }}
             />
             <Tabs.Screen
-                name="explore"
+                name="barGraph"
                 options={{
-                    title: "Explore",
+                    title: "Estatísticas",
                     tabBarIcon: ({ color }) => (
-                        <IconSymbol
-                            size={28}
-                            name="paperplane.fill"
-                            color={color}
-                        />
+                        <Feather name="bar-chart-2" size={24} color={color} />
+                    ),
+                }}
+            />
+            <Tabs.Screen
+                name="calculator"
+                options={{
+                    title: "Calculadora",
+                    tabBarIcon: ({ color }) => (
+                        <Feather name="percent" size={24} color={color} />
+                    ),
+                }}
+            />
+            <Tabs.Screen
+                name="pizzaGraph"
+                options={{
+                    title: "Gastos",
+                    tabBarIcon: ({ color }) => (
+                        <Feather name="trending-down" size={24} color={color} />
+                    ),
+                }}
+            />
+            <Tabs.Screen
+                name="perfil"
+                options={{
+                    title: "Perfil",
+                    tabBarIcon: ({ color }) => (
+                        <Feather name="user" size={24} color={color} />
                     ),
                 }}
             />

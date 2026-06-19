@@ -1,150 +1,213 @@
 import { Platform, StyleSheet } from "react-native";
 
-export const getStyles = (isDark: boolean) =>
+export const getSignStyles = (isDark: boolean) =>
     StyleSheet.create({
+
         container: {
             flex: 1,
-            justifyContent: "center",
-            paddingHorizontal: 24,
-            backgroundColor: "transparent",
-        },
-
-        card: {
+            justifyContent: "flex-end",
             backgroundColor: isDark
-                ? "rgba(28,28,30,0.95)"
-                : "rgba(255,255,255,0.95)",
-
-            borderRadius: 24,
-
-            paddingHorizontal: 22,
-            paddingVertical: 28,
-
-            ...Platform.select({
-                ios: {
-                    shadowColor: "#000",
-                    shadowOffset: {
-                        width: 0,
-                        height: 8,
-                    },
-                    shadowOpacity: 0.15,
-                    shadowRadius: 18,
-                },
-                android: {
-                    elevation: 10,
-                },
-            }),
+                ? "#001B44"
+                : "#006BFF",
         },
 
         header: {
             position: "absolute",
-
-            top: 80,
-
+            top: 115,
             left: 0,
             right: 0,
-
+            flexDirection: "row",
+            justifyContent: "center",
             alignItems: "center",
         },
 
         title: {
-            fontSize: 42,
-            fontWeight: "800",
-            textAlign: "center",
-            fontFamily: "sans-serif",
-            marginBottom: 30,
-            marginTop: 0,
-            color: "#FFFFFF",
+            fontSize: 40,
+            fontWeight: "900",
+            fontFamily: "Poppins_800ExtraBold",
+            color: "#F2EFEF",
             letterSpacing: 1,
         },
 
-        subtitle: {
-            textAlign: "center",
-            marginBottom: 25,
+        logo: {
+            width: 58,
+            height: 58,
+            marginLeft: 6,
+            resizeMode: "contain",
+        },
 
-            color: isDark ? "#BBBBBB" : "#5A6472",
+        card: {
+            backgroundColor: isDark
+                ? "#101E36"
+                : "#F7F9FC",
+            minHeight: "68%",
+            paddingHorizontal: 25,
+            paddingTop: 35,
+            paddingBottom: 55,
+            borderTopLeftRadius: 55,
+            ...Platform.select({
+                ios: {
+                    shadowColor: "#000",
+                    shadowOpacity: 0.18,
+                    shadowRadius: 18,
+                    shadowOffset: {
+                        width: 0,
+                        height: -5
+                    }
+                },
+                android: {
+                    elevation: 10
+                }
+            })
+        },
+
+        label: {
             fontSize: 14,
+            fontWeight: "700",
+            marginBottom: 7,
+            marginLeft: 4,
+            color: isDark
+                ? "#FFFFFF"
+                : "#1E293B",
         },
 
         input: {
             height: 48,
+            borderRadius: 14,
+            paddingHorizontal: 16,
+            marginBottom: 15,
+            backgroundColor: isDark
+                ? "#172A46"
+                : "#FFFFFF",
             borderWidth: 1,
             borderColor: isDark
-                ? "#555555"
-                : "#D1D5DB",
-            borderRadius: 14,
-            paddingHorizontal: 15,
-            marginBottom: 14,
-            backgroundColor: isDark
-                ? "#1F1F1F"
-                : "#FFFFFF",
-
+                ? "#29476F"
+                : "#D7E2F0",
             color: isDark
                 ? "#FFFFFF"
                 : "#111827",
-            fontSize: 15,
+            fontSize: 14,
+            ...Platform.select({
+                ios: {
+                    shadowColor: isDark
+                        ? "#000"
+                        : "#64748B",
+                    shadowOpacity: 0.18,
+                    shadowRadius: 8,
+                    shadowOffset: {
+                        width: 0,
+                        height: 4
+                    }
+                },
+                android: {
+                    elevation: 4
+                }
+            })
         },
 
         inputFocused: {
-            borderColor: "#0b55f3",
             borderWidth: 2,
-
+            borderColor: isDark
+                ? "#8FC5FF"
+                : "#006BFF",
             backgroundColor: isDark
-                ? "#252525"
+                ? "#1D385C"
                 : "#FFFFFF",
-
             ...Platform.select({
                 ios: {
-                    shadowColor: "#0b55f3",
+                    shadowColor: isDark
+                        ? "#8FC5FF"
+                        : "#006BFF",
+                    shadowOpacity: 0.35,
+                    shadowRadius: 8,
                     shadowOffset: {
                         width: 0,
-                        height: 0,
-                    },
-                    shadowOpacity: 0.35,
-                    shadowRadius: 6,
+                        height: 0
+                    }
                 },
-
                 android: {
-                    elevation: 5,
-                },
-            }),
+                    elevation: 7
+                }
+            })
         },
+
         buttonAuth: {
-            height: 50,
+            height: 48,
             borderRadius: 14,
-            backgroundColor: "#002d8f",
+            backgroundColor: isDark
+                ? "#8FC5FF"
+                : "#006BFF",
             justifyContent: "center",
             alignItems: "center",
             marginTop: 10,
-
             ...Platform.select({
                 ios: {
-                    shadowColor: "#002d8f",
+                    shadowColor: isDark
+                        ? "#8FC5FF"
+                        : "#003B99",
+                    shadowOpacity: 0.45,
+                    shadowRadius: 12,
                     shadowOffset: {
                         width: 0,
-                        height: 5,
-                    },
-                    shadowOpacity: 0.3,
-                    shadowRadius: 10,
+                        height: 6
+                    }
                 },
                 android: {
-                    elevation: 6,
-                },
-            }),
+                    elevation: 8
+                }
+            })
         },
 
         textButtonAuth: {
-            color: "#FFFFFF",
             fontSize: 16,
-            fontWeight: "700",
+            fontWeight: "800",
+            color: isDark
+                ? "#001B44"
+                : "#FFFFFF",
+        },
+
+        subtitle: {
+            textAlign: "center",
+            fontSize: 14,
+            marginBottom: 20,
+            color: isDark
+                ? "#B8C7DD"
+                : "#64748B",
+        },
+
+        linkContainer: {
+            flexDirection: "row",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            marginTop: 18,
         },
 
         link: {
-            marginTop: 18,
-            textAlign: "center",
-
-            color: "#60A5FA",
-
+            color: isDark
+                ? "#8FC5FF"
+                : "#006BFF",
+            fontWeight: "800",
+            marginLeft: 5,
+        },
+        divisorContainer: {
+            flexDirection: "row",
+            alignItems: "center",
+            marginTop: 20,
+            marginBottom: 20,
+        },
+        divisor: {
+            flex: 1,
+            height: 1,
+            backgroundColor: isDark
+                ? "#334155"
+                : "#CBD5E1",
+        },
+        divisorText: {
+            marginHorizontal: 12,
             fontSize: 14,
-            fontWeight: "600",
+            fontWeight: "700",
+            color: isDark
+                ? "#B8C7DD"
+                : "#64748B",
         },
     });

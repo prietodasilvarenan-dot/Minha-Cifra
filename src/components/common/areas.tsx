@@ -1,10 +1,13 @@
+import { Feather } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
+    Text,
     TextInput,
+    TouchableOpacity,
     useColorScheme,
+    View
 } from "react-native";
-import { getStyles } from "../styles/stylesSign";
-
+import { getSignStyles } from "../styles/stylesSign";
 
 interface AreaProps {
     value: string;
@@ -16,26 +19,26 @@ export const EmailArea: React.FC<AreaProps> = ({
     onChangeText,
 }) => {
     const isDark = useColorScheme() === "dark";
-    const styles = getStyles(isDark);
+    const styles = getSignStyles(isDark);
     const [focused, setFocused] = useState(false);
 
     return (
-        <TextInput
-        underlineColorAndroid="transparent"
-            style={[
-                styles.input,
-                focused && styles.inputFocused,
-            ]}
-            onFocus={() => setFocused(true)}
-            onBlur={() => setFocused(false)}
-            value={value}
-            onChangeText={onChangeText}
-            placeholder="Digite seu Email"
-            placeholderTextColor={
-                isDark ? "#888" : "#999"
-            }
-            keyboardType="email-address"
-        />
+        <View>
+            <Text style={styles.label}>Email</Text>
+            <TextInput
+                style={[
+                    styles.input,
+                    focused && styles.inputFocused,
+                    { height: 50 }
+                ]}
+                onFocus={() => setFocused(true)}
+                onBlur={() => setFocused(false)}
+                value={value}
+                onChangeText={onChangeText}
+                placeholder="Digite seu Email"
+                placeholderTextColor={isDark ? "#888" : "#999"}
+            />
+        </View>
     );
 };
 
@@ -44,26 +47,50 @@ export const PasswordArea: React.FC<AreaProps> = ({
     onChangeText,
 }) => {
     const isDark = useColorScheme() === "dark";
-    const styles = getStyles(isDark);
+    const styles = getSignStyles(isDark);
     const [focused, setFocused] = useState(false);
+    const [hidePassword, setHidePassword] = useState(true);
 
     return (
-        <TextInput
-        underlineColorAndroid="transparent"
-            style={[
-                styles.input,
-                focused && styles.inputFocused,
-            ]}
-            onFocus={() => setFocused(true)}
-            onBlur={() => setFocused(false)}
-            value={value}
-            onChangeText={onChangeText}
-            placeholder="Digite sua Senha"
-            placeholderTextColor={
-                isDark ? "#888" : "#999"
-            }
-            secureTextEntry
-        />
+        <View>
+            <Text style={styles.label}>Senha</Text>
+            <View style={{ position: "relative" }}>
+                <TextInput
+                    style={[
+                        styles.input,
+                        focused && styles.inputFocused,
+                        {
+                            height: 50,
+                            paddingRight: 45,
+                        }
+                    ]}
+                    onFocus={() => setFocused(true)}
+                    onBlur={() => setFocused(false)}
+                    value={value}
+                    onChangeText={onChangeText}
+                    placeholder="Digite sua Senha"
+                    placeholderTextColor={isDark ? "#888" : "#999"}
+                    secureTextEntry={hidePassword}
+                />
+                <TouchableOpacity
+                    onPress={() => setHidePassword(prev => !prev)}
+                    style={{
+                        position: "absolute",
+                        right: 12,
+                        top: 0,
+                        bottom: 12,
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                    <Feather
+                        name={hidePassword ? "eye-off" : "eye"}
+                        size={18}
+                        color={isDark ? "#fff" : "#000"}
+                    />
+                </TouchableOpacity>
+            </View>
+        </View>
     );
 };
 
@@ -72,25 +99,50 @@ export const ConfirmPasswordArea: React.FC<AreaProps> = ({
     onChangeText,
 }) => {
     const isDark = useColorScheme() === "dark";
-    const styles = getStyles(isDark);
+    const styles = getSignStyles(isDark);
+
     const [focused, setFocused] = useState(false);
+    const [hidePassword, setHidePassword] = useState(true);
 
     return (
-        <TextInput
-        underlineColorAndroid="transparent"
-            style={[
-                styles.input,
-                focused && styles.inputFocused,
-            ]}
-            onFocus={() => setFocused(true)}
-            onBlur={() => setFocused(false)}
-            value={value}
-            onChangeText={onChangeText}
-            placeholder="Confirme sua Senha"
-            placeholderTextColor={
-                isDark ? "#888" : "#999"
-            }
-            secureTextEntry
-        />
+        <View>
+            <Text style={styles.label}>Confirme sua senha</Text>
+            <View style={{ position: "relative" }}>
+                <TextInput
+                    style={[
+                        styles.input,
+                        focused && styles.inputFocused,
+                        {
+                            height: 50,
+                            paddingRight: 45,
+                        }
+                    ]}
+                    onFocus={() => setFocused(true)}
+                    onBlur={() => setFocused(false)}
+                    value={value}
+                    onChangeText={onChangeText}
+                    placeholder="Confirme sua Senha"
+                    placeholderTextColor={isDark ? "#888" : "#999"}
+                    secureTextEntry={hidePassword}
+                />
+                <TouchableOpacity
+                    onPress={() => setHidePassword(prev => !prev)}
+                    style={{
+                        position: "absolute",
+                        right: 12,
+                        top: 0,
+                        bottom: 12,
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                    <Feather
+                        name={hidePassword ? "eye-off" : "eye"}
+                        size={18}
+                        color={isDark ? "#fff" : "#000"}
+                    />
+                </TouchableOpacity>
+            </View>
+        </View>
     );
 };

@@ -1,11 +1,12 @@
+import { DivisorLabel } from "@/src/components/common/divisor";
+import { LinkCadastro } from "@/src/components/common/links";
 import { loginUser } from "@/src/services/userService";
-import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { Alert, Text, View, useColorScheme } from "react-native";
+import { Alert, Image, Text, View, useColorScheme } from "react-native";
 import { EmailArea, PasswordArea } from "../../src/components/common/areas";
 import { ButtonSignIn } from "../../src/components/common/buttons";
-import { getStyles } from "../../src/components/styles/stylesSign";
+import { getSignStyles } from "../../src/components/styles/stylesSign";
 import User from "../../src/model/User";
 
 export default function SignIn() {
@@ -14,7 +15,7 @@ export default function SignIn() {
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
     const [focused, setFocused] = useState(false);
-    const styles = getStyles(isDark);
+    const styles = getSignStyles(isDark);
 
     const handleLogin = async () => {
         if (!email || !password) {
@@ -41,17 +42,21 @@ export default function SignIn() {
     };
 
     return (
-        <LinearGradient
-            colors={["#00020f", "#001535", "#002561"]}
-            style={{ flex: 1 }}
-        >
+        <View style={styles.container}>
             <View style={styles.container}>
-                <View style={styles.container}>
-                    <View style={styles.header}>
-                        <Text style={styles.title}>
-                            Minha Cifra
-                        </Text>
-                    </View>
+                <View style={styles.header}>
+                    <Text style={styles.title}>
+                        Minha
+                    </Text>
+                    <Image
+                        source={require("../../assets/images/logo_no_background.png")}
+                        style={styles.logo}
+                    />
+                    <Text style={styles.title}>
+                        ifra
+                    </Text>
+                </View>
+                <View style={styles.card}>
                     <EmailArea
                         value={email}
                         onChangeText={setEmail}
@@ -65,9 +70,12 @@ export default function SignIn() {
                     <ButtonSignIn
                         onPress={handleLogin}
                     />
-
+                    <DivisorLabel />
+                    <LinkCadastro
+                        onPress={() => router.replace("/signUp")}
+                    />
                 </View>
             </View>
-        </LinearGradient>
+        </View>
     );
 }
