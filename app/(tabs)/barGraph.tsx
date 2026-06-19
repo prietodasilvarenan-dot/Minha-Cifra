@@ -1,59 +1,28 @@
 import { ThemedText } from "@/src/components/expo/themed-text";
-import React, { useState } from "react";
+import React from "react";
 import { Alert, TouchableOpacity, View, StyleSheet, SafeAreaView } from "react-native";
+import { useGraphicFilter } from "@/src/hooks/useGraphicFilter";
 
 export default function BarGraph() {
-    interface Values {
-        year: number;
-        month: string;
-        earn: number;
-        lost: number;
-        investments: number;
-    }
-
-    const monthNames = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
     
-    const bars: Values[] = [
-        { year: 2024, month: "Jan", earn: 4000, lost: 3000, investments: 500 },
-        { year: 2024, month: "Jan", earn: 4000, lost: 3000, investments: 500 },
-        { year: 2024, month: "Fev", earn: 2000, lost: 3500, investments: 100 },
-        { year: 2024, month: "Mar", earn: 5000, lost: 2000, investments: 6000 },
-        { year: 2024, month: "Dez", earn: 4000, lost: 3000, investments: 500 },
-    ];
+    const { currentMonthLabel, filteredBars, maxVal, nextMonth, prevMonth } = useGraphicFilter();
 
-    const currentDate = new Date();
-    const [currentMonthIndex, setCurrentMonthIndex] = useState(currentDate.getMonth());
-
-    const [currentYearIndex, setCurrentYearIndex] = useState(currentDate.getFullYear());
-
-    const filteredBars = bars.filter(b => b.month === monthNames[currentMonthIndex]);
-
-    const maxVal = Math.max(...bars.flatMap(b => [b.earn, b.lost, b.investments]));
 
     const handleDetails = (category: string, month: string, value: number) => {
         Alert.alert("Detalhes", `${category} em ${month}: R$ ${value.toFixed(2)}`);
-    };
-
-    const nextMonth = () => {
-        setCurrentMonthIndex((prev) => (prev === 11 ? 0 : prev + 1));
-    };
-
-    const prevMonth = () => {
-        setCurrentMonthIndex((prev) => (prev === 0 ? 11 : prev - 1));
     };
 
     return (
         <SafeAreaView style={styles.container}>
             <ThemedText type="title" style={styles.title}>Resumo Financeiro</ThemedText>
 
-            {/* controle de seleção do mes */}
             <View style={styles.controlContainer}>
                 <TouchableOpacity onPress={prevMonth} style={styles.navButton}>
                     <ThemedText type="subtitle">-</ThemedText>
                 </TouchableOpacity>
                 
                 <ThemedText type="subtitle" style={styles.monthTitle}>
-                    {monthNames[currentMonthIndex]}
+                    {currentMonthLabel}
                 </ThemedText>
                 
                 <TouchableOpacity onPress={nextMonth} style={styles.navButton}>
@@ -61,7 +30,7 @@ export default function BarGraph() {
                 </TouchableOpacity>
             </View>
 
-            {/* legenda do grafico */}
+            {/* Legenda do gráfico */}
             <View style={styles.legendContainer}>
                 <View style={styles.legendItem}>
                     <View style={[styles.legendBox, { backgroundColor: '#4CD964' }]} />
@@ -77,7 +46,7 @@ export default function BarGraph() {
                 </View>
             </View>
 
-            {/* area do grafico */}
+            {/* Área do gráfico */}
             <View style={styles.chartContainer}>
                 {filteredBars.length > 0 ? (
                     filteredBars.map((item, index) => (
@@ -90,7 +59,6 @@ export default function BarGraph() {
                                     }]} 
                                     onPress={() => handleDetails("Ganhos", item.month, item.earn)}
                                 />
-
                                 <TouchableOpacity 
                                     style={[styles.bar, { 
                                         height: maxVal > 0 ? (item.lost / maxVal) * 140 : 0, 
@@ -98,7 +66,6 @@ export default function BarGraph() {
                                     }]} 
                                     onPress={() => handleDetails("Gastos", item.month, item.lost)}
                                 />
-
                                 <TouchableOpacity 
                                     style={[styles.bar, { 
                                         height: maxVal > 0 ? (item.investments / maxVal) * 140 : 0, 

@@ -9,6 +9,7 @@ interface Values {
 }
 const MONTH_NAMES = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 
+
 const bars: Values[] = [
     { year: 2024, month: "Jan", earn: 4000, lost: 3000, investments: 500 },
     { year: 2024, month: "Jan", earn: 4000, lost: 3000, investments: 500 },
@@ -35,8 +36,18 @@ export function useGraphicFilter(){
         setCurrentMonthIndex((prev) => (prev === 0 ? 11 : prev - 1));
     };
 
+    const nextYear = () => {
+        setCurrentMonthIndex((prev) => (prev === 11 ? 0 : prev + 1));
+    };
+
+    const prevYear = () => {
+        setCurrentMonthIndex((prev) => (prev === 0 ? 11 : prev - 1));
+    };
+
+
     return {
         currentMonthLabel: MONTH_NAMES[currentMonthIndex],
+        currentYearLabel: ,
         filteredBars,
         maxVal,
         nextMonth,
