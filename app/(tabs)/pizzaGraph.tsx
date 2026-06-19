@@ -96,7 +96,6 @@ export default function PizzaGraph() {
                                 onPress={() => handleCategoryDetails(item.title, item.value)}
                             >
                                 <View style={styles.legendLeft}>
-                                    {/* Indicador de cor */}
                                     <View style={[styles.colorBadge, { backgroundColor: color }]} />
                                     <ThemedText type="default">{item.title}</ThemedText>
                                 </View>
