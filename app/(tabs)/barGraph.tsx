@@ -4,17 +4,29 @@ import { Alert, TouchableOpacity, View, StyleSheet, SafeAreaView } from "react-n
 
 export default function BarGraph() {
     interface Values {
+        year: number;
         month: string;
         earn: number;
         lost: number;
         investments: number;
     }
 
+    const monthNames = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+    
     const bars: Values[] = [
-        { month: "Jan", earn: 4000, lost: 3000, investments: 500 },
-        { month: "Fev", earn: 2000, lost: 3500, investments: 100 },
-        { month: "Mar", earn: 5000, lost: 2000, investments: 6000 },
+        { year: 2024, month: "Jan", earn: 4000, lost: 3000, investments: 500 },
+        { year: 2024, month: "Jan", earn: 4000, lost: 3000, investments: 500 },
+        { year: 2024, month: "Fev", earn: 2000, lost: 3500, investments: 100 },
+        { year: 2024, month: "Mar", earn: 5000, lost: 2000, investments: 6000 },
+        { year: 2024, month: "Dez", earn: 4000, lost: 3000, investments: 500 },
     ];
+
+    const currentDate = new Date();
+    const [currentMonthIndex, setCurrentMonthIndex] = useState(currentDate.getMonth());
+
+    const [currentYearIndex, setCurrentYearIndex] = useState(currentDate.getFullYear());
+
+    const filteredBars = bars.filter(b => b.month === monthNames[currentMonthIndex]);
 
     const maxVal = Math.max(...bars.flatMap(b => [b.earn, b.lost, b.investments]));
 
@@ -22,22 +34,33 @@ export default function BarGraph() {
         Alert.alert("Detalhes", `${category} em ${month}: R$ ${value.toFixed(2)}`);
     };
 
-    const currentDate = new Date();
-    const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth() + 1);
+    const nextMonth = () => {
+        setCurrentMonthIndex((prev) => (prev === 11 ? 0 : prev + 1));
+    };
 
+    const prevMonth = () => {
+        setCurrentMonthIndex((prev) => (prev === 0 ? 11 : prev - 1));
+    };
 
     return (
         <SafeAreaView style={styles.container}>
             <ThemedText type="title" style={styles.title}>Resumo Financeiro</ThemedText>
 
-            <View>
-                <ThemedText type="subtitle" style={styles.title}>
-                    <TouchableOpacity onPress={() => setCurrentMonth(currentMonth - 1)}> - </TouchableOpacity>
-                    {currentMonth}
-                    <TouchableOpacity onPress={() => setCurrentMonth(currentMonth + 1)}> + </TouchableOpacity>
+            {/* controle de seleção do mes */}
+            <View style={styles.controlContainer}>
+                <TouchableOpacity onPress={prevMonth} style={styles.navButton}>
+                    <ThemedText type="subtitle">-</ThemedText>
+                </TouchableOpacity>
+                
+                <ThemedText type="subtitle" style={styles.monthTitle}>
+                    {monthNames[currentMonthIndex]}
                 </ThemedText>
-
+                
+                <TouchableOpacity onPress={nextMonth} style={styles.navButton}>
+                    <ThemedText type="subtitle">+</ThemedText>
+                </TouchableOpacity>
             </View>
+
             {/* legenda do grafico */}
             <View style={styles.legendContainer}>
                 <View style={styles.legendItem}>
@@ -56,43 +79,42 @@ export default function BarGraph() {
 
             {/* area do grafico */}
             <View style={styles.chartContainer}>
-                {bars.map((item, index) => (
-                    <View key={index} style={styles.monthGroup}>
-                        
-                        {/* sub-container com as 3 barras lado a lado */}
-                        <View style={styles.barsRow}>
-                            {/* barra de ganhos (earn) */}
-                            <TouchableOpacity 
-                                style={[styles.bar, { 
-                                    height: maxVal > 0 ? (item.earn / maxVal) * 140 : 0, 
-                                    backgroundColor: '#4CD964' 
-                                }]} 
-                                onPress={() => handleDetails("Ganhos", item.month, item.earn)}
-                            />
+                {filteredBars.length > 0 ? (
+                    filteredBars.map((item, index) => (
+                        <View key={index} style={styles.monthGroup}>
+                            <View style={styles.barsRow}>
+                                <TouchableOpacity 
+                                    style={[styles.bar, { 
+                                        height: maxVal > 0 ? (item.earn / maxVal) * 140 : 0, 
+                                        backgroundColor: '#4CD964' 
+                                    }]} 
+                                    onPress={() => handleDetails("Ganhos", item.month, item.earn)}
+                                />
 
-                            {/* barra de gastos (lost) */}
-                            <TouchableOpacity 
-                                style={[styles.bar, { 
-                                    height: maxVal > 0 ? (item.lost / maxVal) * 140 : 0, 
-                                    backgroundColor: '#FF3B30' 
-                                }]} 
-                                onPress={() => handleDetails("Gastos", item.month, item.lost)}
-                            />
+                                <TouchableOpacity 
+                                    style={[styles.bar, { 
+                                        height: maxVal > 0 ? (item.lost / maxVal) * 140 : 0, 
+                                        backgroundColor: '#FF3B30' 
+                                    }]} 
+                                    onPress={() => handleDetails("Gastos", item.month, item.lost)}
+                                />
 
-                            {/* barra de investimentos */}
-                            <TouchableOpacity 
-                                style={[styles.bar, { 
-                                    height: maxVal > 0 ? (item.investments / maxVal) * 140 : 0, 
-                                    backgroundColor: '#5AC8FA' 
-                                }]} 
-                                onPress={() => handleDetails("Investimentos", item.month, item.investments)}
-                            />
+                                <TouchableOpacity 
+                                    style={[styles.bar, { 
+                                        height: maxVal > 0 ? (item.investments / maxVal) * 140 : 0, 
+                                        backgroundColor: '#5AC8FA' 
+                                    }]} 
+                                    onPress={() => handleDetails("Investimentos", item.month, item.investments)}
+                                />
+                            </View>
+                            <ThemedText style={styles.monthLabel}>{item.month}</ThemedText>
                         </View>
-
-                        {/* nome do mes abaixo do grupo de barras */}
-                        <ThemedText style={styles.monthLabel}>{item.month}</ThemedText>
+                    ))
+                ) : (
+                    <View style={styles.noDataContainer}>
+                        <ThemedText>Sem dados para este mês.</ThemedText>
                     </View>
-                ))}
+                )}
             </View>
         </SafeAreaView>
     );
@@ -105,6 +127,20 @@ const styles = StyleSheet.create({
     },
     title: {
         marginBottom: 15,
+    },
+    controlContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 15,
+    },
+    navButton: {
+        paddingHorizontal: 20,
+        paddingVertical: 5,
+    },
+    monthTitle: {
+        minWidth: 60,
+        textAlign: 'center',
     },
     legendContainer: {
         flexDirection: 'row',
@@ -126,8 +162,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
     },
     chartContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'flex-end',
         width: '100%',
         height: 200,
@@ -137,20 +172,27 @@ const styles = StyleSheet.create({
     },
     monthGroup: {
         alignItems: 'center',
-        flex: 1,
+        width: '100%',
     },
     barsRow: {
         flexDirection: 'row',
         alignItems: 'flex-end',
-        gap: 4,
+        gap: 15, 
         height: 140, 
     },
     bar: {
-        width: 20,
+        width: 35, 
+        borderRadius: 4,
     },
     monthLabel: {
         fontSize: 14,
         fontWeight: '600',
         marginTop: 8,
     },
+    noDataContainer: {
+        width: '100%',
+        height: 140,
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
 });
