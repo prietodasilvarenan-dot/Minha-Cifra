@@ -35,15 +35,7 @@ export function useGraphicFilter(){
     const prevMonth = () => {
         setCurrentMonthIndex((prev) => (prev === 0 ? 11 : prev - 1));
     };
-
-    const nextYear = () => {
-        setCurrentMonthIndex((prev) => (prev === 11 ? 0 : prev + 1));
-    };
-
-    const prevYear = () => {
-        setCurrentMonthIndex((prev) => (prev === 0 ? 11 : prev - 1));
-    };
-
+    
 
     return {
         currentMonthLabel: MONTH_NAMES[currentMonthIndex],
