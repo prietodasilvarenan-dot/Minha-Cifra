@@ -5,11 +5,11 @@ import { useGraphicFilter } from "@/src/hooks/useGraphicFilter";
 
 export default function BarGraph() {
     
-    const { currentMonthLabel, filteredBars, maxVal, nextMonth, prevMonth } = useGraphicFilter();
+    const { currentMonthLabel, currentYearLabel, filteredBars, maxVal, nextMonth, prevMonth } = useGraphicFilter();
 
 
-    const handleDetails = (category: string, month: string, value: number) => {
-        Alert.alert("Detalhes", `${category} em ${month}: R$ ${value.toFixed(2)}`);
+    const handleDetails = (category: string, year:number, month: string, value: number) => {
+        Alert.alert("Detalhes", `${category} em ${month}/${year}: R$ ${value.toFixed(2)}`);
     };
 
     return (
@@ -22,7 +22,7 @@ export default function BarGraph() {
                 </TouchableOpacity>
                 
                 <ThemedText type="subtitle" style={styles.monthTitle}>
-                    {currentMonthLabel}
+                    {currentMonthLabel} {currentYearLabel}
                 </ThemedText>
                 
                 <TouchableOpacity onPress={nextMonth} style={styles.navButton}>
@@ -46,6 +46,7 @@ export default function BarGraph() {
                 </View>
             </View>
 
+
             {/* Área do gráfico */}
             <View style={styles.chartContainer}>
                 {filteredBars.length > 0 ? (
@@ -57,21 +58,21 @@ export default function BarGraph() {
                                         height: maxVal > 0 ? (item.earn / maxVal) * 140 : 0, 
                                         backgroundColor: '#4CD964' 
                                     }]} 
-                                    onPress={() => handleDetails("Ganhos", item.month, item.earn)}
+                                    onPress={() => handleDetails("Ganhos", item.year, item.month, item.earn)}
                                 />
                                 <TouchableOpacity 
                                     style={[styles.bar, { 
                                         height: maxVal > 0 ? (item.lost / maxVal) * 140 : 0, 
                                         backgroundColor: '#FF3B30' 
                                     }]} 
-                                    onPress={() => handleDetails("Gastos", item.month, item.lost)}
+                                    onPress={() => handleDetails("Gastos", item.year, item.month, item.lost)}
                                 />
                                 <TouchableOpacity 
                                     style={[styles.bar, { 
                                         height: maxVal > 0 ? (item.investments / maxVal) * 140 : 0, 
                                         backgroundColor: '#5AC8FA' 
                                     }]} 
-                                    onPress={() => handleDetails("Investimentos", item.month, item.investments)}
+                                    onPress={() => handleDetails("Investimentos", item.year, item.month, item.investments)}
                                 />
                             </View>
                             <ThemedText style={styles.monthLabel}>{item.month}</ThemedText>
