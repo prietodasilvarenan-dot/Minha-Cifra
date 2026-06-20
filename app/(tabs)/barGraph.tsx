@@ -2,10 +2,13 @@ import { ThemedText } from "@/src/components/expo/themed-text";
 import React from "react";
 import { Alert, TouchableOpacity, View, StyleSheet, SafeAreaView } from "react-native";
 import { useGraphicFilter } from "@/src/hooks/useGraphicFilter";
-
+import { bars } from "@/src/hooks/useGraphicFilter";
 export default function BarGraph() {
     
-    const { currentMonthLabel, currentYearLabel, filteredBars, maxVal, nextMonth, prevMonth } = useGraphicFilter();
+    const { 
+        currentMonthLabel, currentYearLabel, filteredGraphic, 
+        maxVal, nextMonth, prevMonth 
+    } = useGraphicFilter(bars);
 
 
     const handleDetails = (category: string, year:number, month: string, value: number) => {
@@ -49,8 +52,8 @@ export default function BarGraph() {
 
             {/* Área do gráfico */}
             <View style={styles.chartContainer}>
-                {filteredBars.length > 0 ? (
-                    filteredBars.map((item, index) => (
+                {filteredGraphic.length > 0 ? (
+                    filteredGraphic.map((item, index) => (
                         <View key={index} style={styles.monthGroup}>
                             <View style={styles.barsRow}>
                                 <TouchableOpacity 
