@@ -11,6 +11,12 @@ interface ValuesBars extends Default {
     investments: number;
 }
 
+interface ValuesPizza extends Default {
+    id: number;
+    title: string;
+    value: number;
+}
+
 const MONTH_NAMES = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 
 
@@ -57,41 +63,91 @@ export const bars: ValuesBars[] = [
     
 ];
 
-export function useGraphicFilter(items: ValuesBars[]){
+export const pizza: ValuesPizza[] = [
+    { id: 1, title: "Aluguel", value: 1200, year: 2026, month: "Jan" },
+    { id: 2, title: "Mercado", value: 650, year: 2026, month: "Jan" },
+    { id: 3, title: "Internet", value: 120, year: 2026, month: "Jan" },
+    { id: 4, title: "Energia", value: 210, year: 2026, month: "Jan" },
+    { id: 5, title: "Transporte", value: 340, year: 2026, month: "Jan" },
+    { id: 6, title: "Lazer", value: 280, year: 2026, month: "Jan" },
+
+    { id: 7, title: "Aluguel", value: 1200, year: 2026, month: "Fev" },
+    { id: 8, title: "Mercado", value: 700, year: 2026, month: "Fev" },
+    { id: 9, title: "Internet", value: 120, year: 2026, month: "Fev" },
+    { id: 10, title: "Energia", value: 190, year: 2026, month: "Fev" },
+    { id: 11, title: "Transporte", value: 360, year: 2026, month: "Fev" },
+    { id: 12, title: "Lazer", value: 310, year: 2026, month: "Fev" },
+
+    { id: 13, title: "Aluguel", value: 1200, year: 2026, month: "Mar" },
+    { id: 14, title: "Mercado", value: 680, year: 2026, month: "Mar" },
+    { id: 15, title: "Internet", value: 120, year: 2026, month: "Mar" },
+    { id: 16, title: "Energia", value: 240, year: 2026, month: "Mar" },
+    { id: 17, title: "Transporte", value: 390, year: 2026, month: "Mar" },
+    { id: 18, title: "Lazer", value: 250, year: 2026, month: "Mar" },
+
+    { id: 19, title: "Aluguel", value: 1250, year: 2026, month: "Abr" },
+    { id: 20, title: "Mercado", value: 720, year: 2026, month: "Abr" },
+    { id: 21, title: "Internet", value: 120, year: 2026, month: "Abr" },
+    { id: 22, title: "Energia", value: 260, year: 2026, month: "Abr" },
+    { id: 23, title: "Transporte", value: 370, year: 2026, month: "Abr" },
+    { id: 24, title: "Lazer", value: 340, year: 2026, month: "Abr" },
+
+    { id: 25, title: "Aluguel", value: 1250, year: 2026, month: "Mai" },
+    { id: 26, title: "Mercado", value: 750, year: 2026, month: "Mai" },
+    { id: 27, title: "Internet", value: 120, year: 2026, month: "Mai" },
+    { id: 28, title: "Energia", value: 230, year: 2026, month: "Mai" },
+    { id: 29, title: "Transporte", value: 410, year: 2026, month: "Mai" },
+    { id: 30, title: "Lazer", value: 390, year: 2026, month: "Mai" },
+
+    { id: 31, title: "Aluguel", value: 1250, year: 2026, month: "Jun" },
+    { id: 32, title: "Mercado", value: 780, year: 2026, month: "Jun" },
+    { id: 33, title: "Internet", value: 120, year: 2026, month: "Jun" },
+    { id: 34, title: "Energia", value: 250, year: 2026, month: "Jun" },
+    { id: 35, title: "Transporte", value: 430, year: 2026, month: "Jun" },
+    { id: 36, title: "Lazer", value: 420, year: 2026, month: "Jun" },
+];
+
+
+export function useGraphicFilter<T extends Default>(items: T[]) {
     const currentDate = new Date();
     
     const [currentMonthIndex, setCurrentMonthIndex] = useState(currentDate.getMonth());
     const [currentYearIndex, setCurrentYearIndex] = useState(currentDate.getFullYear());
 
-    const filteredGraphic = bars.filter(b => 
-        b.month === MONTH_NAMES[currentMonthIndex] && 
-        b.year === currentYearIndex
+    // O TypeScript agora sabe exatamente o tipo do array baseado no que foi passado por parâmetro
+    const filteredGraphic = items.filter(item => 
+        item.month === MONTH_NAMES[currentMonthIndex] && 
+        item.year === currentYearIndex
     );
     
     const maxVal = Math.max(...bars.flatMap(b => [b.earn, b.lost, b.investments]));
 
     const nextMonth = () => {
-        setCurrentMonthIndex((prev) => (prev === 11 ? 0 : prev + 1));
-        if (currentMonthIndex + 1 == 12){
-            setCurrentYearIndex((prev) => (prev+1));
-        }
+        setCurrentMonthIndex((prev) => {
+            if (prev === 11) {
+                setCurrentYearIndex((year) => year + 1);
+                return 0;
+            }
+            return prev + 1;
+        });
     };
 
     const prevMonth = () => {
-        setCurrentMonthIndex((prev) => (prev === 0 ? 11 : prev - 1));
-        if (currentMonthIndex - 1 == -1){
-            setCurrentYearIndex((prev) => (prev-1));
-        }
+        setCurrentMonthIndex((prev) => {
+            if (prev === 0) {
+                setCurrentYearIndex((year) => year - 1);
+                return 11;
+            }
+            return prev - 1;
+        });
     };
     
-
     return {
         currentMonthLabel: MONTH_NAMES[currentMonthIndex],
         currentYearLabel: currentYearIndex,
-        filteredGraphic,
+        filteredGraphic, // Retorna tipado perfeitamente!
         maxVal,
         nextMonth,
         prevMonth
-    }
-    
+    }   
 }

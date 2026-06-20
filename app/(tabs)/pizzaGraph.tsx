@@ -4,25 +4,25 @@ import React from "react";
 import { Alert, TouchableOpacity, View, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Svg, { Circle } from "react-native-svg";
+import { pizza, useGraphicFilter } from "@/src/hooks/useGraphicFilter";
 
 export default function PizzaGraph() {
-    interface Values {
-        id: number;
-        title: string;
-        value: number;
-    }
+    const { 
+        currentMonthLabel, currentYearLabel, filteredGraphic, 
+        nextMonth, prevMonth 
+    } = useGraphicFilter(pizza);
 
-    const values: Values[] = [
-        { id: 1, title: "Alimentação", value: 400 },
-        { id: 2, title: "Transporte", value: 2000 },
-        { id: 3, title: "Lazer", value: 400 },
-        { id: 4, title: "Carro", value: 4000 },
-        { id: 5, title: "Teclado", value: 100 },
-    ];
-
-    const colors = ["#FF3B30", "#FFCC00", "#4CD964", "#4d3897", "#ff1188"];
-
-    const totalValue = values.reduce((sum, item) => sum + item.value, 0);
+    const colors = [
+    "#FF3B30", 
+    "#FF9500", 
+    "#FFCC00", 
+    "#34C759", 
+    "#30B0C7", 
+    "#007AFF", 
+    "#5856D6", 
+    "#AF52DE", 
+    ]
+    const totalValue = filteredGraphic.reduce((sum, item) => sum + item.value, 0);
 
     const handleCategoryDetails = (category: string, value: number) => {
         const percent = totalValue > 0 ? ((value / totalValue) * 100).toFixed(1) : "0";
@@ -32,60 +32,74 @@ export default function PizzaGraph() {
         );
     };
 
-    const radius = 35;
+    const radius = 35; 
     const circumference = 2 * Math.PI * radius;
-    let accumulatedPercent = 0;
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={{ flex: 1 }}>
             <ThemedView style={styles.container}>
                 <ThemedText type="title">Distribuição de Gastos</ThemedText>
                 
-                <ThemedText type="default" style={styles.subtitle}>
-                    Veja o impacto percentual de cada categoria no seu orçamento mensal total.
-                </ThemedText>
+                <View style={styles.controlContainer}>
+                    <TouchableOpacity onPress={prevMonth} style={styles.navButton}>
+                        <ThemedText type="subtitle">-</ThemedText>
+                    </TouchableOpacity>
+                    
+                    <ThemedText type="subtitle" style={styles.monthTitle}>
+                        {currentMonthLabel} {currentYearLabel}
+                    </ThemedText>
+                    
+                    <TouchableOpacity onPress={nextMonth} style={styles.navButton}>
+                        <ThemedText type="subtitle">+</ThemedText>
+                    </TouchableOpacity>
+                </View>
 
-                {/* 2. AREA DO GRÁFICO DE PIZZA */}
                 <View style={styles.chartWrapper}>
-                    <Svg width="160" height="160" viewBox="0 0 140 140">
-                        {(() => {
-                            let currentAccumulated = 1;
-                            
-                            return values.map((item, index) => {
-                                const percentage = totalValue > 0 ? item.value / totalValue : 0;
-                                const strokeLength = circumference * percentage;
-                                const strokeOffset = circumference - (circumference * currentAccumulated);
-                                
-                                currentAccumulated += percentage;
+                    {filteredGraphic.length > 0 && totalValue > 0 ? (
+                        <Svg width="160" height="160" viewBox="0 0 160 160">
+                            {(() => {
+                            let accumulated = 0;
 
-                                return (
+                            return filteredGraphic.map((item, index) => {
+                                const percentage = item.value / totalValue;
+                                const strokeLength = circumference * percentage;
+
+                                const circle = (
                                     <Circle
                                         key={item.id}
-                                        cx="70"
-                                        cy="70" 
+                                        cx="80"
+                                        cy="80"
                                         r={radius}
                                         fill="transparent"
                                         stroke={colors[index % colors.length]}
-                                        strokeWidth="70"
+                                        strokeWidth={radius * 2}
                                         strokeDasharray={`${strokeLength} ${circumference}`}
-                                        strokeDashoffset={strokeOffset}
-                                        transform="rotate(-90 70 70)"
+                                        strokeDashoffset={-accumulated}
+                                        strokeLinecap="butt"
+                                        transform="rotate(-90 80 80)"
                                     />
                                 );
-                            });
-                        })()}
-                    </Svg>
+
+                            accumulated += strokeLength;
+
+                            return circle;
+
+                                });
+                            })()}
+                        </Svg>
+                    ) : (
+                        <View style={styles.noDataContainer}>
+                            <ThemedText type="default">Sem gastos registrados neste mês.</ThemedText>
+                        </View>
+                    )}
                 </View>
 
-
-
-                {/* 3. LEGENDA E VALORES INTERATIVOS */}
                 <View style={styles.legendSection}>
                     <ThemedText type="defaultSemiBold" style={styles.legendTitle}>
                         Legenda e Valores
                     </ThemedText>
 
-                    {values.map((item, index) => {
+                    {filteredGraphic.map((item, index) => {
                         const percent = totalValue > 0 ? ((item.value / totalValue) * 100).toFixed(1) : 0;
                         const color = colors[index % colors.length];
 
@@ -101,7 +115,7 @@ export default function PizzaGraph() {
                                 </View>
                                 
                                 <ThemedText type="defaultSemiBold">
-                                    R$ {item.value} ({percent}%)
+                                    R$ {item.value.toFixed(2)} ({percent}%)
                                 </ThemedText>
                             </TouchableOpacity>
                         );
@@ -119,30 +133,28 @@ export default function PizzaGraph() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 20,
-    },
-    headerPlaceholder: {
-        flex: 1,
-        justifyContent: 'center',
+    container: { padding: 20 },
+    controlContainer: {
+        flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: 15,
     },
-    subtitle: {
-        marginTop: 5,
-        marginBottom: 20,
-        opacity: 0.8,
-    },
+    navButton: { paddingHorizontal: 20, paddingVertical: 5 },
+    monthTitle: { minWidth: 120, textAlign: 'center' },
     chartWrapper: {
         alignItems: "center",
         justifyContent: "center",
         marginVertical: 20,
+        height: 160,
     },
-    legendSection: {
-        marginTop: 10,
+    noDataContainer: {
+        height: 160,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    legendTitle: {
-        marginBottom: 15,
-    },
+    legendSection: { marginTop: 10 },
+    legendTitle: { marginBottom: 15 },
     legendItem: {
         flexDirection: "row",
         justifyContent: "space-between",
@@ -151,22 +163,8 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: "#E5E5EA",
     },
-    legendLeft: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 10,
-    },
-    colorBadge: {
-        width: 14,
-        height: 14,
-        borderRadius: 7,
-    },
-    footerInstruction: {
-        marginTop: 25,
-    },
-    instructionText: {
-        fontSize: 12,
-        fontStyle: "italic",
-        color: "#8E8E93",
-    },
+    legendLeft: { flexDirection: "row", alignItems: "center", gap: 10 },
+    colorBadge: { width: 14, height: 14, borderRadius: 7 },
+    footerInstruction: { marginTop: 25 },
+    instructionText: { fontSize: 12, fontStyle: "italic", color: "#8E8E93" },
 });
