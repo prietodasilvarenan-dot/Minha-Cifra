@@ -13,15 +13,16 @@ export default function PizzaGraph() {
     } = useGraphicFilter(pizza);
 
     const colors = [
-    "#FF3B30", 
-    "#FF9500", 
-    "#FFCC00", 
-    "#34C759", 
-    "#30B0C7", 
-    "#007AFF", 
-    "#5856D6", 
-    "#AF52DE", 
+        "#FF3B30", 
+        "#FF9500", 
+        "#FFCC00", 
+        "#34C759", 
+        "#30B0C7", 
+        "#007AFF", 
+        "#5856D6", 
+        "#AF52DE", 
     ]
+    
     const totalValue = filteredGraphic.reduce((sum, item) => sum + item.value, 0);
 
     const handleCategoryDetails = (category: string, value: number) => {
