@@ -1,10 +1,10 @@
 import { ThemedText } from "@/src/components/expo/themed-text";
 import { ThemedView } from "@/src/components/expo/themed-view";
+import { pizza, useGraphicFilter } from "@/src/hooks/useGraphicFilter";
 import React from "react";
-import { Alert, TouchableOpacity, View, StyleSheet } from "react-native";
+import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Svg, { Circle } from "react-native-svg";
-import { pizza, useGraphicFilter } from "@/src/hooks/useGraphicFilter";
 
 export default function PizzaGraph() {
     const { 

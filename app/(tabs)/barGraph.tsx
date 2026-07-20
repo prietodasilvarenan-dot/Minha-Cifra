@@ -1,8 +1,7 @@
 import { ThemedText } from "@/src/components/expo/themed-text";
+import { bars, useGraphicFilter } from "@/src/hooks/useGraphicFilter";
 import React from "react";
-import { Alert, TouchableOpacity, View, StyleSheet, SafeAreaView } from "react-native";
-import { useGraphicFilter } from "@/src/hooks/useGraphicFilter";
-import { bars } from "@/src/hooks/useGraphicFilter";
+import { Alert, SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-native";
 export default function BarGraph() {
     
     const { 

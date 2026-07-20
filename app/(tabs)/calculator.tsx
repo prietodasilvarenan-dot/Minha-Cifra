@@ -1,8 +1,8 @@
-import ParallaxScrollView from "@/src/components/expo/parallax-scroll-view";
 import { ThemedText } from "@/src/components/expo/themed-text";
 import { ThemedView } from "@/src/components/expo/themed-view";
 import React, { useState } from "react";
 import { Alert, TextInput, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Calculator() {
     const [income, setIncome] = useState("");
@@ -43,16 +43,9 @@ export default function Calculator() {
     };
 
     return (
-        <ParallaxScrollView
-            headerBackgroundColor={{ light: "#D1E7DD", dark: "#0F5132" }}
-            headerImage={
-                <View>
-                    <ThemedText>💼</ThemedText>
-                </View>
-            }>
-
+        <SafeAreaView>
             <ThemedView>
-                <ThemedText type="title">Simulador Fiscal</ThemedText>
+                <ThemedText type="title">Calculo de imposto</ThemedText>
             </ThemedView>
 
             <ThemedText type="default">
@@ -83,26 +76,27 @@ export default function Calculator() {
                 </TouchableOpacity>
             </View>
 
-            {result !== null && (
-                <ThemedView>
-                    <ThemedText type="subtitle">Resultado Analítico</ThemedText>
-                    
-                    <View>
-                        <ThemedText type="default">Imposto Estimado:</ThemedText>
-                        <ThemedText type="defaultSemiBold">
-                            R$ {result.tax.toFixed(2)}
-                        </ThemedText>
-                    </View>
+            {
+                result !== null && (
+                    <ThemedView>
+                        <ThemedText type="subtitle">Resultado Analítico</ThemedText>
 
-                    <View>
-                        <ThemedText type="default">Alíquota Efetiva Real:</ThemedText>
-                        <ThemedText type="defaultSemiBold">
-                            {result.effectiveRate.toFixed(2)}%
-                        </ThemedText>
-                    </View>
-                </ThemedView>
-            )}
+                        <View>
+                            <ThemedText type="default">Imposto Estimado:</ThemedText>
+                            <ThemedText type="defaultSemiBold">
+                                R$ {result.tax.toFixed(2)}
+                            </ThemedText>
+                        </View>
 
-        </ParallaxScrollView>
+                        <View>
+                            <ThemedText type="default">Alíquota Efetiva Real:</ThemedText>
+                            <ThemedText type="defaultSemiBold">
+                                {result.effectiveRate.toFixed(2)}%
+                            </ThemedText>
+                        </View>
+                    </ThemedView>
+                )
+            }
+        </SafeAreaView>
     );
 }
