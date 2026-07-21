@@ -1,41 +1,32 @@
-import { ButtonAjusteDespesas, ButtonAjusteSaldo } from "@/src/components/common/buttons";
-import { getHomeStyles } from "@/src/components/styles/stylesHome";
-import { Feather } from "@expo/vector-icons";
+import { ButtonAjusteDespesas, ButtonAjusteSaldo, } from "@/src/components/common/buttons";
 import { router } from "expo-router";
 import React, { useState } from "react";
-import {
-    ScrollView,
-    Text,
-    TouchableOpacity,
-    View,
-    useColorScheme,
-} from "react-native";
+import { ScrollView, useColorScheme, } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
+import { getHomeStyles } from "@/src/components/styles/stylesHome";
+
+import HomeHeader from "@/src/components/index/HomeHeader";
+import WalletCard from "@/src/components/index/WalletCard";
 
 export default function HomeScreen() {
 
     const isDark = useColorScheme() === "dark";
+
     const styles = getHomeStyles(isDark);
 
-    // 👁️ STATE DO OLHO
     const [hideValues, setHideValues] = useState(false);
 
-    const toggleHideValues = () => {
-        setHideValues(prev => !prev);
-    };
+    const toggleHideValues = () =>
+        setHideValues((prev) => !prev);
 
-    interface Items {
-        title: string;
-        value: number;
-    }
-
-    const itemsEarn: Items[] = [
+    const itemsEarn = [
         { title: "Salário", value: 5000 },
         { title: "Investimentos", value: 500 },
         { title: "Freelancer", value: 1000 },
     ];
 
-    const itemsLost: Items[] = [
+    const itemsLost = [
         { title: "Aluguel", value: 1200 },
         { title: "Mercado", value: 500 },
         { title: "Lazer", value: 250 },
@@ -43,82 +34,47 @@ export default function HomeScreen() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.welcome}>
-                    Bem vindo,{"\n"}USER
-                </Text>
 
-                <Text style={styles.subtitle}>
-                    Aqui está seu panorama financeiro
-                </Text>
-            </View>
+            <HomeHeader styles={styles} />
+
             <ScrollView style={styles.content}>
-                <View style={styles.card}>
-                    <View style={styles.cardHeader}>
-                        <Text style={styles.cardTitle}>
-                            Carteira de Ganhos
-                        </Text>
-                        <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-                            <Text style={styles.cardValue}>
-                                {hideValues ? "••••••" : "R$ 6.500"}
-                            </Text>
-                            <TouchableOpacity onPress={toggleHideValues}>
-                                <Feather
-                                    name={hideValues ? "eye-off" : "eye"}
-                                    size={20}
-                                    color={isDark ? "#fff" : "#000"}
-                                />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    {itemsEarn.map((item, index) => (
-                        <View style={styles.item} key={index}>
-                            <Text style={styles.itemText}>
-                                {item.title}
-                            </Text>
 
-                            <Text style={styles.itemValue}>
-                                {hideValues ? "••••" : `R$ ${item.value}`}
-                            </Text>
-                        </View>
-                    ))}
-                    <ButtonAjusteSaldo
-                        onPress={() => router.replace("/signIn")}
-                    />
-                </View>
-                <View style={styles.card}>
-                    <View style={styles.cardHeader}>
-                        <Text style={styles.cardTitle}>
-                            Carteira de Gastos
-                        </Text>
-                        <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-                            <Text style={styles.cardValue}>
-                                {hideValues ? "••••••" : "R$ 1.950"}
-                            </Text>
-                            <TouchableOpacity onPress={toggleHideValues}>
-                                <Feather
-                                    name={hideValues ? "eye-off" : "eye"}
-                                    size={20}
-                                    color={isDark ? "#fff" : "#000"}
-                                />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    {itemsLost.map((item, index) => (
-                        <View style={styles.item} key={index}>
-                            <Text style={styles.itemText}>
-                                {item.title}
-                            </Text>
-                            <Text style={styles.itemValue}>
-                                {hideValues ? "••••" : `R$ ${item.value}`}
-                            </Text>
-                        </View>
-                    ))}
-                    <ButtonAjusteDespesas
-                        onPress={() => router.replace("/signIn")}
-                    />
-                </View>
+                <WalletCard
+                    title="Carteira de Ganhos"
+                    total={6500}
+                    items={itemsEarn}
+                    hidden={hideValues}
+                    isDark={isDark}
+                    styles={styles}
+                    onToggle={toggleHideValues}
+                    button={
+                        <ButtonAjusteSaldo
+                            onPress={() =>
+                                router.replace("/signIn")
+                            }
+                        />
+                    }
+                />
+
+                <WalletCard
+                    title="Carteira de Gastos"
+                    total={1950}
+                    items={itemsLost}
+                    hidden={hideValues}
+                    isDark={isDark}
+                    styles={styles}
+                    onToggle={toggleHideValues}
+                    button={
+                        <ButtonAjusteDespesas
+                            onPress={() =>
+                                router.replace("/signIn")
+                            }
+                        />
+                    }
+                />
+
             </ScrollView>
+
         </SafeAreaView>
     );
 }
