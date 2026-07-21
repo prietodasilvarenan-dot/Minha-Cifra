@@ -1,7 +1,7 @@
 import { ThemedText } from "@/src/components/expo/themed-text";
-import GraphBars from "@/src/components/GraphBars";
-import GraphLegend from "@/src/components/GraphLegend";
-import MonthNavigator from "@/src/components/MonthNavigator";
+import GraphBars from "@/src/components/graphs/GraphBars";
+import GraphLegend from "@/src/components/graphs/GraphLegend";
+import MonthNavigator from "@/src/components/graphs/MonthNavigator";
 import { bars, useGraphicFilter } from "@/src/hooks/useGraphicFilter";
 import { SafeAreaView, StyleSheet } from "react-native";
 
@@ -33,12 +33,12 @@ export default function BarGraph() {
                 onNext={nextMonth}
             />
 
-            <GraphLegend />
-
             <GraphBars
                 data={filteredGraphic}
                 maxValue={maxVal}
             />
+
+            <GraphLegend />
 
         </SafeAreaView>
     );

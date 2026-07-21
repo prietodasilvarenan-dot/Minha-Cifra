@@ -1,8 +1,8 @@
 import { ThemedText } from "@/src/components/expo/themed-text";
 import { ThemedView } from "@/src/components/expo/themed-view";
-import LegendList from "@/src/components/LegendList";
-import MonthNavigator from "@/src/components/MonthNavigator";
-import PieChart from "@/src/components/PieChart";
+import LegendList from "@/src/components/graphs/LegendList";
+import MonthNavigator from "@/src/components/graphs/MonthNavigator";
+import PieChart from "@/src/components/graphs/PieChart";
 import { pizza, useGraphicFilter } from "@/src/hooks/useGraphicFilter";
 import React from "react";
 import { StyleSheet, View } from "react-native";
