@@ -1,102 +1,130 @@
 import { ThemedText } from "@/src/components/expo/themed-text";
 import { ThemedView } from "@/src/components/expo/themed-view";
 import React, { useState } from "react";
-import { Alert, TextInput, TouchableOpacity, View } from "react-native";
+//import { Alert, TextInput, TouchableOpacity, View } from "react-native";
+import { TextInput, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Calculator() {
-    const [income, setIncome] = useState("");
-    const [deductions, setDeductions] = useState("");
-    const [result, setResult] = useState<{ tax: number; effectiveRate: number } | null>(null);
+    const [salario, setSalario] = useState(0);
+    const [salarioCopy, setSalarioCopy] = useState(0);
+    const [inss, setInss] = useState(0);
+    const [imposto, setImposto] = useState(0);
+    const [desconto, setDesconto] = useState(0);
 
-    const calculateTax = () => {
-        const rawIncome = parseFloat(income);
-        const rawDeductions = parseFloat(deductions) || 0;
+    const aliquotaInss = (inss / salario) * 100;
+    const aliquotaIr = (imposto / salario) * 100;
+    const totalDescontos = imposto + inss;
+    const percentual = (totalDescontos / salario) * 100;
+    const salarioLiquido = salario - inss - imposto;
 
-        if (isNaN(rawIncome) || rawIncome <= 0) {
-            Alert.alert("Erro", "Por favor, insira um rendimento válido.");
-            return;
+    function calculateInss(salarioBruto: number): number {
+        const teto = 8475.55;
+        salarioBruto = Math.min(salarioBruto, teto);
+        let inss = 0;
+
+        if (salarioBruto > 4354.28) {
+            inss += (salarioBruto - 4354.28) * 0.14;
+            salarioBruto = 4354.28;
         }
 
-        const calculationBase = Math.max(0, rawIncome - rawDeductions);
-        let taxValue = 0;
-
-        if (calculationBase <= 2259.20) {
-            taxValue = 0;
-        } else if (calculationBase <= 2828.65) {
-            taxValue = (calculationBase * 0.075) - 169.44;
-        } else if (calculationBase <= 3751.05) {
-            taxValue = (calculationBase * 0.15) - 381.44;
-        } else if (calculationBase <= 4664.68) {
-            taxValue = (calculationBase * 0.225) - 662.77;
-        } else {
-            taxValue = (calculationBase * 0.275) - 896.00;
+        if (salarioBruto > 2902.85) {
+            inss += (salarioBruto - 2902.85) * 0.12;
+            salarioBruto = 2902.85;
         }
 
-        taxValue = Math.max(0, taxValue);
-        const rate = (taxValue / rawIncome) * 100;
+        if (salarioBruto > 1621.00) {
+            inss += (salarioBruto - 1621.00) * 0.09;
+            salarioBruto = 1621.00;
+        }
+        inss += salarioBruto * 0.075;
 
-        setResult({
-            tax: taxValue,
-            effectiveRate: rate
-        });
-    };
+        return Number(inss.toFixed(2));
+    }
+
+    function calculateImposto(salarioBruto: number, inss: number): number {
+        let baseOriginal = salarioBruto - inss;
+        let baseCalculo = baseOriginal;
+        let imposto = 0;
+        let desconto = 0;
+
+        if (baseOriginal <= 5000) {
+            return 0;
+        }
+
+        if (baseCalculo > 4664.69) {
+            imposto += (baseCalculo - 4664.69) * 0.275;
+            baseCalculo = 4664.69;
+        }
+
+        if (baseCalculo > 3751.06) {
+            imposto += (baseCalculo - 3751.06) * 0.225;
+            baseCalculo = 3751.06;
+        }
+
+        if (baseCalculo > 2826.66) {
+            imposto += (baseCalculo - 2826.66) * 0.15;
+            baseCalculo = 2826.66;
+        }
+
+        if (baseCalculo > 2428.81) {
+            imposto += (baseCalculo - 2428.81) * 0.075;
+        }
+
+        if (baseOriginal <= 7350) {
+            desconto = 978.62 - (0.133145 * baseOriginal);
+            imposto = Math.max(0, imposto - desconto);
+            setDesconto(Number(desconto.toFixed(2)));
+        }
+
+        return Number(imposto.toFixed(2));
+    }
+
+    function handleCalculate(salarioBruto: number) {
+        setInss(0);
+        setImposto(0);
+        setDesconto(0);
+
+        const valorInss = calculateInss(salarioBruto);
+        const valorImposto = calculateImposto(salarioBruto, valorInss);
+
+        setInss(valorInss);
+        setImposto(valorImposto);
+        setSalarioCopy(salario);
+    }
 
     return (
         <SafeAreaView>
             <ThemedView>
-                <ThemedText type="title">Calculo de imposto</ThemedText>
+                <ThemedText>Calculadora de Imposto de Renda</ThemedText>
             </ThemedView>
 
-            <ThemedText type="default">
-                Calcule uma estimativa do seu imposto com base no seu rendimento e deduções declaradas.
-            </ThemedText>
-
-            <View>
-                <ThemedText type="defaultSemiBold">Rendimento Mensal Bruto (R$)</ThemedText>
+            <ThemedView>
+                <ThemedText>Salario Bruto</ThemedText>
                 <TextInput
-                    placeholder="Ex: 4500.00"
-                    placeholderTextColor="#888"
                     keyboardType="numeric"
-                    value={income}
-                    onChangeText={setIncome}
-                />
+                    value={salario.toString()}
+                    onChangeText={text => setSalario(Number(text.replace(",", ".")))} />
+                <TouchableOpacity onPress={() => handleCalculate(salario)}>Calcular</TouchableOpacity>
+            </ThemedView>
 
-                <ThemedText type="defaultSemiBold">Deduções Legais Opcionais (R$)</ThemedText>
-                <TextInput
-                    placeholder="Ex: 500.00 (Previdência, Dependentes...)"
-                    placeholderTextColor="#888"
-                    keyboardType="numeric"
-                    value={deductions}
-                    onChangeText={setDeductions}
-                />
+            <ThemedView>
+                <ThemedText>Salário Bruto: R$ {salarioCopy}</ThemedText>
 
-                <TouchableOpacity onPress={calculateTax}>
-                    <ThemedText>Calcular Estimativa</ThemedText>
-                </TouchableOpacity>
-            </View>
+                <ThemedText>INSS: R$ {inss}</ThemedText>
+                <ThemedText>Base de Cálculo: R$ {salarioCopy - inss}</ThemedText>
 
-            {
-                result !== null && (
-                    <ThemedView>
-                        <ThemedText type="subtitle">Resultado Analítico</ThemedText>
+                <ThemedText>Imposto Bruto: R$ {imposto}</ThemedText>
+                <ThemedText>Desconto Legal: R$ {desconto}</ThemedText>
+                <ThemedText>IRRF: R$ {Number(imposto - desconto,).toFixed(2)}</ThemedText>
 
-                        <View>
-                            <ThemedText type="default">Imposto Estimado:</ThemedText>
-                            <ThemedText type="defaultSemiBold">
-                                R$ {result.tax.toFixed(2)}
-                            </ThemedText>
-                        </View>
+                <ThemedText>Total de Descontos: R$ {totalDescontos}</ThemedText>
+                <ThemedText>Salário Líquido: R$ {salarioLiquido}</ThemedText>
 
-                        <View>
-                            <ThemedText type="default">Alíquota Efetiva Real:</ThemedText>
-                            <ThemedText type="defaultSemiBold">
-                                {result.effectiveRate.toFixed(2)}%
-                            </ThemedText>
-                        </View>
-                    </ThemedView>
-                )
-            }
+                <ThemedText>Alíquota INSS: {Number(aliquotaInss).toFixed(3)}%</ThemedText>
+                <ThemedText>Alíquota IR: {aliquotaIr}%</ThemedText>
+                <ThemedText>Carga Tributária: {Number(percentual).toFixed(3)}%</ThemedText>
+            </ThemedView>
         </SafeAreaView>
     );
 }
