@@ -47,6 +47,8 @@ export default function GraphBars({
                         <GraphBar
                             value={item.earn}
                             maxValue={maxValue}
+                            maxHeight={250}
+                            barWidth={45}
                             color={BAR_COLORS.earn}
                             onPress={() =>
                                 handleDetails(
@@ -61,6 +63,8 @@ export default function GraphBars({
                         <GraphBar
                             value={item.lost}
                             maxValue={maxValue}
+                            maxHeight={250}
+                            barWidth={45}
                             color={BAR_COLORS.lost}
                             onPress={() =>
                                 handleDetails(
@@ -75,6 +79,8 @@ export default function GraphBars({
                         <GraphBar
                             value={item.investments}
                             maxValue={maxValue}
+                            maxHeight={250}
+                            barWidth={45}
                             color={BAR_COLORS.investments}
                             onPress={() =>
                                 handleDetails(
@@ -99,30 +105,37 @@ export default function GraphBars({
 
 const styles = StyleSheet.create({
     chartContainer: {
-        justifyContent: "center",
-        alignItems: "flex-end",
+        flex: 1,
         width: "100%",
-        height: 200,
-        paddingHorizontal: 15,
+        justifyContent: "center",
+        paddingHorizontal: 10,
         paddingVertical: 10,
     },
+
     monthGroup: {
-        alignItems: "center",
+        flex: 1,
         width: "100%",
+        alignItems: "center",
     },
+
     barsRow: {
+        flex: 1,
+        width: "100%",
         flexDirection: "row",
         alignItems: "flex-end",
-        gap: 15,
-        height: 140,
+        justifyContent: "center",
+        gap: 20,
     },
+
     monthLabel: {
-        marginTop: 8,
+        marginTop: 12,
         fontWeight: "600",
+        fontSize: 15,
     },
+
     noDataContainer: {
+        flex: 1,
         width: "100%",
-        height: 140,
         justifyContent: "center",
         alignItems: "center",
     },

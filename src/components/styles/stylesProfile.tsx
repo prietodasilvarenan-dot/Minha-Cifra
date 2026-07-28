@@ -1,0 +1,201 @@
+import { StyleSheet } from "react-native";
+
+export const getProfileStyles = (isDark: boolean) =>
+    StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: isDark
+                ? "#001B44"
+                : "#006BFF",
+        },
+        content: {
+            flexGrow: 1,
+            paddingHorizontal: 20,
+            paddingTop: 15,
+            paddingBottom: 20,
+        },
+        header: {
+            marginBottom: 15,
+            alignItems: "flex-start",
+        },
+        title: {
+            color: "#FFFFFF",
+            fontSize: 32,
+            fontWeight: "900",
+            letterSpacing: 0.5,
+            textAlign: "left",
+            flexShrink: 1,
+        },
+        subtitle: {
+            marginTop: 5,
+            color: isDark
+                ? "#B8C7DD"
+                : "#DCEAFF",
+            fontSize: 15,
+            textAlign: "left",
+            flexShrink: 1,
+        },
+        settingsButton: {
+            width: "100%",
+            backgroundColor: isDark
+                ? "#101E36"
+                : "#F7F9FC",
+            borderRadius: 18,
+            paddingVertical: 16,
+            paddingHorizontal: 20,
+            marginBottom: 14,
+        },
+        settingsText: {
+            color: isDark
+                ? "#FFFFFF"
+                : "#001B44",
+            fontSize: 16,
+            fontWeight: "700",
+            textAlign: "center",
+        },
+        profileCard: {
+            width: "100%",
+            backgroundColor: isDark
+                ? "#101E36"
+                : "#F7F9FC",
+            borderRadius: 24,
+            paddingHorizontal: 22,
+            paddingVertical: 22,
+            marginBottom: 14,
+            alignItems: "center",
+        },
+        photo: {
+            width: 90,
+            height: 90,
+            borderRadius: 45,
+            backgroundColor: isDark
+                ? "#162844"
+                : "#E5E7EB",
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: 12,
+        },
+        photoText: {
+            color: isDark
+                ? "#AEBBD0"
+                : "#6B7280",
+            fontSize: 14,
+            fontWeight: "600",
+        },
+        name: {
+            color: isDark
+                ? "#FFFFFF"
+                : "#001B44",
+            fontSize: 24,
+            fontWeight: "900",
+            textAlign: "center",
+            flexShrink: 1,
+        },
+        email: {
+            color: isDark
+                ? "#AEBBD0"
+                : "#6B7280",
+            fontSize: 14,
+            marginTop: 5,
+            textAlign: "center",
+            flexShrink: 1,
+        },
+        buttonRow: {
+            flexDirection: "row",
+            width: "100%",
+            gap: 10,
+            marginTop: 20,
+        },
+        button: {
+            flex: 1,
+            minWidth: 0,
+            backgroundColor: isDark
+                ? "#162844"
+                : "#FFFFFF",
+            borderRadius: 14,
+            paddingVertical: 13,
+            paddingHorizontal: 12,
+            alignItems: "center",
+            justifyContent: "center",
+        },
+        buttonText: {
+            color: isDark
+                ? "#FFFFFF"
+                : "#001B44",
+            fontSize: 14,
+            fontWeight: "700",
+            textAlign: "center",
+            flexShrink: 1,
+        },
+        infoCard: {
+            width: "100%",
+            backgroundColor: isDark
+                ? "#101E36"
+                : "#F7F9FC",
+            borderRadius: 24,
+            paddingHorizontal: 22,
+            paddingVertical: 20,
+            marginBottom: 14,
+        },
+        infoTitle: {
+            color: isDark
+                ? "#FFFFFF"
+                : "#001B44",
+            fontSize: 19,
+            fontWeight: "800",
+            marginBottom: 15,
+        },
+        infoItem: {
+            paddingVertical: 12,
+            borderBottomWidth: 1,
+            borderBottomColor: isDark
+                ? "#243653"
+                : "#E5E7EB",
+        },
+        infoLabel: {
+            color: isDark
+                ? "#AEBBD0"
+                : "#6B7280",
+            fontSize: 12,
+            fontWeight: "600",
+            marginBottom: 4,
+        },
+        infoValue: {
+            color: isDark
+                ? "#FFFFFF"
+                : "#001B44",
+            fontSize: 16,
+            fontWeight: "700",
+            flexShrink: 1,
+        },
+        planCard: {
+            width: "100%",
+            backgroundColor: isDark
+                ? "#162844"
+                : "#FFFFFF",
+            borderRadius: 20,
+            paddingHorizontal: 20,
+            paddingVertical: 18,
+            marginBottom: 14,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 10,
+        },
+        planLabel: {
+            color: isDark
+                ? "#AEBBD0"
+                : "#6B7280",
+            fontSize: 13,
+            fontWeight: "600",
+        },
+        planValue: {
+            color: isDark
+                ? "#FFFFFF"
+                : "#001B44",
+            fontSize: 16,
+            fontWeight: "800",
+            flexShrink: 1,
+            textAlign: "right",
+        },
+    });

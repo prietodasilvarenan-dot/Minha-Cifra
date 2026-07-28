@@ -1,0 +1,179 @@
+import { StyleSheet } from "react-native";
+
+export const getCalcStyles = (isDark: boolean) =>
+    StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: isDark
+                ? "#001B44"
+                : "#006BFF",
+        },
+        content: {
+            flexGrow: 1,
+            paddingHorizontal: 20,
+            paddingTop: 15,
+            paddingBottom: 30,
+        },
+        header: {
+            marginBottom: 20,
+            alignItems: "flex-start",
+        },
+        title: {
+            color: "#FFFFFF",
+            fontSize: 32,
+            fontWeight: "900",
+            letterSpacing: 0.5,
+            textAlign: "left",
+        },
+        subtitle: {
+            marginTop: 5,
+            color: isDark
+                ? "#B8C7DD"
+                : "#DCEAFF",
+            fontSize: 15,
+            textAlign: "left",
+        },
+        inputCard: {
+            width: "100%",
+            backgroundColor: isDark
+                ? "#101E36"
+                : "#F7F9FC",
+            borderRadius: 24,
+            paddingHorizontal: 20,
+            paddingVertical: 20,
+            marginBottom: 14,
+        },
+        inputLabel: {
+            color: isDark
+                ? "#AEBBD0"
+                : "#6B7280",
+            fontSize: 14,
+            fontWeight: "600",
+            marginBottom: 8,
+        },
+        input: {
+            width: "100%",
+            height: 52,
+            backgroundColor: isDark
+                ? "#162844"
+                : "#FFFFFF",
+            borderWidth: 1,
+            borderColor: isDark
+                ? "#243653"
+                : "#DCE3ED",
+            borderRadius: 14,
+            paddingHorizontal: 16,
+            color: isDark
+                ? "#FFFFFF"
+                : "#001B44",
+            fontSize: 17,
+            fontWeight: "600",
+        },
+        inputFocused: {
+            borderColor: "#2563EB",
+            borderWidth: 2,
+        },
+        calculateButton: {
+            width: "100%",
+            height: 52,
+            backgroundColor: isDark
+                ? "#2563EB"
+                : "#006BFF",
+            borderRadius: 14,
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: 14,
+        },
+        calculateButtonText: {
+            color: "#FFFFFF",
+            fontSize: 16,
+            fontWeight: "800",
+        },
+        resultCard: {
+            width: "100%",
+            backgroundColor: isDark
+                ? "#101E36"
+                : "#F7F9FC",
+            borderRadius: 24,
+            paddingHorizontal: 20,
+            paddingVertical: 20,
+            marginBottom: 14,
+        },
+        resultTitle: {
+            color: isDark
+                ? "#FFFFFF"
+                : "#001B44",
+            fontSize: 20,
+            fontWeight: "800",
+            marginBottom: 15,
+        },
+        resultItem: {
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            paddingVertical: 10,
+            gap: 10,
+        },
+        resultLabel: {
+            color: isDark
+                ? "#AEBBD0"
+                : "#6B7280",
+            fontSize: 14,
+            fontWeight: "600",
+            flexShrink: 1,
+        },
+        resultValue: {
+            color: isDark
+                ? "#FFFFFF"
+                : "#001B44",
+            fontSize: 15,
+            fontWeight: "700",
+            textAlign: "right",
+            flexShrink: 1,
+        },
+        divider: {
+            height: 1,
+            backgroundColor: isDark
+                ? "#243653"
+                : "#E5E7EB",
+            marginVertical: 4,
+        },
+        highlightItem: {
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            backgroundColor: isDark
+                ? "#162844"
+                : "#FFFFFF",
+            borderRadius: 14,
+            paddingHorizontal: 14,
+            paddingVertical: 13,
+            marginTop: 8,
+            gap: 10,
+        },
+        highlightLabel: {
+            color: isDark
+                ? "#B8C7DD"
+                : "#6B7280",
+            fontSize: 14,
+            fontWeight: "700",
+            flexShrink: 1,
+        },
+        highlightValue: {
+            color: isDark
+                ? "#FFFFFF"
+                : "#001B44",
+            fontSize: 17,
+            fontWeight: "900",
+            textAlign: "right",
+            flexShrink: 1,
+        },
+        netSalary: {
+            color: isDark
+                ? "#60A5FA"
+                : "#006BFF",
+            fontSize: 20,
+            fontWeight: "900",
+            textAlign: "right",
+        },
+    });

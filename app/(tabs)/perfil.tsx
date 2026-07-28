@@ -1,11 +1,20 @@
 import { ThemedText } from "@/src/components/expo/themed-text";
-import { ThemedView } from "@/src/components/expo/themed-view";
+import { getProfileStyles } from "@/src/components/styles/stylesProfile";
 import { router } from "expo-router";
 import React from "react";
-//import { Alert, TextInput, TouchableOpacity, View } from "react-native";
-import { TouchableOpacity } from "react-native";
+import {
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    useColorScheme,
+    View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 export default function PerfilScreen() {
+    const isDark = useColorScheme() === "dark";
+    const styles = getProfileStyles(isDark);
+
     const user = {
         name: "Renan",
         email: "renan@gmail.com",
@@ -14,21 +23,88 @@ export default function PerfilScreen() {
     };
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={styles.container}>
+            <ScrollView
+                contentContainerStyle={styles.content}
+                showsVerticalScrollIndicator={false}
+            >
+                <View style={styles.header}>
+                    <ThemedText style={styles.title}>
+                        Meu Perfil
+                    </ThemedText>
+                    <Text style={styles.subtitle}>
+                        Gerencie suas informações pessoais
+                    </Text>
+                </View>
+                <TouchableOpacity
+                    style={styles.settingsButton}
+                    onPress={() =>
+                        router.replace(
+                            "/(management)/configuration"
+                        )
+                    }
+                >
+                    <Text style={styles.settingsText}>
+                        Configurações
+                    </Text>
+                </TouchableOpacity>
+                <View style={styles.profileCard}>
+                    <View style={styles.photo}>
+                        <Text style={styles.photoText}>
+                            Foto
+                        </Text>
+                    </View>
+                    <Text style={styles.name}>
+                        {user.name}
+                    </Text>
+                    <Text style={styles.email}>
+                        {user.email}
+                    </Text>
+                    <View style={styles.buttonRow}>
+                        <TouchableOpacity style={styles.button}>
+                            <Text style={styles.buttonText}>
+                                Editar perfil
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.button}>
+                            <Text style={styles.buttonText}>
+                                Alterar foto
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <View style={styles.infoCard}>
+                    <Text style={styles.infoTitle}>
+                        Informações da conta
+                    </Text>
+                    <View style={styles.infoItem}>
+                        <Text style={styles.infoLabel}>
+                            Email
+                        </Text>
+                        <Text style={styles.infoValue}>
+                            {user.email}
+                        </Text>
+                    </View>
+                    <View style={styles.infoItem}>
+                        <Text style={styles.infoLabel}>
+                            Senha
+                        </Text>
 
-            <ThemedView>
-                <TouchableOpacity onPress={() => router.replace("/(management)/configuration")}>Configurações</TouchableOpacity>
-                <ThemedText>foto</ThemedText>
-                <ThemedText>{user.name}</ThemedText>
-                <TouchableOpacity>Editar perfil</TouchableOpacity>
-            </ThemedView>
+                        <Text style={styles.infoValue}>
+                            ••••••••
+                        </Text>
+                    </View>
+                </View>
+                <View style={styles.planCard}>
+                    <Text style={styles.planLabel}>
+                        Plano atual
+                    </Text>
 
-            <ThemedView>
-                <ThemedText>Plano: {user.tier}</ThemedText>
-                <ThemedText>Email: {user.email}</ThemedText>
-                <ThemedText>Senha: {user.password}</ThemedText>
-            </ThemedView>
-
-        </SafeAreaView >
+                    <Text style={styles.planValue}>
+                        {user.tier}
+                    </Text>
+                </View>
+            </ScrollView>
+        </SafeAreaView>
     );
 }

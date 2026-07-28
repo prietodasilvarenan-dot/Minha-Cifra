@@ -38,7 +38,7 @@ export default function GraphLegend() {
                     ]}
                 />
                 <ThemedText style={styles.legendText}>
-                    Invest.
+                    Investimentos
                 </ThemedText>
             </View>
 
@@ -49,21 +49,27 @@ export default function GraphLegend() {
 const styles = StyleSheet.create({
     legendContainer: {
         flexDirection: "row",
-        justifyContent: "center",
-        marginBottom: 25,
-        gap: 15,
+        justifyContent: "space-evenly",
+        alignItems: "center",
+        width: "100%",
+        marginTop: 15,
+        marginBottom: 10,
     },
+
     legendItem: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 5,
+        gap: 7,
     },
+
     legendBox: {
-        width: 12,
-        height: 12,
-        borderRadius: 3,
+        width: 15,
+        height: 15,
+        borderRadius: 4,
     },
+
     legendText: {
-        fontSize: 12,
+        fontSize: 13,
+        fontWeight: "600",
     },
 });

@@ -5,6 +5,8 @@ interface Props {
     maxValue: number;
     color: string;
     onPress: () => void;
+    maxHeight: number;
+    barWidth: number;
 }
 
 export default function GraphBar({
@@ -12,6 +14,8 @@ export default function GraphBar({
     maxValue,
     color,
     onPress,
+    maxHeight,
+    barWidth,
 }: Props) {
     return (
         <TouchableOpacity
@@ -20,7 +24,10 @@ export default function GraphBar({
                 styles.bar,
                 {
                     backgroundColor: color,
-                    height: maxValue > 0 ? (value / maxValue) * 140 : 0,
+                    width: barWidth,
+                    height: maxValue > 0
+                        ? (value / maxValue) * maxHeight
+                        : 0,
                 },
             ]}
         />
@@ -29,7 +36,6 @@ export default function GraphBar({
 
 const styles = StyleSheet.create({
     bar: {
-        width: 35,
-        borderRadius: 4,
+        borderRadius: 6,
     },
 });

@@ -1,14 +1,22 @@
 import { ThemedText } from "@/src/components/expo/themed-text";
-import { ThemedView } from "@/src/components/expo/themed-view";
 import LegendList from "@/src/components/graphs/LegendList";
 import MonthNavigator from "@/src/components/graphs/MonthNavigator";
 import PieChart from "@/src/components/graphs/PieChart";
+import { getPizzaStyles } from "@/src/components/styles/stylesPizza";
 import { pizza, useGraphicFilter } from "@/src/hooks/useGraphicFilter";
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import {
+    ScrollView,
+    Text,
+    useColorScheme,
+    View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function PizzaGraph() {
+    const isDark = useColorScheme() === "dark";
+    const styles = getPizzaStyles(isDark);
+
     const {
         currentMonthLabel,
         currentYearLabel,
@@ -18,45 +26,88 @@ export default function PizzaGraph() {
     } = useGraphicFilter(pizza);
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <ThemedView style={styles.container}>
-
-                <ThemedText type="title">
-                    Distribuição de Gastos
-                </ThemedText>
-
-                <MonthNavigator
-                    month={currentMonthLabel}
-                    year={currentYearLabel}
-                    onPrev={prevMonth}
-                    onNext={nextMonth}
-                />
-
-                <PieChart data={filteredGraphic} />
-
-                <LegendList data={filteredGraphic} />
-
-                <View style={styles.footerInstruction}>
-                    <ThemedText style={styles.instructionText}>
-                        * Toque em uma categoria da lista para auditar os lançamentos associados.
+        <SafeAreaView style={styles.container}>
+            <ScrollView
+                contentContainerStyle={styles.content}
+                showsVerticalScrollIndicator={false}
+            >
+                <View style={styles.header}>
+                    <ThemedText
+                        type="title"
+                        style={styles.title}
+                    >
+                        Distribuição de Gastos
                     </ThemedText>
+                    <Text style={styles.subtitle}>
+                        Veja onde seu dinheiro está sendo utilizado
+                    </Text>
                 </View>
 
-            </ThemedView>
+                <View style={styles.balanceCard}>
+                    <Text style={styles.balanceLabel}>
+                        Total de gastos
+                    </Text>
+                    <Text style={styles.balanceValue}>
+                        R$ 1.950,00
+                    </Text>
+                </View>
+
+                <View style={styles.pizzaCard}>
+
+                    <Text style={styles.pizzaTitle}>
+                        Distribuição por categoria
+                    </Text>
+                    <MonthNavigator
+                        month={currentMonthLabel}
+                        year={currentYearLabel}
+                        onPrev={prevMonth}
+                        onNext={nextMonth}
+                    />
+                    <View style={styles.pizzaArea}>
+                        <PieChart
+                            data={filteredGraphic}
+                        />
+                    </View>
+                    <View style={styles.legend}>
+                        <LegendList
+                            data={filteredGraphic}
+                        />
+                    </View>
+                </View>
+
+                <View style={styles.summary}>
+                    <View style={styles.summaryCard}>
+                        <Text style={styles.summaryLabel}>
+                            Maior gasto
+                        </Text>
+
+                        <Text style={styles.summaryValue}>
+                            Aluguel
+                        </Text>
+                    </View>
+                    <View style={styles.summaryCard}>
+                        <Text style={styles.summaryLabel}>
+                            Categoria
+                        </Text>
+
+                        <Text style={styles.summaryValue}>
+                            Moradia
+                        </Text>
+                    </View>
+                    <View style={styles.summaryCard}>
+                        <Text style={styles.summaryLabel}>
+                            Total
+                        </Text>
+
+                        <Text style={styles.summaryValue}>
+                            R$ 1.950
+                        </Text>
+                    </View>
+                </View>
+                <Text style={styles.instructionText}>
+                    * Toque em uma categoria para auditar os lançamentos associados.
+                </Text>
+            </ScrollView>
         </SafeAreaView>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        padding: 20
-    },
-    footerInstruction: {
-        marginTop: 25
-    },
-    instructionText: {
-        fontSize: 12,
-        fontStyle: "italic",
-        color: "#8E8E93"
-    },
-});

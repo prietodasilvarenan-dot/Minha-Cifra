@@ -14,15 +14,22 @@ interface Props {
 }
 
 export default function PieChart({ data }: Props) {
-    const radius = 35;
+    const radius = 55;
+    const size = 240;
+    const center = size / 2;
     const circumference = 2 * Math.PI * radius;
 
-    const total = data.reduce((sum, item) => sum + item.value, 0);
+    const total = data.reduce(
+        (sum, item) => sum + item.value,
+        0
+    );
 
     if (!data.length || total === 0) {
         return (
             <View style={styles.noDataContainer}>
-                <ThemedText>Sem gastos registrados neste mês.</ThemedText>
+                <ThemedText>
+                    Sem gastos registrados neste mês.
+                </ThemedText>
             </View>
         );
     }
@@ -31,22 +38,31 @@ export default function PieChart({ data }: Props) {
 
     return (
         <View style={styles.chartWrapper}>
-            <Svg width="160" height="160" viewBox="0 0 160 160">
+            <Svg
+                width={size}
+                height={size}
+                viewBox={`0 0 ${size} ${size}`}
+            >
                 {data.map((item, index) => {
-                    const strokeLength = circumference * (item.value / total);
+                    const strokeLength =
+                        circumference * (item.value / total);
 
                     const circle = (
                         <Circle
                             key={item.id}
-                            cx="80"
-                            cy="80"
+                            cx={center}
+                            cy={center}
                             r={radius}
                             fill="transparent"
-                            stroke={GRAPH_COLORS[index % GRAPH_COLORS.length]}
+                            stroke={
+                                GRAPH_COLORS[
+                                    index % GRAPH_COLORS.length
+                                ]
+                            }
                             strokeWidth={radius * 2}
                             strokeDasharray={`${strokeLength} ${circumference}`}
                             strokeDashoffset={-accumulated}
-                            transform="rotate(-90 80 80)"
+                            transform={`rotate(-90 ${center} ${center})`}
                         />
                     );
 
@@ -63,12 +79,13 @@ const styles = StyleSheet.create({
     chartWrapper: {
         justifyContent: "center",
         alignItems: "center",
-        marginVertical: 20,
-        height: 160,
+        marginVertical: 10,
+        height: 240,
     },
+
     noDataContainer: {
         justifyContent: "center",
         alignItems: "center",
-        height: 160,
+        height: 240,
     },
 });
