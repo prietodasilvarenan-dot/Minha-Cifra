@@ -1,12 +1,7 @@
 import { getConfigStyles } from "@/src/components/styles/stylesConfig";
+import { router } from "expo-router";
 import React, { useState } from "react";
-import {
-    Switch,
-    Text,
-    TouchableOpacity,
-    useColorScheme,
-    View,
-} from "react-native";
+import { Alert, Switch, Text, TouchableOpacity, useColorScheme, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SettingsScreen() {
@@ -15,6 +10,29 @@ export default function SettingsScreen() {
 
     const [darkMode, setDarkMode] = useState(false);
     const [notifications, setNotifications] = useState(true);
+
+    const handleDeleteAccount = () => {
+        Alert.alert(
+            "Excluir a conta",
+            "Deseja Excluir sua conta permanentemente?",
+            [
+                { text: "Excluir", onPress: () => router.replace('/signUp') },
+                { text: "Cancelar" }
+            ]
+        )
+    }
+
+    const handleLogout = () => {
+        Alert.alert(
+            "Sair",
+            "Deseja sair da conta?",
+            [
+                { text: "Sair", onPress: () => router.replace('/(auth)/signIn') },
+                { text: "Cancelar" }
+            ]
+        )
+    }
+
 
     return (
         <SafeAreaView style={styles.container}>
@@ -81,6 +99,7 @@ export default function SettingsScreen() {
             </TouchableOpacity>
 
             <TouchableOpacity
+                onPress={handleDeleteAccount}
                 style={[
                     styles.button,
                     styles.logout,
@@ -92,6 +111,7 @@ export default function SettingsScreen() {
             </TouchableOpacity>
 
             <TouchableOpacity
+                onPress={handleLogout}
                 style={[
                     styles.button,
                     styles.logout,
