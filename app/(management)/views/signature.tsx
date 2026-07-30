@@ -1,12 +1,20 @@
-import React from "react";
-import { Button, ScrollView, Text, View } from "react-native";
+import { router } from "expo-router";
+import { Button, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SubscriptionScreen() {
   return (
     <SafeAreaView>
       <ScrollView>
-        <Text>Escolha seu plano</Text>
+        <Text>
+          {" "}
+          <TouchableOpacity
+            onPress={() => router.push("/(management)/configuration")}
+          >
+            {"⟵ "}
+          </TouchableOpacity>
+          Escolha seu plano
+        </Text>
 
         <View>
           <Text>Plano Free</Text>

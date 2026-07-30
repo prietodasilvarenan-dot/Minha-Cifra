@@ -38,7 +38,12 @@ export default function SettingsScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Configurações</Text>
+      <Text style={styles.title}>
+        <TouchableOpacity onPress={() => router.push("/(tabs)/perfil")}>
+          {"⟵ "}
+        </TouchableOpacity>
+        Configurações
+      </Text>
 
       <View style={styles.item}>
         <Text style={styles.text}>Modo escuro</Text>
