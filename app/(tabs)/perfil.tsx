@@ -3,11 +3,11 @@ import { getProfileStyles } from "@/src/components/styles/stylesProfile";
 import { router } from "expo-router";
 import React from "react";
 import {
-	ScrollView,
-	Text,
-	TouchableOpacity,
-	useColorScheme,
-	View,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  useColorScheme,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -67,10 +67,15 @@ export default function PerfilScreen() {
             <Text style={styles.infoValue}>••••••••</Text>
           </View>
         </View>
-        <View style={styles.planCard}>
-          <Text style={styles.planLabel}>Plano atual</Text>
+        <View>
+          <TouchableOpacity
+            style={styles.planCard}
+            onPress={() => router.replace("/(management)/views/signature")}
+          >
+            <Text style={styles.planLabel}>Plano atual</Text>
 
-          <Text style={styles.planValue}>{user.tier}</Text>
+            <Text style={styles.planValue}>{user.tier}</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>

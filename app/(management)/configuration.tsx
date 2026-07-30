@@ -61,7 +61,12 @@ export default function SettingsScreen() {
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Gerenciar Assinaturas</Text>
+        <Text
+          style={styles.buttonText}
+          onPress={() => router.replace("/(management)/views/signature")}
+        >
+          Gerenciar Assinaturas
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button}>
@@ -69,11 +74,21 @@ export default function SettingsScreen() {
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Termos de uso</Text>
+        <Text
+          style={styles.buttonText}
+          onPress={() => router.replace("/(management)/views/terms")}
+        >
+          Termos de uso
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Política de Privacidade</Text>
+        <Text
+          style={styles.buttonText}
+          onPress={() => router.replace("/(management)/views/policies")}
+        >
+          Política de Privacidade
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
