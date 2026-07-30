@@ -17,7 +17,8 @@ export default function HomeScreen() {
 
   const [modalEarn, setModalEarn] = useState(false);
   const [modalLost, setModalLost] = useState(false);
-  const [totalValue, setTotalValue] = useState(0);
+  const [totalEarnValue, setTotalEarnValue] = useState(0);
+  const [totalLostValue, setTotalLostValue] = useState(0);
   const [hideValues, setHideValues] = useState(false);
 
   const toggleHideValues = () => setHideValues((prev) => !prev);
@@ -27,12 +28,14 @@ export default function HomeScreen() {
     { title: "Investimentos", value: 500 },
     { title: "Freelancer", value: 1000 },
   ];
+  const totalEarn = itemsEarn.reduce((acc, item) => acc + item.value, 0);
 
   const itemsLost = [
     { title: "Aluguel", value: 1200 },
     { title: "Mercado", value: 500 },
     { title: "Lazer", value: 250 },
   ];
+  const totalLost = itemsLost.reduce((acc, item) => acc + item.value, 0);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -41,7 +44,7 @@ export default function HomeScreen() {
       <ScrollView style={styles.content}>
         <WalletCard
           title="Carteira de Ganhos"
-          total={totalValue}
+          total={totalEarn}
           items={itemsEarn}
           hidden={hideValues}
           isDark={isDark}
@@ -58,7 +61,7 @@ export default function HomeScreen() {
 
         <WalletCard
           title="Carteira de Gastos"
-          total={1950}
+          total={totalLost}
           items={itemsLost}
           hidden={hideValues}
           isDark={isDark}
