@@ -1,5 +1,6 @@
+import ConfigButton from "@/src/components/config/ConfigButton";
 import { getConfigStyles } from "@/src/components/styles/stylesConfig";
-import { router } from "expo-router";
+import { Href, router } from "expo-router";
 import React, { useState } from "react";
 import {
   Alert,
@@ -10,6 +11,10 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+interface ConfigsOptions {
+  text: string;
+  router: Href;
+}
 
 export default function SettingsScreen() {
   const isDark = useColorScheme() === "dark";
@@ -17,6 +22,15 @@ export default function SettingsScreen() {
 
   const [darkMode, setDarkMode] = useState(false);
   const [notifications, setNotifications] = useState(true);
+
+  const ConfigsOptionsList: ConfigsOptions[] = [
+    { text: "Outras opções", router: "/" },
+    { text: "Alterar Dados", router: "/" },
+    { text: "Gerenciar Assinaturas", router: "/(management)/views/signature" },
+    { text: "Sobre o aplicativo", router: "/" },
+    { text: "Termos de uso", router: "/(management)/views/terms" },
+    { text: "Política de Privacidade", router: "/(management)/views/policies" },
+  ];
 
   const handleDeleteAccount = () => {
     Alert.alert(
@@ -57,44 +71,13 @@ export default function SettingsScreen() {
         <Switch value={notifications} onValueChange={setNotifications} />
       </View>
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Outras opções</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Alterar Dados</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button}>
-        <Text
-          style={styles.buttonText}
-          onPress={() => router.replace("/(management)/views/signature")}
-        >
-          Gerenciar Assinaturas
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Sobre o aplicativo</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button}>
-        <Text
-          style={styles.buttonText}
-          onPress={() => router.replace("/(management)/views/terms")}
-        >
-          Termos de uso
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button}>
-        <Text
-          style={styles.buttonText}
-          onPress={() => router.replace("/(management)/views/policies")}
-        >
-          Política de Privacidade
-        </Text>
-      </TouchableOpacity>
+      {ConfigsOptionsList.map((item) => (
+        <ConfigButton
+          key={item.text}
+          text={item.text}
+          onPress={() => router.replace(item.router)}
+        />
+      ))}
 
       <TouchableOpacity
         onPress={handleDeleteAccount}
