@@ -1,18 +1,18 @@
 import { ThemedText } from "@/src/components/expo/themed-text";
 import { getProfileStyles } from "@/src/components/styles/stylesProfile";
+import { useTheme } from "@/src/context/ThemeContext";
 import { router } from "expo-router";
 import React from "react";
 import {
   ScrollView,
   Text,
   TouchableOpacity,
-  useColorScheme,
-  View,
+  View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function PerfilScreen() {
-  const isDark = useColorScheme() === "dark";
+  const { isDark } = useTheme();
   const styles = getProfileStyles(isDark);
 
   const user = {

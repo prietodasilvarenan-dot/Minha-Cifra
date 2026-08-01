@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
 import EyeButton from "./EyeButton";
@@ -19,6 +19,7 @@ interface Props {
   onToggle: () => void;
   button: React.ReactNode;
   modal: boolean;
+  setItems: any;
 }
 
 export default function WalletCard({
@@ -31,7 +32,25 @@ export default function WalletCard({
   onToggle,
   button,
   modal,
+  setItems,
 }: Props) {
+  const [titleItem, setTitleItem] = useState("");
+  const [priceItem, setPriceItem] = useState(0);
+
+  function handleAddItem() {
+    if (!titleItem || !priceItem || priceItem === 0) return;
+    setItems((items: []) => [
+      ...items,
+      {
+        title: titleItem,
+        value: priceItem,
+      },
+    ]);
+
+    setTitleItem("");
+    setPriceItem(0);
+  }
+
   return (
     <View style={styles.card}>
       <View style={styles.cardHeader}>
@@ -64,10 +83,22 @@ export default function WalletCard({
 
       {modal ? (
         <View>
-          {"Adicionar um Item"}
-          <TextInput placeholder="Titulo..."></TextInput>
-          <TextInput placeholder="Valor..."></TextInput>
-          <TouchableOpacity>Adicionar</TouchableOpacity>
+          <TextInput
+            value={titleItem}
+            onChangeText={(text) => setTitleItem(text)}
+            placeholder="Titulo..."
+          />
+          <TextInput
+            value={priceItem.toString()}
+            onChangeText={(text) =>
+              setPriceItem(Number(text.replace(",", ".")))
+            }
+            placeholder="Valor..."
+            keyboardType="number-pad"
+          />
+          <TouchableOpacity onPress={handleAddItem}>
+            <Text>Adicionar</Text>
+          </TouchableOpacity>
         </View>
       ) : (
         <View />

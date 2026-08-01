@@ -3,17 +3,17 @@ import GraphBars from "@/src/components/graphs/GraphBars";
 import GraphLegend from "@/src/components/graphs/GraphLegend";
 import MonthNavigator from "@/src/components/graphs/MonthNavigator";
 import { getBarStyles } from "@/src/components/styles/stylesBar";
+import { useTheme } from "@/src/context/ThemeContext";
 import { bars, useGraphicFilter } from "@/src/hooks/useGraphicFilter";
 import {
   SafeAreaView,
   ScrollView,
   Text,
-  useColorScheme,
-  View,
+  View
 } from "react-native";
 
 export default function BarGraph() {
-  const isDark = useColorScheme() === "dark";
+  const { isDark } = useTheme();
   const styles = getBarStyles(isDark);
 
   const {

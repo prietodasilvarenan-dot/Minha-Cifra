@@ -3,13 +3,14 @@ import LegendList from "@/src/components/graphs/LegendList";
 import MonthNavigator from "@/src/components/graphs/MonthNavigator";
 import PieChart from "@/src/components/graphs/PieChart";
 import { getPizzaStyles } from "@/src/components/styles/stylesPizza";
+import { useTheme } from "@/src/context/ThemeContext";
 import { pizza, useGraphicFilter } from "@/src/hooks/useGraphicFilter";
 import React from "react";
-import { ScrollView, Text, useColorScheme, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function PizzaGraph() {
-  const isDark = useColorScheme() === "dark";
+  const { isDark } = useTheme();
   const styles = getPizzaStyles(isDark);
 
   const {

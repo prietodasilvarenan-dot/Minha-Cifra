@@ -1,17 +1,17 @@
 import { getCalcStyles } from "@/src/components/styles/stylesCalc";
+import { useTheme } from "@/src/context/ThemeContext";
 import React, { useState } from "react";
 import {
   ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
-  useColorScheme,
-  View,
+  View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Calculator() {
-  const isDark = useColorScheme() === "dark";
+  const { isDark } = useTheme();
   const styles = getCalcStyles(isDark);
 
   const [salario, setSalario] = useState(0);
