@@ -30,5 +30,5 @@ O ecossistema é dividido em três camadas principais estruturadas sob o princí
 * **MySQL2** para driver de conexão com o banco de dados
 
 ### Banco de Dados
-* **MariaDB** (Rodando localmente em ambiente Arch Linux)
+* **MariaDB** (Rodando localmente)
 * **DBeaver** como ferramenta de gerenciamento (SGDB)
