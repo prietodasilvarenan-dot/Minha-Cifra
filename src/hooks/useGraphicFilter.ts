@@ -114,7 +114,10 @@ export function useGraphicFilter<T extends Default>(items: T[]) {
     const [currentMonthIndex, setCurrentMonthIndex] = useState(currentDate.getMonth());
     const [currentYearIndex, setCurrentYearIndex] = useState(currentDate.getFullYear());
 
-    // O TypeScript agora sabe exatamente o tipo do array baseado no que foi passado por parâmetro
+    const prevMonthIndex = (currentMonthIndex + 11) % 12;
+    const nextMonthIndex = (currentMonthIndex + 1) % 12;
+
+
     const filteredGraphic = items.filter(item => 
         item.month === MONTH_NAMES[currentMonthIndex] && 
         item.year === currentYearIndex
@@ -143,9 +146,12 @@ export function useGraphicFilter<T extends Default>(items: T[]) {
     };
     
     return {
+        currentPrevMonth: MONTH_NAMES[prevMonthIndex],
         currentMonthLabel: MONTH_NAMES[currentMonthIndex],
+        currentNextMonth: MONTH_NAMES[nextMonthIndex],
+
         currentYearLabel: currentYearIndex,
-        filteredGraphic, // Retorna tipado perfeitamente!
+        filteredGraphic,
         maxVal,
         nextMonth,
         prevMonth

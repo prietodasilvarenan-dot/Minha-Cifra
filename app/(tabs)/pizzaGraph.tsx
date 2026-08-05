@@ -14,7 +14,9 @@ export default function PizzaGraph() {
   const styles = getPizzaStyles(isDark);
 
   const {
+    currentPrevMonth,
     currentMonthLabel,
+    currentNextMonth,
     currentYearLabel,
     filteredGraphic,
     nextMonth,
@@ -44,7 +46,9 @@ export default function PizzaGraph() {
         <View style={styles.pizzaCard}>
           <Text style={styles.pizzaTitle}>Distribuição por categoria</Text>
           <MonthNavigator
+            prevMonth={currentPrevMonth}
             month={currentMonthLabel}
+            nextMonth={currentNextMonth}
             year={currentYearLabel}
             onPrev={prevMonth}
             onNext={nextMonth}

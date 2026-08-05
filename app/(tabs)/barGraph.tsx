@@ -17,7 +17,9 @@ export default function BarGraph() {
   const styles = getBarStyles(isDark);
 
   const {
+    currentPrevMonth,
     currentMonthLabel,
+    currentNextMonth,
     currentYearLabel,
     filteredGraphic,
     maxVal,
@@ -50,7 +52,9 @@ export default function BarGraph() {
         <View style={styles.graphCard}>
           <Text style={styles.graphTitle}>Movimentação financeira</Text>
           <MonthNavigator
+            prevMonth={currentPrevMonth}
             month={currentMonthLabel}
+            nextMonth={currentNextMonth}
             year={currentYearLabel}
             onPrev={prevMonth}
             onNext={nextMonth}
