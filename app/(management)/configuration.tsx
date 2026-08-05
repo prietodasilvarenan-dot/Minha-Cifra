@@ -48,8 +48,8 @@ export default function SettingsScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>
-        <TouchableOpacity onPress={() => router.push("/(tabs)/perfil")}>
-          {"⟵ "}
+        <TouchableOpacity onPress={() => router.replace("/(tabs)/perfil")}>
+          <Text>⟵</Text>
         </TouchableOpacity>
         Configurações
       </Text>
