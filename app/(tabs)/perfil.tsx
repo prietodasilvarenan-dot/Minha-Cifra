@@ -1,25 +1,37 @@
 import { ThemedText } from "@/src/components/expo/themed-text";
 import { getProfileStyles } from "@/src/components/styles/stylesProfile";
 import { useTheme } from "@/src/context/ThemeContext";
+import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
-import React from "react";
-import {
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View
-} from "react-native";
+import React, { useState } from "react";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function PerfilScreen() {
   const { isDark } = useTheme();
   const styles = getProfileStyles(isDark);
 
+  const [selectedImage, setSelectedImage] = useState<string | undefined>(
+    undefined,
+  );
+
   const user = {
     name: "Renan",
     email: "renan@gmail.com",
     password: "123987",
     tier: "Plano Gratuito",
+  };
+
+  const pickerImageAsync = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setSelectedImage(result.assets[0].uri);
+      console.log(result);
+    }
   };
 
   return (
@@ -36,21 +48,31 @@ export default function PerfilScreen() {
         </View>
         <TouchableOpacity
           style={styles.settingsButton}
-          onPress={() => router.replace("/(management)/configuration")}
+          onPress={() => router.push("/(management)/configuration")}
         >
           <Text style={styles.settingsText}>Configurações</Text>
         </TouchableOpacity>
         <View style={styles.profileCard}>
-          <View style={styles.photo}>
-            <Text style={styles.photoText}>Foto</Text>
-          </View>
+          <TouchableOpacity onPress={pickerImageAsync}>
+            {selectedImage ? (
+              <Image
+                source={{ uri: selectedImage }}
+                style={{ width: 100, height: 100, borderRadius: 50 }}
+              />
+            ) : (
+              <Text style={styles.photo} />
+            )}
+          </TouchableOpacity>
           <Text style={styles.name}>{user.name}</Text>
           <Text style={styles.email}>{user.email}</Text>
           <View style={styles.buttonRow}>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity
+              onPress={() => router.replace("/(management)/views/editPerfil")}
+              style={styles.button}
+            >
               <Text style={styles.buttonText}>Editar perfil</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity onPress={pickerImageAsync} style={styles.button}>
               <Text style={styles.buttonText}>Alterar foto</Text>
             </TouchableOpacity>
           </View>
@@ -70,7 +92,7 @@ export default function PerfilScreen() {
         <View>
           <TouchableOpacity
             style={styles.planCard}
-            onPress={() => router.replace("/(management)/views/signature")}
+            onPress={() => router.push("/(management)/views/signature")}
           >
             <Text style={styles.planLabel}>Plano atual</Text>
 

@@ -1,16 +1,22 @@
-import { Link } from "expo-router";
-import { StyleSheet } from "react-native";
-
 import { ThemedText } from "@/src/components/expo/themed-text";
 import { ThemedView } from "@/src/components/expo/themed-view";
+import { router } from "expo-router";
+import { StyleSheet, TouchableOpacity } from "react-native";
 
 export default function ModalScreen() {
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title">This is a modal</ThemedText>
-      <Link href="/" dismissTo style={styles.link}>
-        <ThemedText type="link">Go to home screen</ThemedText>
-      </Link>
+      <ThemedText type="title">Bem-Vindo ao MinhaCifra!</ThemedText>
+
+      <ThemedText type="subtitle">
+        Entre ou crie uma conta para continuar.
+      </ThemedText>
+      <TouchableOpacity onPress={() => router.push("/(auth)/signIn")}>
+        <ThemedText>Entrar</ThemedText>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => router.push("/(auth)/signUp")}>
+        <ThemedText>Cadastrar</ThemedText>
+      </TouchableOpacity>
     </ThemedView>
   );
 }
