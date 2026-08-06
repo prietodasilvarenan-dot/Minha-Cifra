@@ -217,6 +217,10 @@ export const POLITICAS = {
   `,
 } as const;
 
-export const SOBRE = {
+export const SOBREAPP = {
+  text: "",
+} as const;
+
+export const SOBRENOS = {
   text: "",
 } as const;

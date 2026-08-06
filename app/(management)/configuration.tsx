@@ -22,9 +22,10 @@ export default function SettingsScreen() {
     { text: "Outras opções", router: "/" },
     { text: "Alterar Dados", router: "/" },
     { text: "Gerenciar Assinaturas", router: "/(management)/views/signature" },
-    { text: "Sobre o aplicativo", router: "/" },
+    { text: "Sobre o aplicativo", router: "/(management)/views/aboutApp" },
     { text: "Termos de uso", router: "/(management)/views/terms" },
     { text: "Política de Privacidade", router: "/(management)/views/policies" },
+    { text: "Sobre nós", router: "/(management)/views/aboutUs" },
   ];
 
   const handleDeleteAccount = () => {

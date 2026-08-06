@@ -1,9 +1,9 @@
-import { POLITICAS } from "@/src/constants/strings";
+import { SOBREAPP } from "@/src/constants/strings";
 import { router } from "expo-router";
 import { ScrollView, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function Polices() {
+export default function AboutApp() {
   return (
     <SafeAreaView>
       <ScrollView>
@@ -13,10 +13,10 @@ export default function Polices() {
           >
             {"⟵ "}
           </TouchableOpacity>
-          Politicas de privacidade
+          Sobre o app
         </Text>
 
-        <Text style={{ color: "white" }}>{POLITICAS.text}</Text>
+        <Text style={{ color: "white" }}>{SOBREAPP.text}</Text>
       </ScrollView>
     </SafeAreaView>
   );
