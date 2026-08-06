@@ -46,7 +46,7 @@ export default function BarGraph() {
         <View style={styles.balanceCard}>
           <Text style={styles.balanceLabel}>Saldo atual</Text>
 
-          <Text style={styles.balanceValue}>R$ 4.550,00</Text>
+          <Text style={styles.balanceValue}>R$ {}</Text>
         </View>
 
         <View style={styles.graphCard}>
