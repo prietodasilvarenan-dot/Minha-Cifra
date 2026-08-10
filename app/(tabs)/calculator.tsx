@@ -9,6 +9,8 @@ import {
   View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Header } from "@/src/components/common/header";
+
 
 export default function Calculator() {
   const { isDark } = useTheme();
@@ -105,12 +107,11 @@ export default function Calculator() {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.header}>
-          <Text style={styles.title}>Calculadora de{"\n"}Imposto de Renda</Text>
-          <Text style={styles.subtitle}>
-            Calcule seus descontos e veja seu salário líquido
-          </Text>
-        </View>
+        <Header
+          title="Calculadora de Imposto de Renda"
+          subtitle="Calcule seus descontos e veja seu salário líquido"
+        />
+        
 
         <View style={styles.inputCard}>
           <Text style={styles.inputLabel}>Salário Bruto</Text>
