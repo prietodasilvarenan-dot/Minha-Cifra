@@ -8,12 +8,13 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 
 import { ThemeProvider, useTheme } from "@/src/context/ThemeContext";
+import { FinanceProvider } from "@/src/context/FinanceContext";
 
 interface UserProps {
   name: string;
   email: string;
   password: string;
-  photo: any; //todo
+  photo: any;
 }
 
 function App() {
@@ -34,8 +35,10 @@ function App() {
 
 export default function RootLayout() {
   return (
-    <ThemeProvider>
-      <App />
-    </ThemeProvider>
+    <FinanceProvider>
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
+    </FinanceProvider>
   );
 }
