@@ -6,6 +6,7 @@ import { router } from "expo-router";
 import React, { useState } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Header } from "@/src/components/common/header";
 
 export default function PerfilScreen() {
   const { isDark } = useTheme();
@@ -40,12 +41,11 @@ export default function PerfilScreen() {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.header}>
-          <ThemedText style={styles.title}>Meu Perfil</ThemedText>
-          <Text style={styles.subtitle}>
-            Gerencie suas informações pessoais
-          </Text>
-        </View>
+        <Header
+          title="Meu Perfil"
+          subtitle="Gerencie suas informações pessoais"
+        />
+        
         <TouchableOpacity
           style={styles.settingsButton}
           onPress={() => router.push("/(management)/configuration")}
