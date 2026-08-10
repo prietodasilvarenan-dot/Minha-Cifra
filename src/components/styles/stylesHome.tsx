@@ -37,7 +37,33 @@ export const getHomeStyles = (isDark: boolean) =>
             borderTopLeftRadius:45,
             padding:20,
         },
-
+        balanceCard: {
+            width: "100%",
+            backgroundColor: isDark
+                ? "#101E36"
+                : "#F7F9FC",
+            borderRadius: 24,
+            paddingHorizontal: 22,
+            paddingVertical: 18,
+            marginBottom: 14,
+            alignItems: "flex-end",
+        },
+        balanceLabel: {
+            color: isDark
+                ? "#AEBBD0"
+                : "#6B7280",
+            fontSize: 14,
+            fontWeight: "600",
+        },
+        balanceValue: {
+            marginTop: 5,
+            color: isDark
+                ? "#FFFFFF"
+                : "#001B44",
+            fontSize: 30,
+            fontWeight: "900",
+            flexShrink: 1,
+        },
         card:{
             backgroundColor:isDark
                 ? "#122746"
