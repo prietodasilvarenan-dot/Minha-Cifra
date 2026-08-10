@@ -1,65 +1,64 @@
 import React from "react";
-import { Text, TouchableOpacity, useColorScheme } from "react-native";
+import {
+  Text,
+  TouchableOpacity,
+  TouchableOpacityProps,
+  useColorScheme,
+} from "react-native";
 import { getHomeStyles } from "../styles/stylesHome";
 import { getSignStyles } from "../styles/stylesSign";
 
-interface ButtonProps {
-  onPress: () => void;
+interface AuthButtonProps extends TouchableOpacityProps {
+  title: string;
 }
 
-interface ModalButtonProps {
-  onPress: () => void;
+interface ModalButtonProps extends TouchableOpacityProps {
   modal: boolean;
+  defaultTitle: string;
+  cancelTitle?: string;
 }
 
-export const ButtonSignUp: React.FC<ButtonProps> = ({ onPress }) => {
+const AuthButton: React.FC<AuthButtonProps> = ({ title, ...props }) => {
   const isDark = useColorScheme() === "dark";
   const styles = getSignStyles(isDark);
 
   return (
-    <TouchableOpacity style={styles.buttonAuth} onPress={onPress}>
-      <Text style={styles.textButtonAuth}>Cadastrar</Text>
+    <TouchableOpacity style={styles.buttonAuth} {...props}>
+      <Text style={styles.textButtonAuth}>{title}</Text>
     </TouchableOpacity>
   );
 };
 
-export const ButtonSignIn: React.FC<ButtonProps> = ({ onPress }) => {
-  const isDark = useColorScheme() === "dark";
-  const styles = getSignStyles(isDark);
-
-  return (
-    <TouchableOpacity style={styles.buttonAuth} onPress={onPress}>
-      <Text style={styles.textButtonAuth}>Entrar</Text>
-    </TouchableOpacity>
-  );
-};
-
-export const ButtonAjusteDespesas: React.FC<ModalButtonProps> = ({
-  onPress,
+const ActionButton: React.FC<ModalButtonProps> = ({
   modal,
+  defaultTitle,
+  cancelTitle = "Cancelar",
+  ...props
 }) => {
   const isDark = useColorScheme() === "dark";
   const styles = getHomeStyles(isDark);
+
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
+    <TouchableOpacity style={styles.button} {...props}>
       <Text style={styles.buttonText}>
-        {modal ? "Cancelar" : "Ajustar despesas"}
+        {modal ? cancelTitle : defaultTitle}
       </Text>
     </TouchableOpacity>
   );
 };
 
-export const ButtonAjusteSaldo: React.FC<ModalButtonProps> = ({
-  onPress,
-  modal,
-}) => {
-  const isDark = useColorScheme() === "dark";
-  const styles = getHomeStyles(isDark);
-  return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Text style={styles.buttonText}>
-        {modal ? "Cancelar" : "Ajustar saldo"}
-      </Text>
-    </TouchableOpacity>
-  );
-};
+export const ButtonSignUp: React.FC<TouchableOpacityProps> = (props) => (
+  <AuthButton title="Cadastrar" {...props} />
+);
+
+export const ButtonSignIn: React.FC<TouchableOpacityProps> = (props) => (
+  <AuthButton title="Entrar" {...props} />
+);
+
+export const ButtonAjusteDespesas: React.FC<
+  Omit<ModalButtonProps, "defaultTitle">
+> = (props) => <ActionButton defaultTitle="Ajustar despesas" {...props} />;
+
+export const ButtonAjusteSaldo: React.FC<
+  Omit<ModalButtonProps, "defaultTitle">
+> = (props) => <ActionButton defaultTitle="Ajustar saldo" {...props} />;
