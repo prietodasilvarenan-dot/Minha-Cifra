@@ -1,14 +1,7 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Modal,
-  TextInput,
-  Alert,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { ItemFinance } from "@/src/context/FinanceContext";
+import AddTagModal from "@/src/components/modal/tagModal";
 
 interface WalletCardProps {
   title: string;
@@ -21,7 +14,7 @@ interface WalletCardProps {
   button: React.ReactNode;
   modal: boolean;
   setModal: (value: boolean) => void;
-  setItems: React.Dispatch<React.SetStateAction<ItemFinance[]>>;
+  onAddItem: (item: Omit<ItemFinance, "id">) => void;
 }
 
 export default function WalletCard({
@@ -33,13 +26,9 @@ export default function WalletCard({
   button,
   modal,
   setModal,
-  setItems,
+  onAddItem,
 }: WalletCardProps) {
   const [expandedTag, setExpandedTag] = useState<string | null>(null);
-
-  const [novoTitulo, setNovoTitulo] = useState("");
-  const [novoValor, setNovoValor] = useState("");
-  const [novaTag, setNovaTag] = useState("");
 
   const groupedItems = items.reduce((acc, item) => {
     const tagName = item.tag || "Geral";
@@ -58,31 +47,12 @@ export default function WalletCard({
     setExpandedTag((prev) => (prev === tagName ? null : tagName));
   };
 
-  const handleAddItem = () => {
-    if (!novoTitulo.trim() || !novoValor.trim()) {
-      Alert.alert("Atenção", "Preencha o título e o valor.");
-      return;
-    }
-
-    const valorNumerico = parseFloat(novoValor.replace(",", "."));
-    if (isNaN(valorNumerico) || valorNumerico <= 0) {
-      Alert.alert("Atenção", "Informe um valor válido.");
-      return;
-    }
-
-    const novoItem: ItemFinance = {
-      id: Date.now().toString(),
-      title: novoTitulo.trim(),
-      value: valorNumerico,
-      tag: novaTag.trim() || "Geral",
-    };
-
-    setItems((prev) => [...prev, novoItem]);
-
-    setNovoTitulo("");
-    setNovoValor("");
-    setNovaTag("");
-    setModal(false);
+  const handleAddTagItem = (newItem: ItemFinance) => {
+    onAddItem({
+      title: newItem.title,
+      value: newItem.value,
+      tag: newItem.tag,
+    });
   };
 
   return (
@@ -97,7 +67,7 @@ export default function WalletCard({
         </Text>
       </View>
 
-      {/* lista agrupada por tags*/}
+      {/* lista agrupada por tags */}
       {!hidden &&
         Object.entries(groupedItems).map(([tag, data]) => {
           const isExpanded = expandedTag === tag;
@@ -110,7 +80,7 @@ export default function WalletCard({
                 activeOpacity={0.7}
               >
                 <Text style={[styles.itemText, localStyles.tagTitle]}>
-                  {isExpanded ? "▲" : "▼"} #{tag} 
+                  {isExpanded ? "▲" : "▼"} #{tag}
                 </Text>
                 <Text style={styles.itemValue}>
                   R$ {data.total.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
@@ -138,59 +108,15 @@ export default function WalletCard({
           );
         })}
 
-      {/* botao que gera o modal*/}
+      {/* botao que gera o modal */}
       {button}
 
-      <Modal
+      <AddTagModal
         visible={modal}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setModal(false)}
-      >
-        <View style={localStyles.modalOverlay}>
-          <View style={localStyles.modalContent}>
-            <Text style={localStyles.modalTitle}>Adicionar em {title}</Text>
-
-            <TextInput
-              style={localStyles.input}
-              placeholder="Descrição (ex: Projeto, Aluguel)"
-              value={novoTitulo}
-              onChangeText={setNovoTitulo}
-            />
-
-            <TextInput
-              style={localStyles.input}
-              placeholder="Valor (R$)"
-              keyboardType="decimal-pad"
-              value={novoValor}
-              onChangeText={setNovoValor}
-            />
-
-            <TextInput
-              style={localStyles.input}
-              placeholder="Tag (ex: Freelancer, Mercado)"
-              value={novaTag}
-              onChangeText={setNovaTag}
-            />
-
-            <View style={localStyles.modalActions}>
-              <TouchableOpacity
-                style={[localStyles.modalBtn, localStyles.btnCancel]}
-                onPress={() => setModal(false)}
-              >
-                <Text style={localStyles.btnTextCancel}>Cancelar</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[localStyles.modalBtn, localStyles.btnSave]}
-                onPress={handleAddItem}
-              >
-                <Text style={localStyles.btnTextSave}>Salvar</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
+        cardTitle={title}
+        onClose={() => setModal(false)}
+        onAddTag={handleAddTagItem}
+      />
     </View>
   );
 }
@@ -211,58 +137,5 @@ const localStyles = StyleSheet.create({
   },
   subItemText: {
     fontSize: 13,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
-  },
-  modalContent: {
-    width: "100%",
-    backgroundColor: "#FFF",
-    borderRadius: 16,
-    padding: 20,
-    elevation: 5,
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 16,
-    color: "#333",
-  },
-  input: {
-    backgroundColor: "#F3F4F6",
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    marginBottom: 12,
-    fontSize: 15,
-  },
-  modalActions: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    gap: 10,
-    marginTop: 10,
-  },
-  modalBtn: {
-    paddingVertical: 10,
-    paddingHorizontal: 18,
-    borderRadius: 8,
-  },
-  btnCancel: {
-    backgroundColor: "#E5E7EB",
-  },
-  btnSave: {
-    backgroundColor: "#006BFF",
-  },
-  btnTextCancel: {
-    color: "#374151",
-    fontWeight: "600",
-  },
-  btnTextSave: {
-    color: "#FFF",
-    fontWeight: "bold",
   },
 });

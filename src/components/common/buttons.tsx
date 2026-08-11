@@ -57,8 +57,8 @@ export const ButtonSignIn: React.FC<TouchableOpacityProps> = (props) => (
 
 export const ButtonAjusteDespesas: React.FC<
   Omit<ModalButtonProps, "defaultTitle">
-> = (props) => <ActionButton defaultTitle="Ajustar despesas" {...props} />;
+> = (props) => <ActionButton defaultTitle="Adicionar Tag" {...props} />;
 
 export const ButtonAjusteSaldo: React.FC<
   Omit<ModalButtonProps, "defaultTitle">
-> = (props) => <ActionButton defaultTitle="Ajustar saldo" {...props} />;
+> = (props) => <ActionButton defaultTitle="Adicionar Tag" {...props} />;

@@ -22,6 +22,8 @@ export default function HomeScreen() {
     setItemsLost,
     totalLost,
     balance,
+    addEarn, 
+    addLost,
   } = useFinance();
 
   const [modalEarn, setModalEarn] = useState(false);
@@ -60,7 +62,7 @@ export default function HomeScreen() {
           }
           modal={modalEarn}
           setModal={setModalEarn}
-          setItems={setItemsEarn}
+          onAddItem={addEarn}
         />
 
         <WalletCard
@@ -79,14 +81,14 @@ export default function HomeScreen() {
           }
           modal={modalLost}
           setModal={setModalLost}
-          setItems={setItemsLost}
+          onAddItem={addLost}
         />
 
         <TouchableOpacity
           style={[styles.button, { marginBottom: 30 }]}
           onPress={() => router.push("/newRelease")}
         >
-          <Text style={styles.buttonText}>+ Novo Lançamento</Text>
+          <Text style={styles.buttonText}>Gerenciar Carteiras</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
