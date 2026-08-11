@@ -4,26 +4,31 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
   ScrollView,
   Alert,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { useFinance } from "@/src/context/FinanceContext";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AddTagModal from "@/src/components/modal/tagModal";
+import { getNewReleaseStyles } from "@/src/components/styles/stylesNewRelease";
+import { useTheme } from "@/src/context/ThemeContext";
+import { Header } from "@/src/components/common/header";
 
-export default function NovoLancamentoScreen() {
+export default function newReleaseScreen() {
   const router = useRouter();
+  const { isDark } = useTheme();
+  const styles = getNewReleaseStyles(isDark);
+
   const { tagsEarn, tagsLost, addEarn, addLost } = useFinance();
 
-  // Estados do formulário
-  const [type, setType] = useState<"earn" | "lost">("lost"); // 'earn' = Ganho, 'lost' = Despesa
+  const [type, setType] = useState<"earn" | "lost">("lost");
   const [title, setTitle] = useState("");
   const [value, setValue] = useState("");
   const [selectedTag, setSelectedTag] = useState("");
-  const [customTag, setCustomTag] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  // Obtém as tags dinâmicas dependendo do tipo escolhido
+  // As tags agora vêm diretamente do Contexto global
   const currentTags = type === "earn" ? tagsEarn : tagsLost;
 
   const handleSave = () => {
@@ -38,247 +43,155 @@ export default function NovoLancamentoScreen() {
       return;
     }
 
-    // Define a tag (usa a personalizada se digitada, senão usa a selecionada)
-    const finalTag = customTag.trim() || selectedTag;
-
-    if (!finalTag) {
+    if (!selectedTag) {
       Alert.alert("Atenção", "Selecione ou crie uma tag.");
       return;
     }
 
-    // Salva de acordo com o tipo
     if (type === "earn") {
-      addEarn({ title, value: numericValue, tag: finalTag });
+      addEarn({ title, value: numericValue, tag: selectedTag });
     } else {
-      addLost({ title, value: numericValue, tag: finalTag });
+      addLost({ title, value: numericValue, tag: selectedTag });
     }
 
     Alert.alert("Sucesso", "Lançamento adicionado com sucesso!", [
       {
         text: "OK",
-        onPress: () => router.back(),
+        onPress: () => router.push("/"),
       },
     ]);
+  };
+
+  const handleAddTagFromModal = (newItem: { tag: string }) => {
+    const newTag = newItem.tag.trim();
+    if (!newTag) return;
+
+    if (type === "earn") {
+      addEarn({ title: "Adicione itens", value: 0, tag: newTag });
+    } else {
+      addLost({ title: "Adicione itens", value: 0, tag: newTag });
+    }
+
+    setSelectedTag(newTag);
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.headerTitle}>Novo Lançamento</Text>
-
-        {/* Seleção do Tipo: Ganho ou Despesa */}
-        <View style={styles.typeContainer}>
-          <TouchableOpacity
-            style={[
-              styles.typeButton,
-              type === "earn" && styles.typeButtonEarnActive,
-            ]}
-            onPress={() => {
-              setType("earn");
-              setSelectedTag("");
-            }}
-          >
-            <Text
-              style={[
-                styles.typeText,
-                type === "earn" && styles.typeTextActive,
-              ]}
-            >
-              + Ganho
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[
-              styles.typeButton,
-              type === "lost" && styles.typeButtonLostActive,
-            ]}
-            onPress={() => {
-              setType("lost");
-              setSelectedTag("");
-            }}
-          >
-            <Text
-              style={[
-                styles.typeText,
-                type === "lost" && styles.typeTextActive,
-              ]}
-            >
-              - Despesa
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Campo Título */}
-        <Text style={styles.label}>Descrição / Título</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Ex: Jantar no restaurante, Projeto X"
-          value={title}
-          onChangeText={setTitle}
+        <Header
+          title="Novo lançamento"
+          subtitle="Adicione novos itens ou tags a sua carteira"
         />
 
-        {/* Campo Valor */}
-        <Text style={styles.label}>Valor (R$)</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="0,00"
-          keyboardType="numeric"
-          value={value}
-          onChangeText={setValue}
-        />
-
-        {/* Seleção de Tags Existentes */}
-        <Text style={styles.label}>Selecione uma Tag Existente</Text>
-        <View style={styles.tagsContainer}>
-          {currentTags.map((tag) => {
-            const isSelected = selectedTag === tag && !customTag;
-            return (
-              <TouchableOpacity
-                key={tag}
-                style={[styles.tagChip, isSelected && styles.tagChipSelected]}
-                onPress={() => {
-                  setSelectedTag(tag);
-                  setCustomTag(""); // Limpa tag customizada ao escolher uma existente
-                }}
+        <View style={styles.inputCard}>
+          <View style={styles.typeContainer}>
+            <TouchableOpacity
+              style={[
+                styles.typeButton,
+                type === "earn" && styles.typeButtonEarnActive,
+              ]}
+              onPress={() => {
+                setType("earn");
+                setSelectedTag("");
+                setTitle("");
+                setValue("");
+              }}
+            >
+              <Text
+                style={[
+                  styles.typeText,
+                  type === "earn" && styles.typeTextActive,
+                ]}
               >
-                <Text
-                  style={[
-                    styles.tagText,
-                    isSelected && styles.tagTextSelected,
-                  ]}
+                Ganho
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.typeButton,
+                type === "lost" && styles.typeButtonLostActive,
+              ]}
+              onPress={() => {
+                setType("lost");
+                setSelectedTag("");
+                setTitle("");
+                setValue("");
+              }}
+            >
+              <Text
+                style={[
+                  styles.typeText,
+                  type === "lost" && styles.typeTextActive,
+                ]}
+              >
+                Despesa
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <Text style={styles.label}>Descrição / Título</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Ex: Jantar no restaurante, Projeto X"
+            value={title}
+            onChangeText={setTitle}
+          />
+
+          <Text style={styles.label}>Valor (R$)</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="0,00"
+            keyboardType="numeric"
+            value={value}
+            onChangeText={setValue}
+          />
+
+          <Text style={styles.label}>Selecione uma Tag</Text>
+          <View style={styles.tagsContainer}>
+            {currentTags.map((tag) => {
+              const isSelected = selectedTag === tag;
+              return (
+                <TouchableOpacity
+                  key={tag}
+                  style={[styles.tagChip, isSelected && styles.tagChipSelected]}
+                  onPress={() => setSelectedTag(tag)}
                 >
-                  #{tag}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
+                  <Text
+                    style={[
+                      styles.tagText,
+                      isSelected && styles.tagTextSelected,
+                    ]}
+                  >
+                    #{tag}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+
+            <TouchableOpacity
+              style={[styles.tagChip, styles.addTagChip]}
+              onPress={() => setIsModalVisible(true)}
+            >
+              <Text style={styles.addTagText}>+ Nova Tag</Text>
+            </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity
+            style={[styles.saveButton,]}
+            onPress={handleSave}
+          >
+            <Text style={styles.saveButtonText}>Confirmar Lançamento</Text>
+          </TouchableOpacity>
         </View>
-
-        {/* Ou criar uma nova Tag */}
-        <Text style={styles.label}>Ou crie uma nova Tag</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Ex: Viagem, Educação..."
-          value={customTag}
-          onChangeText={(text) => {
-            setCustomTag(text);
-            setSelectedTag("");
-          }}
-        />
-
-        {/* Botão Salvar */}
-        <TouchableOpacity
-          style={[
-            styles.saveButton,
-            type === "earn" ? styles.bgEarn : styles.bgLost,
-          ]}
-          onPress={handleSave}
-        >
-          <Text style={styles.saveButtonText}>Confirmar Lançamento</Text>
-        </TouchableOpacity>
       </ScrollView>
+
+      <AddTagModal
+        visible={isModalVisible}
+        cardTitle={type === "earn" ? "Ganhos" : "Despesas"}
+        onClose={() => setIsModalVisible(false)}
+        onAddTag={handleAddTagFromModal}
+      />
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F4F6F8",
-  },
-  content: {
-    padding: 20,
-  },
-  headerTitle: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom: 20,
-    color: "#333",
-  },
-  typeContainer: {
-    flexDirection: "row",
-    marginBottom: 20,
-    gap: 10,
-  },
-  typeButton: {
-    flex: 1,
-    paddingVertical: 12,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#CCC",
-    alignItems: "center",
-    backgroundColor: "#FFF",
-  },
-  typeButtonEarnActive: {
-    backgroundColor: "#2e7d32",
-    borderColor: "#2e7d32",
-  },
-  typeButtonLostActive: {
-    backgroundColor: "#c62828",
-    borderColor: "#c62828",
-  },
-  typeText: {
-    fontWeight: "bold",
-    color: "#666",
-  },
-  typeTextActive: {
-    color: "#FFF",
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#444",
-    marginBottom: 6,
-    marginTop: 12,
-  },
-  input: {
-    backgroundColor: "#FFF",
-    borderWidth: 1,
-    borderColor: "#DDD",
-    borderRadius: 8,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    fontSize: 16,
-  },
-  tagsContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 8,
-    marginVertical: 6,
-  },
-  tagChip: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
-    backgroundColor: "#E0E0E0",
-  },
-  tagChipSelected: {
-    backgroundColor: "#1976D2",
-  },
-  tagText: {
-    fontSize: 14,
-    color: "#333",
-  },
-  tagTextSelected: {
-    color: "#FFF",
-    fontWeight: "bold",
-  },
-  saveButton: {
-    marginTop: 30,
-    paddingVertical: 14,
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  bgEarn: {
-    backgroundColor: "#2e7d32",
-  },
-  bgLost: {
-    backgroundColor: "#c62828",
-  },
-  saveButtonText: {
-    color: "#FFF",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-});
