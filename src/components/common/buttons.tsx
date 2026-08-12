@@ -1,3 +1,4 @@
+import { useTheme } from "@/src/context/ThemeContext";
 import React from "react";
 import {
   Text,
@@ -35,7 +36,8 @@ const ActionButton: React.FC<ModalButtonProps> = ({
   cancelTitle = "Cancelar",
   ...props
 }) => {
-  const isDark = useColorScheme() === "dark";
+  const { isDark } = useTheme();
+  
   const styles = getHomeStyles(isDark);
 
   return (

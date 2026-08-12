@@ -1,10 +1,10 @@
 import { HapticTab } from "@/src/components/expo/haptic-tab";
 import { Colors } from "@/src/constants/theme";
+import { useTheme } from "@/src/context/ThemeContext";
 import { Feather } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import React from "react";
 import { View } from "react-native";
-import { useTheme } from "@/src/context/ThemeContext";
 
 export default function TabLayout() {
   const { isDark } = useTheme();
