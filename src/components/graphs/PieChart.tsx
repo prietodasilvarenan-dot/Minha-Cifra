@@ -1,8 +1,9 @@
 import { ThemedText } from "@/src/components/expo/themed-text";
+import { getPizzaStyles } from "@/src/components/styles/stylesPizza";
+import { useTheme } from "@/src/context/ThemeContext";
 import { StyleSheet, View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 import { GRAPH_COLORS } from "./colors";
-
 interface GraphicItem {
   id: number;
   title: string;
@@ -14,6 +15,8 @@ interface Props {
 }
 
 export default function PieChart({ data }: Props) {
+  const { isDark } = useTheme();
+  const pizzaStyles = getPizzaStyles(isDark);
   const radius = 55;
   const size = 240;
   const center = size / 2;
@@ -23,8 +26,8 @@ export default function PieChart({ data }: Props) {
 
   if (!data.length || total === 0) {
     return (
-      <View style={styles.noDataContainer}>
-        <ThemedText>Sem gastos registrados neste mês.</ThemedText>
+      <View style={pizzaStyles.noDataContainer}>
+        <ThemedText style={pizzaStyles.noDataLabel}>Sem gastos registrados neste mês.</ThemedText>
       </View>
     );
   }
@@ -32,7 +35,7 @@ export default function PieChart({ data }: Props) {
   let accumulated = 0;
 
   return (
-    <View style={styles.chartWrapper}>
+    <View style={pizzaStyles.chartWrapper}>
       <Svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
         {data.map((item, index) => {
           const strokeLength = circumference * (item.value / total);
@@ -61,17 +64,6 @@ export default function PieChart({ data }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  chartWrapper: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginVertical: 10,
-    height: 240,
-  },
-
-  noDataContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    height: 240,
-  },
+const styles = (isDark: boolean) => StyleSheet.create({
+  
 });

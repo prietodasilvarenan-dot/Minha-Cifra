@@ -28,4 +28,26 @@ export const getGraphLegendStyle = (isDark: boolean) =>
       color: isDark ? "#AEBBD0" : "#070808",
       fontWeight: "600",
     },
+    legendPieItem: {
+      flexDirection: "row",
+      color: isDark ? "#AEBBD0" : "#070808",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingVertical: 12,
+      borderBottomWidth: 1,
+      borderBottomColor: "#E5E5EA",
+    },
+    labelItem:{
+      color: isDark ? "#FFFFFF" : "#001B44",
+    },
+    legendLeft: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 10,
+    },
+    colorBadge: {
+      width: 14,
+      height: 14,
+      borderRadius: 7,
+    },
   });

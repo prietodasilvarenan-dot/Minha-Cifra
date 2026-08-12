@@ -65,6 +65,7 @@ export const getPizzaStyles = (isDark: boolean) =>
     },
     pizzaArea: {
       flex: 1,
+      color: isDark ? "#FFFFFF" : "#001B44",
       minHeight: 300,
       justifyContent: "center",
       alignItems: "center",
@@ -73,16 +74,19 @@ export const getPizzaStyles = (isDark: boolean) =>
     },
     legend: {
       width: "100%",
+      color: isDark ? "#FFFFFF" : "#001B44",
       marginTop: 10,
       transform: [{ scale: 0.95 }],
     },
     legendItem: {
       flexDirection: "row",
+      color: isDark ? "#FFFFFF" : "#001B44",
       alignItems: "center",
       marginBottom: 12,
     },
     legendBox: {
       width: 15,
+      color: isDark ? "#FFFFFF" : "#001B44",
       height: 15,
       borderRadius: 4,
       marginRight: 8,
@@ -106,7 +110,7 @@ export const getPizzaStyles = (isDark: boolean) =>
       padding: 14,
     },
     summaryLabel: {
-      color: isDark ? "#AEBBD0" : "#6B7280",
+      color: isDark ? "#162844" : "#FFFFFF",
       fontSize: 12,
       marginBottom: 5,
     },
@@ -121,7 +125,22 @@ export const getPizzaStyles = (isDark: boolean) =>
       marginBottom: 5,
       fontSize: 12,
       fontStyle: "italic",
-      color: isDark ? "#8FA3BF" : "#DCEAFF",
+      color: "#FFFFFF",
       textAlign: "center",
     },
+    chartWrapper: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 10,
+    height: 240,
+  },
+
+  noDataContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: 240,
+  },
+  noDataLabel: {
+    color: isDark ? "#FFFFFF" : "#001B44",
+  },
   });
