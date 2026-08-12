@@ -9,48 +9,35 @@ import { router } from "expo-router";
 import { getSignStyles } from "../styles/stylesSign";
 
 interface Props {
-    isDark: boolean;
-    email: string;
-    password: string;
-    setEmail: (value: string) => void;
-    setPassword: (value: string) => void;
-    onLogin: () => void;
+  isDark: boolean;
+  email: string;
+  password: string;
+  setEmail: (value: string) => void;
+  setPassword: (value: string) => void;
+  onLogin: () => void;
 }
 
 export default function LoginForm({
-    isDark,
-    email,
-    password,
-    setEmail,
-    setPassword,
-    onLogin,
+  isDark,
+  email,
+  password,
+  setEmail,
+  setPassword,
+  onLogin,
 }: Props) {
+  const styles = getSignStyles(isDark);
 
-    const styles = getSignStyles(isDark);
+  return (
+    <View style={styles.card}>
+      <EmailArea value={email} onChangeText={setEmail} />
 
-    return (
-        <View style={styles.card}>
+      <PasswordArea value={password} onChangeText={setPassword} />
 
-            <EmailArea
-                value={email}
-                onChangeText={setEmail}
-            />
+      <ButtonSignIn onPress={onLogin} />
 
-            <PasswordArea
-                value={password}
-                onChangeText={setPassword}
-            />
+      <DivisorLabel />
 
-            <ButtonSignIn
-                onPress={onLogin}
-            />
-
-            <DivisorLabel />
-
-            <LinkCadastro
-                onPress={() => router.replace("/signUp")}
-            />
-
-        </View>
-    );
+      <LinkCadastro onPress={() => router.replace("/signUp")} />
+    </View>
+  );
 }

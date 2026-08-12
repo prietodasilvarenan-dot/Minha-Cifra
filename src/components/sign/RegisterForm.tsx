@@ -3,79 +3,61 @@ import React from "react";
 import { View } from "react-native";
 
 import {
-    ConfirmPasswordArea,
-    EmailArea,
-    PasswordArea,
+  ConfirmPasswordArea,
+  EmailArea,
+  PasswordArea,
 } from "@/src/components/common/areas";
 
 import { ButtonSignUp } from "@/src/components/common/buttons";
 import { DivisorLabel } from "@/src/components/common/divisor";
-import {
-    LinkPossui,
-    LinkTermos,
-} from "@/src/components/common/links";
+import { LinkPossui, LinkTermos } from "@/src/components/common/links";
 
 import { getSignStyles } from "../styles/stylesSign";
 
 interface Props {
-    isDark: boolean;
-    email: string;
-    password: string;
-    confirmPassword: string;
+  isDark: boolean;
+  email: string;
+  password: string;
+  confirmPassword: string;
 
-    setEmail: (text: string) => void;
-    setPassword: (text: string) => void;
-    setConfirmPassword: (text: string) => void;
+  setEmail: (text: string) => void;
+  setPassword: (text: string) => void;
+  setConfirmPassword: (text: string) => void;
 
-    onRegister: () => void;
+  onRegister: () => void;
 }
 
 export default function RegisterForm({
-    isDark,
-    email,
-    password,
-    confirmPassword,
-    setEmail,
-    setPassword,
-    setConfirmPassword,
-    onRegister,
+  isDark,
+  email,
+  password,
+  confirmPassword,
+  setEmail,
+  setPassword,
+  setConfirmPassword,
+  onRegister,
 }: Props) {
+  const styles = getSignStyles(isDark);
+  const router = useRouter();
 
-    const styles = getSignStyles(isDark);
-    const router = useRouter();
+  return (
+    <View style={styles.card}>
+      <EmailArea value={email} onChangeText={setEmail} />
 
-    return (
-        <View style={styles.card}>
+      <PasswordArea value={password} onChangeText={setPassword} />
 
-            <EmailArea
-                value={email}
-                onChangeText={setEmail}
-            />
+      <ConfirmPasswordArea
+        value={confirmPassword}
+        onChangeText={setConfirmPassword}
+      />
 
-            <PasswordArea
-                value={password}
-                onChangeText={setPassword}
-            />
+      <ButtonSignUp onPress={onRegister} />
 
-            <ConfirmPasswordArea
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
-            />
+      <LinkTermos onPress={() => router.replace("/(tabs)")} />
 
-            <ButtonSignUp
-                onPress={onRegister}
-            />
+      <DivisorLabel />
 
-            <LinkTermos
-                onPress={() => router.replace("/(tabs)")}
-            />
-
-            <DivisorLabel />
-
-            <LinkPossui
-                onPress={() => router.replace("/signIn")}
-            />
-
-        </View>
-    );
+      <LinkPossui onPress={() => router.replace("/signIn")} />
+    </View>
+  );
 }

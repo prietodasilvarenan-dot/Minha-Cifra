@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { ScrollView, View, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
-import {ButtonAjusteDespesas,ButtonAjusteSaldo,} from "@/src/components/common/buttons";
+import {
+  ButtonAjusteDespesas,
+  ButtonAjusteSaldo,
+} from "@/src/components/common/buttons";
 import { getHomeStyles } from "@/src/components/styles/stylesHome";
 import HomeHeader from "@/src/components/index/HomeHeader";
 import WalletCard from "@/src/components/index/WalletCard";
@@ -22,7 +25,7 @@ export default function HomeScreen() {
     setItemsLost,
     totalLost,
     balance,
-    addEarn, 
+    addEarn,
     addLost,
   } = useFinance();
 

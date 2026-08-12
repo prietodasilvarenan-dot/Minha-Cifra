@@ -6,11 +6,10 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Header } from "@/src/components/common/header";
-
 
 export default function Calculator() {
   const { isDark } = useTheme();
@@ -111,7 +110,6 @@ export default function Calculator() {
           title="Calculadora de Imposto de Renda"
           subtitle="Calcule seus descontos e veja seu salário líquido"
         />
-        
 
         <View style={styles.inputCard}>
           <Text style={styles.inputLabel}>Salário Bruto</Text>

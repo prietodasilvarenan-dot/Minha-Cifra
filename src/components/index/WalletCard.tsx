@@ -30,18 +30,21 @@ export default function WalletCard({
 }: WalletCardProps) {
   const [expandedTag, setExpandedTag] = useState<string | null>(null);
 
-  const groupedItems = items.reduce((acc, item) => {
-    const tagName = item.tag || "Geral";
-    if (!acc[tagName]) {
-      acc[tagName] = {
-        items: [],
-        total: 0,
-      };
-    }
-    acc[tagName].items.push(item);
-    acc[tagName].total += item.value;
-    return acc;
-  }, {} as Record<string, { items: ItemFinance[]; total: number }>);
+  const groupedItems = items.reduce(
+    (acc, item) => {
+      const tagName = item.tag || "Geral";
+      if (!acc[tagName]) {
+        acc[tagName] = {
+          items: [],
+          total: 0,
+        };
+      }
+      acc[tagName].items.push(item);
+      acc[tagName].total += item.value;
+      return acc;
+    },
+    {} as Record<string, { items: ItemFinance[]; total: number }>,
+  );
 
   const toggleTag = (tagName: string) => {
     setExpandedTag((prev) => (prev === tagName ? null : tagName));
@@ -83,7 +86,10 @@ export default function WalletCard({
                   {isExpanded ? "▲" : "▼"} #{tag}
                 </Text>
                 <Text style={styles.itemValue}>
-                  R$ {data.total.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                  R${" "}
+                  {data.total.toLocaleString("pt-BR", {
+                    minimumFractionDigits: 2,
+                  })}
                 </Text>
               </TouchableOpacity>
 

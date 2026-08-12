@@ -20,7 +20,6 @@ export default function PerfilScreen() {
     name: "Renan",
     email: "renan@gmail.com",
     password: "123987",
-    tier: "Plano Gratuito",
   };
 
   const pickerImageAsync = async () => {
@@ -45,7 +44,7 @@ export default function PerfilScreen() {
           title="Meu Perfil"
           subtitle="Gerencie suas informações pessoais"
         />
-        
+
         <TouchableOpacity
           style={styles.settingsButton}
           onPress={() => router.push("/(management)/configuration")}
@@ -89,16 +88,7 @@ export default function PerfilScreen() {
             <Text style={styles.infoValue}>••••••••</Text>
           </View>
         </View>
-        <View>
-          <TouchableOpacity
-            style={styles.planCard}
-            onPress={() => router.push("/(management)/views/signature")}
-          >
-            <Text style={styles.planLabel}>Plano atual</Text>
-
-            <Text style={styles.planValue}>{user.tier}</Text>
-          </TouchableOpacity>
-        </View>
+        <View></View>
       </ScrollView>
     </SafeAreaView>
   );

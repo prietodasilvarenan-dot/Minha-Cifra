@@ -31,7 +31,7 @@ export const GraphBarLayout = ({
   return (
     <View style={barStyles.graphCard}>
       <Text style={barStyles.graphTitle}>Movimentação financeira</Text>
-      
+
       <View style={barStyles.graphArea}>
         <GraphBars data={data} maxValue={maxValue} />
         <GraphLegend />
@@ -50,7 +50,9 @@ export const GraphBarLayout = ({
 
         <View style={barStyles.summaryCard}>
           <Text style={barStyles.summaryLabel}>Economia</Text>
-          <Text style={barStyles.summaryValue}>{formatCurrency(investimentos)}</Text>
+          <Text style={barStyles.summaryValue}>
+            {formatCurrency(investimentos)}
+          </Text>
         </View>
       </View>
     </View>

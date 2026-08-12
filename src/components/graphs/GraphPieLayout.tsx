@@ -27,14 +27,14 @@ export const GraphPieLayout = ({
     typeof total === "number"
       ? `R$ ${total.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`
       : total.startsWith("R$")
-      ? total
-      : `R$ ${total}`;
+        ? total
+        : `R$ ${total}`;
 
   return (
     <View>
       <View style={pizzaStyles.pizzaCard}>
         <Text style={pizzaStyles.pizzaTitle}>Distribuição por categoria</Text>
-        
+
         <View style={pizzaStyles.pizzaArea}>
           <PieChart data={data} />
         </View>
@@ -43,24 +43,22 @@ export const GraphPieLayout = ({
           <LegendList data={data} />
         </View>
         <View style={pizzaStyles.summary}>
-        <View style={pizzaStyles.summaryCard}>
-          <Text style={pizzaStyles.summaryLabel}>Maior gasto</Text>
-          <Text style={pizzaStyles.summaryValue}>{maiorGasto}</Text>
-        </View>
+          <View style={pizzaStyles.summaryCard}>
+            <Text style={pizzaStyles.summaryLabel}>Maior gasto</Text>
+            <Text style={pizzaStyles.summaryValue}>{maiorGasto}</Text>
+          </View>
 
-        <View style={pizzaStyles.summaryCard}>
-          <Text style={pizzaStyles.summaryLabel}>Categoria</Text>
-          <Text style={pizzaStyles.summaryValue}>{categoria}</Text>
-        </View>
+          <View style={pizzaStyles.summaryCard}>
+            <Text style={pizzaStyles.summaryLabel}>Categoria</Text>
+            <Text style={pizzaStyles.summaryValue}>{categoria}</Text>
+          </View>
 
-        <View style={pizzaStyles.summaryCard}>
-          <Text style={pizzaStyles.summaryLabel}>Total</Text>
-          <Text style={pizzaStyles.summaryValue}>{formattedTotal}</Text>
+          <View style={pizzaStyles.summaryCard}>
+            <Text style={pizzaStyles.summaryLabel}>Total</Text>
+            <Text style={pizzaStyles.summaryValue}>{formattedTotal}</Text>
+          </View>
         </View>
       </View>
-      </View>
-
-      
 
       <Text style={pizzaStyles.instructionText}>
         * Toque em uma categoria para auditar os lançamentos associados.

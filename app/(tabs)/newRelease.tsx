@@ -177,10 +177,7 @@ export default function newReleaseScreen() {
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity
-            style={[styles.saveButton,]}
-            onPress={handleSave}
-          >
+          <TouchableOpacity style={[styles.saveButton]} onPress={handleSave}>
             <Text style={styles.saveButtonText}>Confirmar Lançamento</Text>
           </TouchableOpacity>
         </View>

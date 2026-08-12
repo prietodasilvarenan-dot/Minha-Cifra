@@ -11,7 +11,7 @@ interface FinanceContextData {
   itemsEarn: ItemFinance[];
   setItemsEarn: React.Dispatch<React.SetStateAction<ItemFinance[]>>;
   itemsLost: ItemFinance[];
-  setItemsLost: React.Dispatch<React.SetStateAction<ItemFinance[]>>; 
+  setItemsLost: React.Dispatch<React.SetStateAction<ItemFinance[]>>;
   totalEarn: number;
   totalLost: number;
   balance: number;
@@ -21,14 +21,14 @@ interface FinanceContextData {
   addLost: (item: Omit<ItemFinance, "id">) => void;
 }
 
-const FinanceContext = createContext<FinanceContextData>({} as FinanceContextData);
+const FinanceContext = createContext<FinanceContextData>(
+  {} as FinanceContextData,
+);
 
 export function FinanceProvider({ children }: { children: ReactNode }) {
-  const [itemsEarn, setItemsEarn] = useState<ItemFinance[]>([
-  ]);
+  const [itemsEarn, setItemsEarn] = useState<ItemFinance[]>([]);
 
-  const [itemsLost, setItemsLost] = useState<ItemFinance[]>([
-  ]);
+  const [itemsLost, setItemsLost] = useState<ItemFinance[]>([]);
 
   const tagsEarn = Array.from(new Set(itemsEarn.map((item) => item.tag)));
   const tagsLost = Array.from(new Set(itemsLost.map((item) => item.tag)));
@@ -57,9 +57,9 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     <FinanceContext.Provider
       value={{
         itemsEarn,
-        setItemsEarn, 
+        setItemsEarn,
         itemsLost,
-        setItemsLost, 
+        setItemsLost,
         totalEarn,
         totalLost,
         balance,

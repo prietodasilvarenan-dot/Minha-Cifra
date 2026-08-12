@@ -8,9 +8,7 @@ export const getNewReleaseStyles = (isDark: boolean) =>
     },
     inputCard: {
       width: "100%",
-      backgroundColor: isDark
-        ? "#101E36"
-        : "#F7F9FC",
+      backgroundColor: isDark ? "#101E36" : "#F7F9FC",
       borderRadius: 24,
       paddingHorizontal: 20,
       paddingVertical: 20,
@@ -157,28 +155,26 @@ export const getNewReleaseStyles = (isDark: boolean) =>
     },
 
     saveButton: {
-      height:46,
-      borderRadius:10,
-      backgroundColor:isDark
-          ? "#8FC5FF"
-          : "#006BFF",
-      justifyContent:"center",
-      alignItems:"center",
-      marginTop:14,
+      height: 46,
+      borderRadius: 10,
+      backgroundColor: isDark ? "#8FC5FF" : "#006BFF",
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 14,
       ...Platform.select({
-          ios:{
-              shadowColor:"#006BFF",
-              shadowOpacity:0.3,
-              shadowRadius:8,
-              shadowOffset:{
-                  width:0,
-                  height:4
-              }
+        ios: {
+          shadowColor: "#006BFF",
+          shadowOpacity: 0.3,
+          shadowRadius: 8,
+          shadowOffset: {
+            width: 0,
+            height: 4,
           },
-          android:{
-              elevation:5
-          }
-      })
+        },
+        android: {
+          elevation: 5,
+        },
+      }),
     },
 
     bgEarn: {
