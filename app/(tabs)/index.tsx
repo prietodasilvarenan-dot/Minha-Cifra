@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import { ScrollView, View, Text, TouchableOpacity } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
 import {
   ButtonAjusteDespesas,
   ButtonAjusteSaldo,
 } from "@/src/components/common/buttons";
-import { getHomeStyles } from "@/src/components/styles/stylesHome";
 import HomeHeader from "@/src/components/index/HomeHeader";
 import WalletCard from "@/src/components/index/WalletCard";
+import { getHomeStyles } from "@/src/components/styles/stylesHome";
 import { useFinance } from "@/src/context/FinanceContext";
 import { useTheme } from "@/src/context/ThemeContext";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   const { isDark } = useTheme();
@@ -18,18 +18,24 @@ export default function HomeScreen() {
   const router = useRouter();
 
   const {
-    itemsEarn,
-    setItemsEarn,
-    totalEarn,
-    itemsLost,
-    setItemsLost,
-    totalLost,
-    balance,
-    addEarn,
-    addLost,
-  } = useFinance();
+  itemsEarn,
+  totalEarn,
+  itemsInvestments,
+  totalInvestments,
+  itemsLost,
+  totalLost,
+  balance,
+  addEarn,
+  addInvestments,
+  addLost,
+  addTagEarn,
+  addTagInvestments,
+  addTagLost,
+} = useFinance();
+
 
   const [modalEarn, setModalEarn] = useState(false);
+  const [modalInvestments, setModalInvestments] = useState(false);
   const [modalLost, setModalLost] = useState(false);
   const [hideValues, setHideValues] = useState(false);
 
@@ -66,6 +72,27 @@ export default function HomeScreen() {
           modal={modalEarn}
           setModal={setModalEarn}
           onAddItem={addEarn}
+          onAddTag={addTagEarn}
+        />
+
+        <WalletCard
+          title="Carteira de Investimentos"
+          total={totalInvestments}
+          items={itemsInvestments}
+          hidden={hideValues}
+          isDark={isDark}
+          styles={styles}
+          onToggle={toggleHideValues}
+          button={
+            <ButtonAjusteSaldo
+              onPress={() => setModalInvestments(!modalInvestments)}
+              modal={modalInvestments}
+            />
+          }
+          modal={modalEarn}
+          setModal={setModalInvestments}
+          onAddItem={addInvestments}
+          onAddTag={addTagInvestments}
         />
 
         <WalletCard
@@ -85,6 +112,7 @@ export default function HomeScreen() {
           modal={modalLost}
           setModal={setModalLost}
           onAddItem={addLost}
+          onAddTag={addTagLost}
         />
 
         <TouchableOpacity

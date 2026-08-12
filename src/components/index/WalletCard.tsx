@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { ItemFinance } from "@/src/context/FinanceContext";
-import AddTagModal from "@/src/components/modal/tagModal";
+import React, { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface WalletCardProps {
   title: string;
@@ -15,6 +14,7 @@ interface WalletCardProps {
   modal: boolean;
   setModal: (value: boolean) => void;
   onAddItem: (item: Omit<ItemFinance, "id">) => void;
+  onAddTag: (tag: string) => void;
 }
 
 export default function WalletCard({
@@ -27,6 +27,7 @@ export default function WalletCard({
   modal,
   setModal,
   onAddItem,
+  onAddTag,
 }: WalletCardProps) {
   const [expandedTag, setExpandedTag] = useState<string | null>(null);
 
@@ -114,15 +115,6 @@ export default function WalletCard({
           );
         })}
 
-      {/* botao que gera o modal */}
-      {button}
-
-      <AddTagModal
-        visible={modal}
-        cardTitle={title}
-        onClose={() => setModal(false)}
-        onAddTag={handleAddTagItem}
-      />
     </View>
   );
 }
