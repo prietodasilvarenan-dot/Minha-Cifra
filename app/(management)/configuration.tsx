@@ -5,7 +5,7 @@ import { Href, router } from "expo-router";
 import React, { useState } from "react";
 import { Alert, Switch, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ArrowBackHeader } from "@/src/components/common/arrowBackHeader"
+import { ArrowBackHeader } from "@/src/components/common/arrowBackHeader";
 
 interface ConfigsOptions {
   text: string;
@@ -20,9 +20,8 @@ export default function SettingsScreen() {
   const [notifications, setNotifications] = useState(true);
 
   const ConfigsOptionsList: ConfigsOptions[] = [
-    { text: "Outras opções", router: "/" },
-    { text: "Alterar Dados", router: "/" },
-    { text: "Gerenciar Assinaturas", router: "/(management)/views/signature" },
+    { text: "Outras opções", router: "/(management)/views/otherOpitions" },
+    { text: "Alterar Dados", router: "/(management)/views/editPerfil" },
     { text: "Sobre o aplicativo", router: "/(management)/views/aboutApp" },
     { text: "Termos de uso", router: "/(management)/views/terms" },
     { text: "Política de Privacidade", router: "/(management)/views/policies" },
@@ -49,10 +48,7 @@ export default function SettingsScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ArrowBackHeader 
-        title="Configurações"
-        
-      />
+      <ArrowBackHeader title="Configurações" route="/(tabs)/perfil" />
 
       <View style={styles.item}>
         <Text style={styles.text}>Modo escuro</Text>
