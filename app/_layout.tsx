@@ -9,7 +9,7 @@ import React, { useState } from "react";
 
 import { ThemeProvider, useTheme } from "@/src/context/ThemeContext";
 import { FinanceProvider } from "@/src/context/FinanceContext";
-
+import { UserProvider } from "@/src/context/UserContext";
 interface UserProps {
   name: string;
   email: string;
@@ -35,10 +35,12 @@ function App() {
 
 export default function RootLayout() {
   return (
-    <FinanceProvider>
-      <ThemeProvider>
-        <App />
-      </ThemeProvider>
-    </FinanceProvider>
+    <UserProvider>
+      <FinanceProvider>
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
+      </FinanceProvider>
+    </UserProvider>
   );
 }
