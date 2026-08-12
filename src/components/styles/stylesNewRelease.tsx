@@ -69,6 +69,9 @@ export const getNewReleaseStyles = (isDark: boolean) =>
     typeButtonEarnActive: {
       backgroundColor: "#2E7D32",
     },
+    typeButtonInvestimentsActive: {
+      backgroundColor: "#2e477d",
+    },
 
     typeButtonLostActive: {
       backgroundColor: "#C62828",

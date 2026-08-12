@@ -1,78 +1,118 @@
+import { Header } from "@/src/components/common/header";
+import AddTagModal from "@/src/components/modal/tagModal";
+import { getNewReleaseStyles } from "@/src/components/styles/stylesNewRelease";
+import { useFinance } from "@/src/context/FinanceContext";
+import { useTheme } from "@/src/context/ThemeContext";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
-  View,
+  Alert,
+  ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
-  ScrollView,
-  Alert,
+  View,
 } from "react-native";
-import { useRouter } from "expo-router";
-import { useFinance } from "@/src/context/FinanceContext";
 import { SafeAreaView } from "react-native-safe-area-context";
-import AddTagModal from "@/src/components/modal/tagModal";
-import { getNewReleaseStyles } from "@/src/components/styles/stylesNewRelease";
-import { useTheme } from "@/src/context/ThemeContext";
-import { Header } from "@/src/components/common/header";
 
-export default function newReleaseScreen() {
+export default function NewReleaseScreen() {
   const router = useRouter();
   const { isDark } = useTheme();
   const styles = getNewReleaseStyles(isDark);
 
-  const { tagsEarn, tagsLost, addEarn, addLost } = useFinance();
+  const {
+  tagsEarn,
+  tagsInvestments,
+  tagsLost,
 
-  const [type, setType] = useState<"earn" | "lost">("lost");
+  addEarn,
+  addInvestments,
+  addLost,
+
+  addTagEarn,
+  addTagInvestments,
+  addTagLost,
+} = useFinance();
+
+  const [type, setType] = useState<"earn" | "investiments" |"lost">("lost");
   const [title, setTitle] = useState("");
   const [value, setValue] = useState("");
   const [selectedTag, setSelectedTag] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  // As tags agora vêm diretamente do Contexto global
-  const currentTags = type === "earn" ? tagsEarn : tagsLost;
+ const currentTags =
+  type === "earn"
+    ? tagsEarn
+    : type === "investiments"
+    ? tagsInvestments
+    : tagsLost;
 
   const handleSave = () => {
-    if (!title.trim() || !value.trim()) {
-      Alert.alert("Atenção", "Preencha o título e o valor.");
-      return;
-    }
+  if (!title.trim() || !value.trim()) {
+    Alert.alert("Atenção", "Preencha o título e o valor.");
+    return;
+  }
 
-    const numericValue = parseFloat(value.replace(",", "."));
-    if (isNaN(numericValue) || numericValue <= 0) {
-      Alert.alert("Atenção", "Informe um valor válido.");
-      return;
-    }
+  const numericValue = parseFloat(value.replace(",", "."));
 
-    if (!selectedTag) {
-      Alert.alert("Atenção", "Selecione ou crie uma tag.");
-      return;
-    }
+  if (isNaN(numericValue) || numericValue <= 0) {
+    Alert.alert("Atenção", "Informe um valor válido.");
+    return;
+  }
 
-    if (type === "earn") {
-      addEarn({ title, value: numericValue, tag: selectedTag });
-    } else {
-      addLost({ title, value: numericValue, tag: selectedTag });
-    }
+  if (!selectedTag) {
+    Alert.alert("Atenção", "Selecione ou crie uma tag.");
+    return;
+  }
 
-    Alert.alert("Sucesso", "Lançamento adicionado com sucesso!", [
-      {
-        text: "OK",
-        onPress: () => router.push("/"),
-      },
-    ]);
+  const item = {
+    title: title.trim(),
+    value: numericValue,
+    tag: selectedTag,
   };
 
-  const handleAddTagFromModal = (newItem: { tag: string }) => {
-    const newTag = newItem.tag.trim();
+  if (type === "earn") {
+    addEarn(item);
+  } else if (type === "investiments") {
+    addInvestments(item);
+  } else {
+    addLost(item);
+  }
+
+  setSelectedTag("");
+  setTitle("");
+  setValue("");
+
+  Alert.alert("Sucesso", "Lançamento adicionado com sucesso!", [
+    {
+      text: "OK",
+      onPress: () => router.push("/"),
+    },
+  ]);
+};
+
+  const handleAddTag = (tag: string) => {
+    const newTag = tag.trim();
+
     if (!newTag) return;
 
     if (type === "earn") {
-      addEarn({ title: "Adicione itens", value: 0, tag: newTag });
+      addTagEarn(newTag);
+    } else if (type === "investiments") {
+      addTagInvestments(newTag);
     } else {
-      addLost({ title: "Adicione itens", value: 0, tag: newTag });
+      addTagLost(newTag);
     }
 
     setSelectedTag(newTag);
+    setIsModalVisible(false);
+  };
+
+  const handleChangeType = (newType: "earn" | "investiments" | "lost") => {
+    setType(newType);
+    setSelectedTag("");
+    setTitle("");
+    setValue("");
   };
 
   return (
@@ -80,22 +120,18 @@ export default function newReleaseScreen() {
       <ScrollView contentContainerStyle={styles.content}>
         <Header
           title="Novo lançamento"
-          subtitle="Adicione novos itens ou tags a sua carteira"
+          subtitle="Adicione novos itens e tags a sua carteira"
         />
 
         <View style={styles.inputCard}>
+          {/* Tipo */}
           <View style={styles.typeContainer}>
             <TouchableOpacity
               style={[
                 styles.typeButton,
                 type === "earn" && styles.typeButtonEarnActive,
               ]}
-              onPress={() => {
-                setType("earn");
-                setSelectedTag("");
-                setTitle("");
-                setValue("");
-              }}
+              onPress={() => handleChangeType("earn")}
             >
               <Text
                 style={[
@@ -110,14 +146,26 @@ export default function newReleaseScreen() {
             <TouchableOpacity
               style={[
                 styles.typeButton,
+                type === "investiments" && styles.typeButtonInvestimentsActive,
+              ]}
+              onPress={() => handleChangeType("investiments")}
+            >
+              <Text
+                style={[
+                  styles.typeText,
+                  type === "investiments" && styles.typeTextActive,
+                ]}
+              >
+                Inves.
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.typeButton,
                 type === "lost" && styles.typeButtonLostActive,
               ]}
-              onPress={() => {
-                setType("lost");
-                setSelectedTag("");
-                setTitle("");
-                setValue("");
-              }}
+              onPress={() => handleChangeType("lost")}
             >
               <Text
                 style={[
@@ -130,7 +178,9 @@ export default function newReleaseScreen() {
             </TouchableOpacity>
           </View>
 
+          {/* Título */}
           <Text style={styles.label}>Descrição / Título</Text>
+
           <TextInput
             style={styles.input}
             placeholder="Ex: Jantar no restaurante, Projeto X"
@@ -138,7 +188,9 @@ export default function newReleaseScreen() {
             onChangeText={setTitle}
           />
 
+          {/* Valor */}
           <Text style={styles.label}>Valor (R$)</Text>
+
           <TextInput
             style={styles.input}
             placeholder="0,00"
@@ -147,14 +199,20 @@ export default function newReleaseScreen() {
             onChangeText={setValue}
           />
 
+          {/* Tags */}
           <Text style={styles.label}>Selecione uma Tag</Text>
+
           <View style={styles.tagsContainer}>
             {currentTags.map((tag) => {
               const isSelected = selectedTag === tag;
+
               return (
                 <TouchableOpacity
                   key={tag}
-                  style={[styles.tagChip, isSelected && styles.tagChipSelected]}
+                  style={[
+                    styles.tagChip,
+                    isSelected && styles.tagChipSelected,
+                  ]}
                   onPress={() => setSelectedTag(tag)}
                 >
                   <Text
@@ -177,17 +235,30 @@ export default function newReleaseScreen() {
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity style={[styles.saveButton]} onPress={handleSave}>
-            <Text style={styles.saveButtonText}>Confirmar Lançamento</Text>
+          {/* Salvar */}
+          <TouchableOpacity
+            style={styles.saveButton}
+            onPress={handleSave}
+          >
+            <Text style={styles.saveButtonText}>
+              Confirmar Lançamento
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
 
+      {/* Modal de nova tag */}
       <AddTagModal
         visible={isModalVisible}
-        cardTitle={type === "earn" ? "Ganhos" : "Despesas"}
+        cardTitle={
+          type === "earn"
+            ? "Ganhos"
+            : type === "investiments"
+            ? "Investimentos"
+            : "Despesas"
+        }
         onClose={() => setIsModalVisible(false)}
-        onAddTag={handleAddTagFromModal}
+        onAddTag={handleAddTag}
       />
     </SafeAreaView>
   );

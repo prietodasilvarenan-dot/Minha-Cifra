@@ -1,20 +1,19 @@
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Modal,
-  TextInput,
   Alert,
+  Modal,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { ItemFinance } from "@/src/context/FinanceContext";
 
 interface AddTagModalProps {
   visible: boolean;
   cardTitle: string;
   onClose: () => void;
-  onAddTag: (newItem: ItemFinance) => void;
+  onAddTag: (tag: string) => void;
 }
 
 export default function AddTagModal({
@@ -33,14 +32,7 @@ export default function AddTagModal({
       return;
     }
 
-    const novoItem: ItemFinance = {
-      id: Date.now().toString(),
-      title: "Adicione itens",
-      value: 0,
-      tag: tagFormatada,
-    };
-
-    onAddTag(novoItem);
+    onAddTag(tagFormatada);
     setNovaTag("");
     onClose();
   };
