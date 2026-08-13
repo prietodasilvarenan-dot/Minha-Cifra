@@ -110,7 +110,7 @@ export const getPizzaStyles = (isDark: boolean) =>
       padding: 14,
     },
     summaryLabel: {
-      color: isDark ? "#162844" : "#FFFFFF",
+      color: isDark ? "#FFFFFF" : "#162844",
       fontSize: 12,
       marginBottom: 5,
     },
@@ -129,18 +129,18 @@ export const getPizzaStyles = (isDark: boolean) =>
       textAlign: "center",
     },
     chartWrapper: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginVertical: 10,
-    height: 240,
-  },
+      justifyContent: "center",
+      alignItems: "center",
+      marginVertical: 10,
+      height: 240,
+    },
 
-  noDataContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    height: 240,
-  },
-  noDataLabel: {
-    color: isDark ? "#FFFFFF" : "#001B44",
-  },
+    noDataContainer: {
+      justifyContent: "center",
+      alignItems: "center",
+      height: 240,
+    },
+    noDataLabel: {
+      color: isDark ? "#FFFFFF" : "#001B44",
+    },
   });

@@ -2,6 +2,8 @@ import { ThemedText } from "@/src/components/expo/themed-text";
 import { Alert, StyleSheet, View } from "react-native";
 import GraphBar from "./GraphBar";
 import { BAR_COLORS } from "./colors";
+import { getBarStyles } from "@/src/components/styles/stylesBar";
+import { useTheme } from "@/src/context/ThemeContext";
 
 interface Props {
   data: any[];
@@ -9,6 +11,9 @@ interface Props {
 }
 
 export default function GraphBars({ data, maxValue }: Props) {
+  const { isDark } = useTheme();
+  const styles = getBarStyles(isDark);
+
   function handleDetails(
     category: string,
     year: number,
@@ -24,7 +29,9 @@ export default function GraphBars({ data, maxValue }: Props) {
   if (!data.length) {
     return (
       <View style={styles.noDataContainer}>
-        <ThemedText>Sem dados para este mês.</ThemedText>
+        <ThemedText style={styles.noDataLabel}>
+          Sem dados para este mês.
+        </ThemedText>
       </View>
     );
   }
@@ -79,41 +86,3 @@ export default function GraphBars({ data, maxValue }: Props) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  chartContainer: {
-    flex: 1,
-    width: "100%",
-    justifyContent: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-  },
-
-  monthGroup: {
-    flex: 1,
-    width: "100%",
-    alignItems: "center",
-  },
-
-  barsRow: {
-    flex: 1,
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "flex-end",
-    justifyContent: "center",
-    gap: 20,
-  },
-
-  monthLabel: {
-    marginTop: 12,
-    fontWeight: "600",
-    fontSize: 15,
-  },
-
-  noDataContainer: {
-    flex: 1,
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});

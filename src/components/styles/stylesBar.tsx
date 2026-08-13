@@ -101,4 +101,42 @@ export const getBarStyles = (isDark: boolean) =>
       fontWeight: "800",
       flexShrink: 1,
     },
+    chartContainer: {
+      flex: 1,
+      width: "100%",
+      justifyContent: "center",
+      paddingHorizontal: 10,
+      paddingVertical: 10,
+    },
+
+    monthGroup: {
+      flex: 1,
+      width: "100%",
+      alignItems: "center",
+    },
+
+    barsRow: {
+      flex: 1,
+      width: "100%",
+      flexDirection: "row",
+      alignItems: "flex-end",
+      justifyContent: "center",
+      gap: 20,
+    },
+
+    monthLabel: {
+      marginTop: 12,
+      fontWeight: "600",
+      fontSize: 15,
+    },
+
+    noDataContainer: {
+      flex: 1,
+      width: "100%",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    noDataLabel: {
+      color: isDark ? "#FFFFFF" : "#001B44",
+    },
   });
