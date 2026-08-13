@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View } from "react-native";
 import { useTheme } from "@/src/context/ThemeContext";
-import { getHeaderStyle } from "@/src/components/styles/stylesHeader";
+import { getArrowHeaderStyle } from "@/src/components/styles/stylesHeader";
 import { Feather } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import { router, Href } from "expo-router";
@@ -14,7 +14,7 @@ type HeaderProps = {
 
 export const ArrowBackHeader = ({ title, route }: HeaderProps) => {
   const { isDark } = useTheme();
-  const headerStyle = getHeaderStyle(isDark);
+  const headerStyle = getArrowHeaderStyle(isDark);
 
   return (
     <View style={headerStyle.header}>

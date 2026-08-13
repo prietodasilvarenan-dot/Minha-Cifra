@@ -22,3 +22,29 @@ export const getHeaderStyle = (isDark: boolean) =>
       flexShrink: 1,
     },
   });
+
+export const getArrowHeaderStyle = (isDark: boolean) =>
+  StyleSheet.create({
+    header: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingHorizontal: 0,
+      paddingTop: 0,
+      paddingBottom: 15,
+      backgroundColor: isDark ? "#001B44" : "#006BFF",
+      gap: 12,
+    },
+    backButton: {
+      padding: 4,
+      borderRadius: 8,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    title: {
+      color: "#FFFFFF",
+      fontSize: 34,
+      fontWeight: "900",
+      letterSpacing: 0.5,
+      flexShrink: 1,
+    },
+  });
