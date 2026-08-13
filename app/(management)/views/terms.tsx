@@ -1,23 +1,26 @@
 import { TERMOS_DE_USO } from "@/src/constants/strings";
-import { router } from "expo-router";
+import { getStaticStyle } from "@/src/components/styles/stylesStatic";
+import { useTheme } from "@/src/context/ThemeContext";
 import React from "react";
-import { ScrollView, Text, TouchableOpacity } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { ArrowBackHeader } from "@/src/components/common/arrowBackHeader";
 
 export default function TermsOfUseScreen() {
-  return (
-    <SafeAreaView>
-      <ScrollView>
-        <Text style={{ color: "white" }}>
-          <TouchableOpacity
-            onPress={() => router.push("/(management)/configuration")}
-          >
-            {"⟵ "}
-          </TouchableOpacity>
-          Termos de Uso
-        </Text>
+  const { isDark } = useTheme();
+  const styles = getStaticStyle(isDark);
 
-        <Text style={{ color: "white" }}>{TERMOS_DE_USO.text}</Text>
+  return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.content}>
+        <ArrowBackHeader
+          title="Termos de Uso"
+          route="/(management)/configuration"
+        />
+
+        <View style={styles.card}>
+          <Text style={styles.textContent}>{TERMOS_DE_USO.text}</Text>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

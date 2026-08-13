@@ -1,22 +1,26 @@
 import { SOBREAPP } from "@/src/constants/strings";
-import { router } from "expo-router";
-import { ScrollView, Text, TouchableOpacity } from "react-native";
+import { getStaticStyle } from "@/src/components/styles/stylesStatic";
+import React from "react";
+import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "@/src/context/ThemeContext";
+import { ArrowBackHeader } from "@/src/components/common/arrowBackHeader";
 
 export default function AboutApp() {
-  return (
-    <SafeAreaView>
-      <ScrollView>
-        <Text style={{ color: "white" }}>
-          <TouchableOpacity
-            onPress={() => router.push("/(management)/configuration")}
-          >
-            {"⟵ "}
-          </TouchableOpacity>
-          Sobre o app
-        </Text>
+  const { isDark } = useTheme();
+  const styles = getStaticStyle(isDark);
 
-        <Text style={{ color: "white" }}>{SOBREAPP.text}</Text>
+  return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.content}>
+        <ArrowBackHeader
+          title="Sobre o app"
+          route="/(management)/configuration"
+        />
+
+        <View style={styles.card}>
+          <Text style={styles.textContent}>{SOBREAPP.text}</Text>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
