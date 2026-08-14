@@ -5,14 +5,15 @@ import User from "@/src/model/User";
 import { api } from "@/src/services/api";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Alert, View, useColorScheme } from "react-native";
+import { Alert, View } from "react-native";
+import { useTheme } from "@/src/context/ThemeContext";
 
 export default function SignUp() {
+  const { isDark } = useTheme();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
-  const isDark = useColorScheme() === "dark";
 
   const styles = getSignStyles(isDark);
 

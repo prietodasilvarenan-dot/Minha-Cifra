@@ -1,18 +1,20 @@
 import React, { useState } from "react";
-import { Alert, View, useColorScheme } from "react-native";
+import { Alert, View } from "react-native";
 import { router } from "expo-router";
 import LoginForm from "@/src/components/sign/LoginForm";
 import LogoHeader from "@/src/components/sign/LogoHeader";
 import { getSignStyles } from "@/src/components/styles/stylesSign";
 import User from "@/src/model/User";
-import { useUser } from "@/src/context/UserContext"; // Importe o Hook
+import { useUser } from "@/src/context/UserContext";
+import { useTheme } from "@/src/context/ThemeContext";
 
 export default function SignIn() {
+  const { isDark } = useTheme();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signIn } = useUser(); // Hook do contexto
+  const { signIn } = useUser();
 
-  const isDark = useColorScheme() === "dark";
   const styles = getSignStyles(isDark);
 
   async function handleLogin() {
