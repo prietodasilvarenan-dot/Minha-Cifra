@@ -14,6 +14,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Feather } from "@expo/vector-icons";
 
 export default function NewReleaseScreen() {
   const router = useRouter();
@@ -21,75 +22,75 @@ export default function NewReleaseScreen() {
   const styles = getNewReleaseStyles(isDark);
 
   const {
-  tagsEarn,
-  tagsInvestments,
-  tagsLost,
+    tagsEarn,
+    tagsInvestments,
+    tagsLost,
 
-  addEarn,
-  addInvestments,
-  addLost,
+    addEarn,
+    addInvestments,
+    addLost,
 
-  addTagEarn,
-  addTagInvestments,
-  addTagLost,
-} = useFinance();
+    addTagEarn,
+    addTagInvestments,
+    addTagLost,
+  } = useFinance();
 
-  const [type, setType] = useState<"earn" | "investiments" |"lost">("lost");
+  const [type, setType] = useState<"earn" | "investiments" | "lost">("lost");
   const [title, setTitle] = useState("");
   const [value, setValue] = useState("");
   const [selectedTag, setSelectedTag] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
 
- const currentTags =
-  type === "earn"
-    ? tagsEarn
-    : type === "investiments"
-    ? tagsInvestments
-    : tagsLost;
+  const currentTags =
+    type === "earn"
+      ? tagsEarn
+      : type === "investiments"
+        ? tagsInvestments
+        : tagsLost;
 
   const handleSave = () => {
-  if (!title.trim() || !value.trim()) {
-    Alert.alert("Atenção", "Preencha o título e o valor.");
-    return;
-  }
+    if (!title.trim() || !value.trim()) {
+      Alert.alert("Atenção", "Preencha o título e o valor.");
+      return;
+    }
 
-  const numericValue = parseFloat(value.replace(",", "."));
+    const numericValue = parseFloat(value.replace(",", "."));
 
-  if (isNaN(numericValue) || numericValue <= 0) {
-    Alert.alert("Atenção", "Informe um valor válido.");
-    return;
-  }
+    if (isNaN(numericValue) || numericValue <= 0) {
+      Alert.alert("Atenção", "Informe um valor válido.");
+      return;
+    }
 
-  if (!selectedTag) {
-    Alert.alert("Atenção", "Selecione ou crie uma tag.");
-    return;
-  }
+    if (!selectedTag) {
+      Alert.alert("Atenção", "Selecione ou crie uma tag.");
+      return;
+    }
 
-  const item = {
-    title: title.trim(),
-    value: numericValue,
-    tag: selectedTag,
+    const item = {
+      title: title.trim(),
+      value: numericValue,
+      tag: selectedTag,
+    };
+
+    if (type === "earn") {
+      addEarn(item);
+    } else if (type === "investiments") {
+      addInvestments(item);
+    } else {
+      addLost(item);
+    }
+
+    setSelectedTag("");
+    setTitle("");
+    setValue("");
+
+    Alert.alert("Sucesso", "Lançamento adicionado com sucesso!", [
+      {
+        text: "OK",
+        onPress: () => router.push("/"),
+      },
+    ]);
   };
-
-  if (type === "earn") {
-    addEarn(item);
-  } else if (type === "investiments") {
-    addInvestments(item);
-  } else {
-    addLost(item);
-  }
-
-  setSelectedTag("");
-  setTitle("");
-  setValue("");
-
-  Alert.alert("Sucesso", "Lançamento adicionado com sucesso!", [
-    {
-      text: "OK",
-      onPress: () => router.push("/"),
-    },
-  ]);
-};
 
   const handleAddTag = (tag: string) => {
     const newTag = tag.trim();
@@ -122,9 +123,7 @@ export default function NewReleaseScreen() {
           title="Novo lançamento"
           subtitle="Adicione novos itens e tags a sua carteira"
         />
-
         <View style={styles.inputCard}>
-          {/* Tipo */}
           <View style={styles.typeContainer}>
             <TouchableOpacity
               style={[
@@ -132,45 +131,89 @@ export default function NewReleaseScreen() {
                 type === "earn" && styles.typeButtonEarnActive,
               ]}
               onPress={() => handleChangeType("earn")}
+              activeOpacity={0.7}
             >
+              <Feather
+                name="arrow-up-right"
+                size={18}
+                color={
+                  type === "earn"
+                    ? isDark
+                      ? "#4ADE80"
+                      : "#2E7D32"
+                    : isDark
+                      ? "#64748B"
+                      : "#94A3B8"
+                }
+              />
               <Text
                 style={[
                   styles.typeText,
-                  type === "earn" && styles.typeTextActive,
+                  type === "earn" && styles.typeTextEarnActive,
                 ]}
               >
                 Ganho
               </Text>
             </TouchableOpacity>
 
+            {/* INVESTIMENTO */}
             <TouchableOpacity
               style={[
                 styles.typeButton,
-                type === "investiments" && styles.typeButtonInvestimentsActive,
+                type === "investiments" && styles.typeButtonInvestmentsActive,
               ]}
               onPress={() => handleChangeType("investiments")}
+              activeOpacity={0.7}
             >
+              <Feather
+                name="trending-up"
+                size={18}
+                color={
+                  type === "investiments"
+                    ? isDark
+                      ? "#60A5FA"
+                      : "#1E88E5"
+                    : isDark
+                      ? "#64748B"
+                      : "#94A3B8"
+                }
+              />
               <Text
                 style={[
                   styles.typeText,
-                  type === "investiments" && styles.typeTextActive,
+                  type === "investiments" && styles.typeTextInvestmentsActive,
                 ]}
               >
                 Inves.
               </Text>
             </TouchableOpacity>
 
+            {/* DESPESA */}
             <TouchableOpacity
               style={[
                 styles.typeButton,
                 type === "lost" && styles.typeButtonLostActive,
               ]}
               onPress={() => handleChangeType("lost")}
+              activeOpacity={0.7}
             >
+              <Feather
+                name="arrow-down-left"
+                size={18}
+                color={
+                  type === "lost"
+                    ? isDark
+                      ? "#F87171"
+                      : "#C62828"
+                    : isDark
+                      ? "#64748B"
+                      : "#94A3B8"
+                }
+              />
               <Text
                 style={[
                   styles.typeText,
-                  type === "lost" && styles.typeTextActive,
+                  type === "lost" && styles.typeTextLostActive,
                 ]}
               >
                 Despesa
@@ -184,6 +227,7 @@ export default function NewReleaseScreen() {
           <TextInput
             style={styles.input}
             placeholder="Ex: Jantar no restaurante, Projeto X"
+            placeholderTextColor={isDark ? "#888" : "#999"}
             value={title}
             onChangeText={setTitle}
           />
@@ -194,6 +238,7 @@ export default function NewReleaseScreen() {
           <TextInput
             style={styles.input}
             placeholder="0,00"
+            placeholderTextColor={isDark ? "#888" : "#999"}
             keyboardType="numeric"
             value={value}
             onChangeText={setValue}
@@ -209,10 +254,7 @@ export default function NewReleaseScreen() {
               return (
                 <TouchableOpacity
                   key={tag}
-                  style={[
-                    styles.tagChip,
-                    isSelected && styles.tagChipSelected,
-                  ]}
+                  style={[styles.tagChip, isSelected && styles.tagChipSelected]}
                   onPress={() => setSelectedTag(tag)}
                 >
                   <Text
@@ -236,13 +278,8 @@ export default function NewReleaseScreen() {
           </View>
 
           {/* Salvar */}
-          <TouchableOpacity
-            style={styles.saveButton}
-            onPress={handleSave}
-          >
-            <Text style={styles.saveButtonText}>
-              Confirmar Lançamento
-            </Text>
+          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+            <Text style={styles.saveButtonText}>Confirmar Lançamento</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -254,8 +291,8 @@ export default function NewReleaseScreen() {
           type === "earn"
             ? "Ganhos"
             : type === "investiments"
-            ? "Investimentos"
-            : "Despesas"
+              ? "Investimentos"
+              : "Despesas"
         }
         onClose={() => setIsModalVisible(false)}
         onAddTag={handleAddTag}
