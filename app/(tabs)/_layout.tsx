@@ -49,29 +49,37 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="newRelease"
-        options={{
-          title: "",
-          tabBarLabel: () => null,
-          tabBarIcon: () => (
-            <View
-              style={{
-                width: 67,
-                height: 48,
-                borderRadius: 24,
-                backgroundColor: "#006BFF",
-                justifyContent: "center",
-                alignItems: "center",
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.3,
-                shadowRadius: 5,
-              }}
-            >
-              <Feather name="plus" size={28} color="#FFFFFF" />
-            </View>
-          ),
+  name="newRelease"
+  options={{
+    title: "",
+    tabBarLabel: () => null,
+    tabBarIcon: ({ focused }) => (
+      <View
+        style={{
+          width: 67,
+          height: 48,
+          borderRadius: 24,
+          backgroundColor: "#006BFF",
+          justifyContent: "center",
+          alignItems: "center",
+
+          shadowColor: focused ? "#006BFF" : "#000",
+          shadowOffset: {
+            width: 0,
+            height: 0,
+          },
+          shadowOpacity: focused ? 0.95 : 0.3,
+          shadowRadius: focused ? 10 : 5,
+
+          // Android
+          elevation: focused ? 10 : 5,
         }}
-      />
+      >
+        <Feather name="plus" size={28} color="#FFFFFF" />
+      </View>
+        ),
+      }}
+    />
 
       <Tabs.Screen
         name="calculator"

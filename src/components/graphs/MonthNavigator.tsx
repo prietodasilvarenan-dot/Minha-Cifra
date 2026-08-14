@@ -1,6 +1,6 @@
+import { useTheme } from "@/src/context/ThemeContext";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useTheme } from "@/src/context/ThemeContext";
 
 interface Props {
   prevMonth: string;
@@ -34,8 +34,10 @@ export default function MonthNavigator({
           style={styles.navButton}
           activeOpacity={0.7}
         >
+          <Text style={styles.arrowText}>‹</Text>
+
           <Text style={styles.sideMonthText} numberOfLines={1}>
-            ‹ {prevMonth}
+            {prevMonth}
           </Text>
         </TouchableOpacity>
 
@@ -51,8 +53,10 @@ export default function MonthNavigator({
           activeOpacity={0.7}
         >
           <Text style={styles.sideMonthText} numberOfLines={1}>
-            {nextMonth} ›
+            {nextMonth}
           </Text>
+
+          <Text style={styles.arrowText}>›</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -85,25 +89,40 @@ const getStyles = (isDark: boolean) =>
     navigationRow: {
       flexDirection: "row",
       alignItems: "center",
-      justifyContent: "space-between",
       width: "100%",
     },
+
     navButton: {
-      flex: 1,
-      paddingVertical: 6,
+      width: 100,
+      height: 40,
+      flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
     },
+
+    arrowText: {
+      width: 20,
+      fontSize: 16,
+      fontWeight: "400",
+      color: isDark ? "#AEBBD0" : "#6B7280",
+      textAlign: "center",
+    },
+
     sideMonthText: {
-      fontSize: 13,
+      flex: 1,
+      fontSize: 16,
       fontWeight: "600",
       color: isDark ? "#AEBBD0" : "#6B7280",
+      textAlign: "center",
     },
+
     currentMonthContainer: {
-      flex: 1.2,
+      flex: 1,
+      height: 40,
       alignItems: "center",
       justifyContent: "center",
     },
+
     currentMonthText: {
       fontSize: 18,
       fontWeight: "900",
