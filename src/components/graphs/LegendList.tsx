@@ -3,7 +3,7 @@ import LegendItem from "./LegendItem";
 import { GRAPH_COLORS } from "./colors";
 
 interface GraphicItem {
-  id: number;
+  id: string;
   title: string;
   value: number;
 }

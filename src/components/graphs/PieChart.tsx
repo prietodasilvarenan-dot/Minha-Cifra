@@ -1,11 +1,12 @@
 import { ThemedText } from "@/src/components/expo/themed-text";
 import { getPizzaStyles } from "@/src/components/styles/stylesPizza";
 import { useTheme } from "@/src/context/ThemeContext";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 import { GRAPH_COLORS } from "./colors";
+
 interface GraphicItem {
-  id: number;
+  id: string;
   title: string;
   value: number;
 }
@@ -17,6 +18,7 @@ interface Props {
 export default function PieChart({ data }: Props) {
   const { isDark } = useTheme();
   const pizzaStyles = getPizzaStyles(isDark);
+
   const radius = 55;
   const size = 240;
   const center = size / 2;
@@ -27,7 +29,9 @@ export default function PieChart({ data }: Props) {
   if (!data.length || total === 0) {
     return (
       <View style={pizzaStyles.noDataContainer}>
-        <ThemedText style={pizzaStyles.noDataLabel}>Sem gastos registrados neste mês.</ThemedText>
+        <ThemedText style={pizzaStyles.noDataLabel}>
+          Sem gastos registrados neste mês.
+        </ThemedText>
       </View>
     );
   }
@@ -63,7 +67,3 @@ export default function PieChart({ data }: Props) {
     </View>
   );
 }
-
-const styles = (isDark: boolean) => StyleSheet.create({
-  
-});

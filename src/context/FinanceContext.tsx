@@ -1,12 +1,31 @@
-import React, {
-  createContext,
-  ReactNode,
-  useContext,
-  useState,
-} from "react";
+import React, { createContext, ReactNode, useContext, useState } from "react";
+
+const MONTH_NAMES = [
+  "Janeiro",
+  "Fevereiro",
+  "Março",
+  "Abril",
+  "Maio",
+  "Junho",
+  "Julho",
+  "Agosto",
+  "Setembro",
+  "Outubro",
+  "Novembro",
+  "Dezembro",
+];
 
 export interface ItemFinance {
   id: string;
+  title: string | null;
+  value: number;
+  tag: string;
+
+  year: number;
+  month: string;
+}
+
+interface NewItemFinance {
   title: string | null;
   value: number;
   tag: string;
@@ -36,33 +55,51 @@ interface FinanceContextData {
   addTagInvestments: (tag: string) => void;
   addTagLost: (tag: string) => void;
 
-  addEarn: (item: Omit<ItemFinance, "id">) => void;
-  addInvestments: (item: Omit<ItemFinance, "id">) => void;
-  addLost: (item: Omit<ItemFinance, "id">) => void;
+  addEarn: (item: NewItemFinance) => void;
+  addInvestments: (item: NewItemFinance) => void;
+  addLost: (item: NewItemFinance) => void;
 }
 
 const FinanceContext = createContext<FinanceContextData>(
   {} as FinanceContextData,
 );
 
-export function FinanceProvider({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export function FinanceProvider({ children }: { children: ReactNode }) {
   const [itemsEarn, setItemsEarn] = useState<ItemFinance[]>([]);
-  const [itemsInvestments, setItemsInvestments] =
-    useState<ItemFinance[]>([]);
+
+  const [itemsInvestments, setItemsInvestments] = useState<ItemFinance[]>([]);
+
   const [itemsLost, setItemsLost] = useState<ItemFinance[]>([]);
 
   const [tagsEarn, setTagsEarn] = useState<string[]>([]);
+
   const [tagsInvestments, setTagsInvestments] = useState<string[]>([]);
+
   const [tagsLost, setTagsLost] = useState<string[]>([]);
+
+  // =========================
+  // DATA ATUAL
+  // =========================
+
+  const getCurrentDate = () => {
+    const date = new Date();
+
+    return {
+      year: date.getFullYear(),
+      month: MONTH_NAMES[date.getMonth()],
+    };
+  };
+
+  // =========================
+  // TAGS - RECEITAS
+  // =========================
 
   const addTagEarn = (tag: string) => {
     const tagFormatada = tag.trim();
 
-    if (!tagFormatada) return;
+    if (!tagFormatada) {
+      return;
+    }
 
     setTagsEarn((prev) => {
       if (prev.includes(tagFormatada)) {
@@ -76,7 +113,9 @@ export function FinanceProvider({
   const addTagInvestments = (tag: string) => {
     const tagFormatada = tag.trim();
 
-    if (!tagFormatada) return;
+    if (!tagFormatada) {
+      return;
+    }
 
     setTagsInvestments((prev) => {
       if (prev.includes(tagFormatada)) {
@@ -90,7 +129,9 @@ export function FinanceProvider({
   const addTagLost = (tag: string) => {
     const tagFormatada = tag.trim();
 
-    if (!tagFormatada) return;
+    if (!tagFormatada) {
+      return;
+    }
 
     setTagsLost((prev) => {
       if (prev.includes(tagFormatada)) {
@@ -101,52 +142,55 @@ export function FinanceProvider({
     });
   };
 
-  const addEarn = (newItem: Omit<ItemFinance, "id">) => {
+  const addEarn = (newItem: NewItemFinance) => {
+    const { year, month } = getCurrentDate();
+
     const itemWithId: ItemFinance = {
       ...newItem,
       id: Date.now().toString(),
+      year,
+      month,
     };
 
     setItemsEarn((prev) => [...prev, itemWithId]);
   };
 
-  const addInvestments = (newItem: Omit<ItemFinance, "id">) => {
+  const addInvestments = (newItem: NewItemFinance) => {
+    const { year, month } = getCurrentDate();
+
     const itemWithId: ItemFinance = {
       ...newItem,
       id: Date.now().toString(),
+      year,
+      month,
     };
 
     setItemsInvestments((prev) => [...prev, itemWithId]);
   };
 
+  const addLost = (newItem: NewItemFinance) => {
+    const { year, month } = getCurrentDate();
 
-  const addLost = (newItem: Omit<ItemFinance, "id">) => {
     const itemWithId: ItemFinance = {
       ...newItem,
       id: Date.now().toString(),
+      year,
+      month,
     };
 
     setItemsLost((prev) => [...prev, itemWithId]);
   };
 
-
-  const totalEarn = itemsEarn.reduce(
-    (acc, item) => acc + item.value,
-    0,
-  );
+  const totalEarn = itemsEarn.reduce((acc, item) => acc + item.value, 0);
 
   const totalInvestments = itemsInvestments.reduce(
     (acc, item) => acc + item.value,
     0,
   );
 
-  const totalLost = itemsLost.reduce(
-    (acc, item) => acc + item.value,
-    0,
-  );
+  const totalLost = itemsLost.reduce((acc, item) => acc + item.value, 0);
 
-  const balance =
-    totalEarn - (totalLost + totalInvestments);
+  const balance = totalEarn - (totalLost + totalInvestments);
 
   return (
     <FinanceContext.Provider

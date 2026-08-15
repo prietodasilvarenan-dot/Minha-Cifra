@@ -6,8 +6,14 @@ import PieChart from "@/src/components/graphs/PieChart";
 import { getPizzaStyles } from "@/src/components/styles/stylesPizza";
 import { useTheme } from "@/src/context/ThemeContext";
 
+interface GraphicItem {
+  id: string;
+  title: string;
+  value: number;
+}
+
 interface GraphPieLayoutProps {
-  data: any[];
+  data: GraphicItem[];
   maiorGasto?: string;
   categoria?: string;
   total?: string | number;
@@ -15,20 +21,55 @@ interface GraphPieLayoutProps {
 
 export const GraphPieLayout = ({
   data,
-  maiorGasto = "Aluguel",
-  categoria = "Moradia",
-  total = "1.950",
+  maiorGasto,
+  categoria,
+  total,
 }: GraphPieLayoutProps) => {
   const { isDark } = useTheme();
   const pizzaStyles = getPizzaStyles(isDark);
 
-  // Formata o total caso venha como número
+  const pieData: GraphicItem[] = Object.values(
+    data.reduce<Record<string, GraphicItem>>((acc, item) => {
+      const categoria = item.title?.trim() || "Sem categoria";
+
+      if (!acc[categoria]) {
+        acc[categoria] = {
+          id: item.id,
+          title: categoria,
+          value: 0,
+        };
+      }
+
+      acc[categoria].value += item.value;
+
+      return acc;
+    }, {}),
+  );
+
+  const maiorGastoCalculado =
+    pieData.length > 0
+      ? pieData.reduce((maior, atual) =>
+          atual.value > maior.value ? atual : maior,
+        )
+      : null;
+
+  const maiorGastoFinal = maiorGasto ?? maiorGastoCalculado?.title ?? "Nenhum";
+
+  const categoriaFinal = categoria ?? maiorGastoCalculado?.title ?? "Nenhuma";
+
+  const totalCalculado = pieData.reduce((acc, item) => acc + item.value, 0);
+
+  const totalFinal = total ?? totalCalculado;
+
   const formattedTotal =
-    typeof total === "number"
-      ? `R$ ${total.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`
-      : total.startsWith("R$")
-        ? total
-        : `R$ ${total}`;
+    typeof totalFinal === "number"
+      ? `R$ ${totalFinal.toLocaleString("pt-BR", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`
+      : totalFinal.startsWith("R$")
+        ? totalFinal
+        : `R$ ${totalFinal}`;
 
   return (
     <View>
@@ -36,25 +77,31 @@ export const GraphPieLayout = ({
         <Text style={pizzaStyles.pizzaTitle}>Distribuição por categoria</Text>
 
         <View style={pizzaStyles.pizzaArea}>
-          <PieChart data={data} />
+          <PieChart data={pieData} />
         </View>
 
         <View style={pizzaStyles.legend}>
-          <LegendList data={data} />
+          <LegendList data={pieData} />
         </View>
+
         <View style={pizzaStyles.summary}>
           <View style={pizzaStyles.summaryCard}>
             <Text style={pizzaStyles.summaryLabel}>Maior gasto</Text>
-            <Text style={pizzaStyles.summaryValue}>{maiorGasto}</Text>
+
+            <Text style={pizzaStyles.summaryValue}>{maiorGastoFinal}</Text>
           </View>
 
-          <View style={pizzaStyles.summaryCard}>
-            <Text style={pizzaStyles.summaryLabel}>Categoria</Text>
-            <Text style={pizzaStyles.summaryValue}>{categoria}</Text>
-          </View>
+          {
+            //          <View style={pizzaStyles.summaryCard}>
+            //            <Text style={pizzaStyles.summaryLabel}>Tag</Text>
+            //
+            //            <Text style={pizzaStyles.summaryValue}>{categoriaFinal}</Text>
+            //          </View>
+          }
 
           <View style={pizzaStyles.summaryCard}>
             <Text style={pizzaStyles.summaryLabel}>Total</Text>
+
             <Text style={pizzaStyles.summaryValue}>{formattedTotal}</Text>
           </View>
         </View>
