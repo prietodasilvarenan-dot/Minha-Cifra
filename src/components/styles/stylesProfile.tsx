@@ -65,7 +65,7 @@ export const getProfileStyles = (isDark: boolean) =>
     },
     photoText: {
       color: isDark ? "#AEBBD0" : "#6B7280",
-      fontSize: 14,
+      fontSize: 11,
       fontWeight: "600",
     },
     name: {

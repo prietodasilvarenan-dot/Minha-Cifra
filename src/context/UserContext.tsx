@@ -27,7 +27,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     if (response.status === 200) {
       setUser({
         email: userCredentials.getEmail(),
-        name: response.data?.name || userCredentials.getEmail().split("@")[0], // fallback para o nome antes do @
+        name: response.data?.name || userCredentials.getEmail().split("@")[0],
         profileImage: response.data?.profileImage || undefined,
       });
     }
@@ -38,9 +38,11 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const updateProfileImage = (imageUri: string) => {
-    setUser((prevUser) =>
-      prevUser ? { ...prevUser, profileImage: imageUri } : null,
-    );
+    setUser((prevUser) => ({
+      ...prevUser,
+      email: prevUser?.email ?? "",
+      profileImage: imageUri,
+    }));
   };
 
   return (

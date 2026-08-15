@@ -6,20 +6,29 @@ import { router } from "expo-router";
 import { getProfileStyles } from "@/src/components/styles/stylesProfile";
 import { useTheme } from "@/src/context/ThemeContext";
 import { Header } from "@/src/components/common/header";
-import { useUser } from "@/src/context/UserContext"; // Importe o Hook
+import { useUser } from "@/src/context/UserContext";
 
 export default function PerfilScreen() {
   const { isDark } = useTheme();
-  const { user, updateProfileImage } = useUser(); // Dados globais do usuário
+  const { user, updateProfileImage } = useUser();
   const styles = getProfileStyles(isDark);
 
   const pickerImageAsync = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (status !== "granted") {
+      alert("É necessária a permissão para acessar suas fotos!");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
+      aspect: [1, 1],
       quality: 1,
     });
 
-    if (!result.canceled) {
+    if (!result.canceled && result.assets && result.assets.length > 0) {
       updateProfileImage(result.assets[0].uri);
     }
   };
@@ -50,7 +59,9 @@ export default function PerfilScreen() {
                 style={{ width: 100, height: 100, borderRadius: 50 }}
               />
             ) : (
-              <Text style={styles.photo} />
+              <View style={styles.photo}>
+                <Text style={styles.photoText}>Adicionar foto</Text>
+              </View>
             )}
           </TouchableOpacity>
           <Text style={styles.name}>{user?.name ?? "Usuário"}</Text>
