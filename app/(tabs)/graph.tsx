@@ -12,14 +12,13 @@ import { getBarStyles } from "@/src/components/styles/stylesBar";
 import { useFinance } from "@/src/context/FinanceContext";
 import { useTheme } from "@/src/context/ThemeContext";
 
-import { bars, useGraphicFilter } from "@/src/hooks/useGraphicFilter";
+import { useGraphicFilter } from "@/src/hooks/useGraphicFilter";
 
 export default function FinancialDashboard() {
   const { isDark } = useTheme();
-
   const barStyles = getBarStyles(isDark);
 
-  const { balance, itemsLost } = useFinance();
+  const { balance, itemsEarn, itemsInvestments, itemsLost } = useFinance();
 
   const {
     currentPrevMonth,
@@ -27,42 +26,51 @@ export default function FinancialDashboard() {
     currentNextMonth,
     currentYearLabel,
 
-    filteredGraphic: barFilteredGraphic,
+    nextMonth,
+    prevMonth,
+  } = useGraphicFilter();
 
-    maxVal,
+  const earnFiltered = itemsEarn.filter(
+    (item) =>
+      item.month === currentMonthLabel && item.year === currentYearLabel,
+  );
 
-    nextMonth: nextBarMonth,
-    prevMonth: prevBarMonth,
-  } = useGraphicFilter(bars);
+  const investmentsFiltered = itemsInvestments.filter(
+    (item) =>
+      item.month === currentMonthLabel && item.year === currentYearLabel,
+  );
 
-  const {
-    filteredGraphic: lostFilteredGraphic,
+  const lostFiltered = itemsLost.filter(
+    (item) =>
+      item.month === currentMonthLabel && item.year === currentYearLabel,
+  );
 
-    nextMonth: nextLostMonth,
-    prevMonth: prevLostMonth,
-  } = useGraphicFilter(itemsLost);
+  const receitas = earnFiltered.reduce((acc, item) => acc + item.value, 0);
 
-  const handlePrevMonth = () => {
-    prevBarMonth();
-    prevLostMonth();
-  };
+  const despesas = lostFiltered.reduce((acc, item) => acc + item.value, 0);
 
-  const handleNextMonth = () => {
-    nextBarMonth();
-    nextLostMonth();
-  };
+  const investimentos = investmentsFiltered.reduce(
+    (acc, item) => acc + item.value,
+    0,
+  );
 
-  const barGraphic = barFilteredGraphic[0];
+  const barData = [
+    {
+      year: currentYearLabel,
+      month: currentMonthLabel,
+      earn: receitas,
+      lost: despesas,
+      investments: investimentos,
+    },
+  ];
 
-  const receitas = barGraphic?.earn ?? 0;
-  const despesas = barGraphic?.lost ?? 0;
-  const investimentos = barGraphic?.investments ?? 0;
-
-  const pizzaData = lostFilteredGraphic.map((item) => ({
+  const pizzaData = lostFiltered.map((item) => ({
     id: item.id,
     title: item.tag,
     value: item.value,
   }));
+
+  const maxValue = Math.max(receitas, despesas, investimentos, 1);
 
   return (
     <SafeAreaView style={barStyles.container}>
@@ -91,13 +99,13 @@ export default function FinancialDashboard() {
           month={currentMonthLabel}
           nextMonth={currentNextMonth}
           year={currentYearLabel}
-          onPrev={handlePrevMonth}
-          onNext={handleNextMonth}
+          onPrev={prevMonth}
+          onNext={nextMonth}
         />
 
         <GraphBarLayout
-          data={barFilteredGraphic}
-          maxValue={maxVal}
+          data={barData}
+          maxValue={maxValue}
           receitas={receitas}
           despesas={despesas}
           investimentos={investimentos}

@@ -1,5 +1,5 @@
 import { ThemedText } from "@/src/components/expo/themed-text";
-import { Alert, StyleSheet, View } from "react-native";
+import { Alert, View } from "react-native";
 import GraphBar from "./GraphBar";
 import { BAR_COLORS } from "./colors";
 import { getBarStyles } from "@/src/components/styles/stylesBar";
@@ -26,7 +26,11 @@ export default function GraphBars({ data, maxValue }: Props) {
     );
   }
 
-  if (!data.length) {
+  const hasData = data.some(
+    (item) => item.earn > 0 || item.lost > 0 || item.investments > 0,
+  );
+
+  if (!hasData) {
     return (
       <View style={styles.noDataContainer}>
         <ThemedText style={styles.noDataLabel}>
@@ -79,8 +83,6 @@ export default function GraphBars({ data, maxValue }: Props) {
               }
             />
           </View>
-
-          <ThemedText style={styles.monthLabel}>{item.month}</ThemedText>
         </View>
       ))}
     </View>
