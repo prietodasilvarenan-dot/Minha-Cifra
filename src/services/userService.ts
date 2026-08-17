@@ -30,3 +30,17 @@ export const loginUser = async (user: User) => {
     throw error;
   }
 };
+
+export const deleteUser = async (userId: string, password: string) => {
+  try {
+    const response = await api.delete(`/user/${userId}`, {
+      data: {
+        password,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

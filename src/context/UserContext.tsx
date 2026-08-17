@@ -3,6 +3,7 @@ import User from "@/src/model/User";
 import { loginUser } from "@/src/services/userService";
 
 export interface UserData {
+  id: string;
   name?: string;
   email: string;
   profileImage?: string;
@@ -26,9 +27,11 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
     if (response.status === 200) {
       setUser({
-        email: userCredentials.getEmail(),
-        name: response.data?.name || userCredentials.getEmail().split("@")[0],
-        profileImage: response.data?.profileImage || undefined,
+        id: String(response.data.user.id),
+        email: response.data.user.email,
+        name:
+          response.data.user.name || userCredentials.getEmail().split("@")[0],
+        profileImage: undefined,
       });
     }
   };
@@ -38,11 +41,16 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const updateProfileImage = (imageUri: string) => {
-    setUser((prevUser) => ({
-      ...prevUser,
-      email: prevUser?.email ?? "",
-      profileImage: imageUri,
-    }));
+    setUser((prevUser) => {
+      if (!prevUser) {
+        return prevUser;
+      }
+
+      return {
+        ...prevUser,
+        profileImage: imageUri,
+      };
+    });
   };
 
   return (
@@ -62,8 +70,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
 export const useUser = () => {
   const context = useContext(UserContext);
+
   if (!context) {
     throw new Error("useUser deve ser usado dentro de um UserProvider");
   }
+
   return context;
 };

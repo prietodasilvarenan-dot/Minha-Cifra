@@ -9,9 +9,10 @@ app.use(cors());
 
 const db = mysql.createConnection({
   host: "127.0.0.1",
-  user: "USER",
-  password: "SENHA",
+  user: "",
+  password: "",
   database: "minhacifra",
+  
 });
 
 app.post("/register", async (req, res) => {
@@ -73,6 +74,86 @@ app.post("/login", async (req, res) => {
   } catch (error) {
     console.error("Erro na rota de login:", error);
     res.status(500).json({ error: "Erro interno no servidor." });
+  }
+});
+
+app.delete("/user/:id", async (req, res) => {
+  const { id } = req.params;
+  const { password } = req.body;
+
+  if (!password) {
+    return res.status(400).json({
+      error: "A senha é obrigatória para confirmar a exclusão.",
+    });
+  }
+
+  if (!id || id === "undefined") {
+    return res.status(400).json({
+      error: "ID do usuário não informado.",
+    });
+  }
+
+  try {
+    const selectSql =
+      "SELECT * FROM Users WHERE pk_users_id = ?";
+
+    db.query(selectSql, [id], async (err, results) => {
+      if (err) {
+        console.error("Erro ao buscar usuário:", err);
+
+        return res.status(500).json({
+          error: "Erro interno no servidor.",
+        });
+      }
+
+      if (!results || results.length === 0) {
+        return res.status(404).json({
+          error: "Usuário não encontrado.",
+        });
+      }
+
+      const user = results[0];
+
+      const passwordMatch = await bcrypt.compare(
+        password,
+        user.password,
+      );
+
+      if (!passwordMatch) {
+        return res.status(401).json({
+          error: "Senha incorreta.",
+        });
+      }
+
+      const deleteSql =
+        "DELETE FROM Users WHERE pk_users_id = ?";
+
+      db.query(deleteSql, [id], (deleteErr) => {
+        if (deleteErr) {
+          console.error(
+            "Erro ao deletar usuário:",
+            deleteErr,
+          );
+
+          return res.status(500).json({
+            error: "Erro ao deletar a conta.",
+          });
+        }
+
+        return res.status(200).json({
+          message: "Conta deletada com sucesso!",
+        });
+      });
+    });
+  } catch (error) {
+    console.error(
+      "Erro na rota de exclusão:",
+      error,
+    );
+
+    return res.status(500).json({
+      error: "Erro interno no servidor.",
+    });
   }
 });
 

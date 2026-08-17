@@ -1,12 +1,14 @@
 import ConfigButton from "@/src/components/config/ConfigButton";
+import DeleteAccountModal from "@/src/components/modal/deleteAccountModal";
+import { ArrowBackHeader } from "@/src/components/common/arrowBackHeader";
 import { getConfigStyles } from "@/src/components/styles/stylesConfig";
 import { useTheme } from "@/src/context/ThemeContext";
+import { useUser } from "@/src/context/UserContext";
+import { deleteUser } from "@/src/services/userService";
 import { Href, router } from "expo-router";
 import React, { useState } from "react";
 import { Alert, Switch, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ArrowBackHeader } from "@/src/components/common/arrowBackHeader";
-import { useUser } from "@/src/context/UserContext";
 
 interface ConfigsOptions {
   text: string;
@@ -15,30 +17,72 @@ interface ConfigsOptions {
 
 export default function SettingsScreen() {
   const { isDark, toggleTheme } = useTheme();
-
-  const styles = getConfigStyles(isDark);
   const { user, signOut } = useUser();
 
+  const styles = getConfigStyles(isDark);
+
   const [notifications, setNotifications] = useState(true);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [deletingAccount, setDeletingAccount] = useState(false);
 
   const ConfigsOptionsList: ConfigsOptions[] = [
-    { text: "Outras opções", router: "/(management)/views/otherOpitions" },
-    { text: "Alterar Dados", router: "/(management)/views/editPerfil" },
-    { text: "Sobre o aplicativo", router: "/(management)/views/aboutApp" },
-    { text: "Termos de uso", router: "/(management)/views/terms" },
-    { text: "Política de Privacidade", router: "/(management)/views/policies" },
-    { text: "Sobre nós", router: "/(management)/views/aboutUs" },
+    {
+      text: "Outras opções",
+      router: "/(management)/views/otherOpitions",
+    },
+    {
+      text: "Alterar Dados",
+      router: "/(management)/views/editPerfil",
+    },
+    {
+      text: "Sobre o aplicativo",
+      router: "/(management)/views/aboutApp",
+    },
+    {
+      text: "Termos de uso",
+      router: "/(management)/views/terms",
+    },
+    {
+      text: "Política de Privacidade",
+      router: "/(management)/views/policies",
+    },
+    {
+      text: "Sobre nós",
+      router: "/(management)/views/aboutUs",
+    },
   ];
 
-  const handleDeleteAccount = () => {
-    Alert.alert(
-      "Excluir a conta",
-      "Deseja Excluir sua conta permanentemente?",
-      [
-        { text: "Excluir", onPress: () => router.replace("/signUp") },
-        { text: "Cancelar" },
-      ],
-    );
+  const handleConfirmDeleteAccount = async (password: string) => {
+    if (!user) {
+      Alert.alert("Erro", "Usuário não encontrado.");
+      return;
+    }
+
+    try {
+      setDeletingAccount(true);
+
+      await deleteUser(user.id, password);
+
+      setDeleteModalVisible(false);
+
+      signOut();
+
+      Alert.alert("Conta excluída", "Sua conta foi excluída com sucesso.", [
+        {
+          text: "OK",
+          onPress: () => {
+            router.replace("/(auth)/signIn");
+          },
+        },
+      ]);
+    } catch (error: any) {
+      const message =
+        error?.response?.data?.error || "Não foi possível excluir sua conta.";
+
+      Alert.alert("Erro", message);
+    } finally {
+      setDeletingAccount(false);
+    }
   };
 
   const handleLogout = () => {
@@ -50,7 +94,10 @@ export default function SettingsScreen() {
           router.replace("/(auth)/signIn");
         },
       },
-      { text: "Cancelar" },
+      {
+        text: "Cancelar",
+        style: "cancel",
+      },
     ]);
   };
 
@@ -79,7 +126,7 @@ export default function SettingsScreen() {
       ))}
 
       <TouchableOpacity
-        onPress={handleDeleteAccount}
+        onPress={() => setDeleteModalVisible(true)}
         style={[styles.button, styles.logout]}
       >
         <Text style={styles.logoutText}>Excluir conta</Text>
@@ -91,6 +138,14 @@ export default function SettingsScreen() {
       >
         <Text style={styles.logoutText}>Sair</Text>
       </TouchableOpacity>
+
+      <DeleteAccountModal
+        visible={deleteModalVisible}
+        isDark={isDark}
+        loading={deletingAccount}
+        onConfirm={handleConfirmDeleteAccount}
+        onCancel={() => setDeleteModalVisible(false)}
+      />
     </SafeAreaView>
   );
 }
