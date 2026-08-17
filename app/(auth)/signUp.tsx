@@ -36,11 +36,9 @@ export default function SignUp() {
     }
 
     try {
-      const newUser = new User(email, password);
-
       const response = await api.post("/register", {
-        email: newUser.getEmail(),
-        password: newUser.getPassword(),
+        email,
+        password,
       });
 
       if (response.status === 201) {
