@@ -34,7 +34,7 @@ export const getSignStyles = (isDark: boolean) =>
     },
 
     card: {
-      backgroundColor: isDark ? "#101E36" : "#F7F9FC",
+      backgroundColor: isDark ? "#0B1933" : "#F7F9FC",
       minHeight: "68%",
       paddingHorizontal: 25,
       paddingTop: 35,
@@ -69,7 +69,7 @@ export const getSignStyles = (isDark: boolean) =>
       borderRadius: 14,
       paddingHorizontal: 16,
       marginBottom: 15,
-      backgroundColor: isDark ? "#172A46" : "#FFFFFF",
+      backgroundColor: isDark ? "#122746" : "#FFFFFF",
       borderWidth: 1,
       borderColor: isDark ? "#29476F" : "#D7E2F0",
       color: isDark ? "#FFFFFF" : "#111827",
@@ -143,7 +143,7 @@ export const getSignStyles = (isDark: boolean) =>
       textAlign: "center",
       fontSize: 14,
       marginBottom: 20,
-      color: isDark ? "#B8C7DD" : "#64748B",
+      color: isDark ? "#DCEBFF" : "#64748B",
     },
 
     linkContainer: {
@@ -158,21 +158,24 @@ export const getSignStyles = (isDark: boolean) =>
       fontWeight: "800",
       marginLeft: 5,
     },
+
     divisorContainer: {
       flexDirection: "row",
       alignItems: "center",
       marginTop: 20,
       marginBottom: 20,
     },
+
     divisor: {
       flex: 1,
       height: 1,
-      backgroundColor: isDark ? "#334155" : "#CBD5E1",
+      backgroundColor: isDark ? "#29476F" : "#CBD5E1",
     },
+
     divisorText: {
       marginHorizontal: 12,
       fontSize: 14,
       fontWeight: "700",
-      color: isDark ? "#B8C7DD" : "#64748B",
+      color: isDark ? "#DCEBFF" : "#64748B",
     },
   });

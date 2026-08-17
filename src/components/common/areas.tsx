@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 import { getSignStyles } from "../styles/stylesSign";
+import { useTheme } from "@/src/context/ThemeContext";
 
 interface AreaProps {
   value: string;
@@ -15,7 +16,7 @@ interface AreaProps {
 }
 
 export const EmailArea: React.FC<AreaProps> = ({ value, onChangeText }) => {
-  const isDark = useColorScheme() === "dark";
+  const { isDark } = useTheme();
   const styles = getSignStyles(isDark);
   const [focused, setFocused] = useState(false);
 
@@ -36,7 +37,7 @@ export const EmailArea: React.FC<AreaProps> = ({ value, onChangeText }) => {
 };
 
 export const PasswordArea: React.FC<AreaProps> = ({ value, onChangeText }) => {
-  const isDark = useColorScheme() === "dark";
+  const { isDark } = useTheme();
   const styles = getSignStyles(isDark);
   const [focused, setFocused] = useState(false);
   const [hidePassword, setHidePassword] = useState(true);
@@ -88,7 +89,7 @@ export const ConfirmPasswordArea: React.FC<AreaProps> = ({
   value,
   onChangeText,
 }) => {
-  const isDark = useColorScheme() === "dark";
+  const { isDark } = useTheme();
   const styles = getSignStyles(isDark);
 
   const [focused, setFocused] = useState(false);

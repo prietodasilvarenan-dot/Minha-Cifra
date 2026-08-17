@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, TouchableOpacity, View, useColorScheme } from "react-native";
+import { useTheme } from "@/src/context/ThemeContext";
 
 import { getSignStyles } from "../styles/stylesSign";
 
@@ -8,7 +9,7 @@ interface LinkLabelProps {
 }
 
 export const LinkTermos: React.FC<LinkLabelProps> = ({ onPress }) => {
-  const isDark = useColorScheme() === "dark";
+  const { isDark } = useTheme();
   const styles = getSignStyles(isDark);
 
   return (
@@ -28,7 +29,7 @@ export const LinkTermos: React.FC<LinkLabelProps> = ({ onPress }) => {
 };
 
 export const LinkPossui: React.FC<LinkLabelProps> = ({ onPress }) => {
-  const isDark = useColorScheme() === "dark";
+  const { isDark } = useTheme();
   const styles = getSignStyles(isDark);
 
   return (
@@ -42,7 +43,7 @@ export const LinkPossui: React.FC<LinkLabelProps> = ({ onPress }) => {
 };
 
 export const LinkCadastro: React.FC<LinkLabelProps> = ({ onPress }) => {
-  const isDark = useColorScheme() === "dark";
+  const { isDark } = useTheme();
   const styles = getSignStyles(isDark);
 
   return (
