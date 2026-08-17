@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { Alert, Switch, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ArrowBackHeader } from "@/src/components/common/arrowBackHeader";
+import { useUser } from "@/src/context/UserContext";
 
 interface ConfigsOptions {
   text: string;
@@ -16,6 +17,7 @@ export default function SettingsScreen() {
   const { isDark, toggleTheme } = useTheme();
 
   const styles = getConfigStyles(isDark);
+  const { user, signOut } = useUser();
 
   const [notifications, setNotifications] = useState(true);
 
@@ -41,7 +43,13 @@ export default function SettingsScreen() {
 
   const handleLogout = () => {
     Alert.alert("Sair", "Deseja sair da conta?", [
-      { text: "Sair", onPress: () => router.replace("/(auth)/signIn") },
+      {
+        text: "Sair",
+        onPress: () => {
+          signOut();
+          router.replace("/(auth)/signIn");
+        },
+      },
       { text: "Cancelar" },
     ]);
   };
