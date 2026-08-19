@@ -4,14 +4,9 @@ import { getEditProfileStyles } from "@/src/components/styles/stylesEditProfile"
 import { useTheme } from "@/src/context/ThemeContext";
 import { useUser } from "@/src/context/UserContext";
 import { useProfileActions } from "@/src/hooks/useProfileActions";
+import { router } from "expo-router";
 import React from "react";
-import {
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function EditProfileScreen() {
@@ -19,6 +14,24 @@ export default function EditProfileScreen() {
   const { user } = useUser();
   const styles = getEditProfileStyles(isDark);
   const { handlePickImageAsync } = useProfileActions();
+
+  const editOptions = [
+    {
+      label: "Nome",
+      value: user?.name ?? "Adicionar nome",
+      route: "/(management)/views/editName" as const,
+    },
+    {
+      label: "Email",
+      value: user?.email ?? "Adicionar e-mail",
+      route: "/(management)/views/editEmail" as const,
+    },
+    {
+      label: "Senha",
+      value: "********",
+      route: "/(management)/views/editPassword" as const,
+    },
+  ];
 
   return (
     <SafeAreaView style={styles.container}>
@@ -48,42 +61,21 @@ export default function EditProfileScreen() {
           </View>
 
           <View style={styles.formSection}>
-            <View style={styles.field}>
-              <Text style={styles.label}>Nome</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Digite seu nome"
-                placeholderTextColor={isDark ? "#888" : "#999"}
-                value={user?.name ?? ""}
-              />
-            </View>
-
-            <View style={styles.field}>
-              <Text style={styles.label}>Email</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Digite seu e-mail"
-                placeholderTextColor={isDark ? "#888" : "#999"}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                value={user?.email ?? ""}
-              />
-            </View>
-
-            <View style={styles.field}>
-              <Text style={styles.label}>Senha</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="********"
-                placeholderTextColor={isDark ? "#888" : "#999"}
-                secureTextEntry
-              />
-            </View>
+            {editOptions.map((item) => (
+              <TouchableOpacity
+                key={item.label}
+                style={styles.optionCard}
+                onPress={() => router.push(item.route)}
+                activeOpacity={0.8}
+              >
+                <View style={styles.optionTextWrap}>
+                  <Text style={styles.optionLabel}>{item.label}</Text>
+                  <Text style={styles.optionValue}>{item.value}</Text>
+                </View>
+                <Text style={styles.optionArrow}>›</Text>
+              </TouchableOpacity>
+            ))}
           </View>
-
-          <TouchableOpacity style={styles.primaryButton} activeOpacity={0.8}>
-            <Text style={styles.primaryButtonText}>Salvar Alterações</Text>
-          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>

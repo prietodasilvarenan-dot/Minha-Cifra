@@ -15,6 +15,7 @@ interface UserContextType {
   signIn: (userCredentials: User) => Promise<void>;
   signOut: () => void;
   updateProfileImage: (imageUri: string) => void;
+  updateUser: (updatedUser: UserData) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -53,6 +54,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
+  const updateUser = (updatedUser: UserData) => {
+    setUser(updatedUser);
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -61,6 +66,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         signIn,
         signOut,
         updateProfileImage,
+        updateUser,
       }}
     >
       {children}
