@@ -1,13 +1,13 @@
 import ConfigButton from "@/src/components/config/ConfigButton";
-import DeleteAccountModal from "@/src/components/modal/deleteAccountModal";
+import SettingsActionButton from "@/src/components/config/SettingsActionButton";
+import SettingsToggleItem from "@/src/components/config/SettingsToggleItem";
 import { ArrowBackHeader } from "@/src/components/common/arrowBackHeader";
+import DeleteAccountModal from "@/src/components/modal/deleteAccountModal";
 import { getConfigStyles } from "@/src/components/styles/stylesConfig";
 import { useTheme } from "@/src/context/ThemeContext";
-import { useUser } from "@/src/context/UserContext";
-import { deleteUser } from "@/src/services/userService";
+import { useConfigurationActions } from "@/src/hooks/useConfigurationActions";
 import { Href, router } from "expo-router";
 import React, { useState } from "react";
-import { Alert, Switch, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 interface ConfigsOptions {
@@ -17,13 +17,16 @@ interface ConfigsOptions {
 
 export default function SettingsScreen() {
   const { isDark, toggleTheme } = useTheme();
-  const { user, signOut } = useUser();
-
   const styles = getConfigStyles(isDark);
 
   const [notifications, setNotifications] = useState(true);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deletingAccount, setDeletingAccount] = useState(false);
+
+  const { handleConfirmDeleteAccount, handleLogout } = useConfigurationActions({
+    setDeleteModalVisible,
+    setDeletingAccount,
+  });
 
   const ConfigsOptionsList: ConfigsOptions[] = [
     {
@@ -52,92 +55,46 @@ export default function SettingsScreen() {
     },
   ];
 
-  const handleConfirmDeleteAccount = async (password: string) => {
-    if (!user) {
-      Alert.alert("Erro", "Usuário não encontrado.");
-      return;
-    }
-
-    try {
-      setDeletingAccount(true);
-
-      await deleteUser(user.id, password);
-
-      setDeleteModalVisible(false);
-
-      signOut();
-
-      Alert.alert("Conta excluída", "Sua conta foi excluída com sucesso.", [
-        {
-          text: "OK",
-          onPress: () => {
-            router.replace("/(auth)/signIn");
-          },
-        },
-      ]);
-    } catch (error: any) {
-      const message =
-        error?.response?.data?.error || "Não foi possível excluir sua conta.";
-
-      Alert.alert("Erro", message);
-    } finally {
-      setDeletingAccount(false);
-    }
-  };
-
-  const handleLogout = () => {
-    Alert.alert("Sair", "Deseja sair da conta?", [
-      {
-        text: "Sair",
-        onPress: () => {
-          signOut();
-          router.replace("/(auth)/signIn");
-        },
-      },
-      {
-        text: "Cancelar",
-        style: "cancel",
-      },
-    ]);
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <ArrowBackHeader title="Configurações" route="/(tabs)/perfil" />
 
-      <View style={styles.item}>
-        <Text style={styles.text}>Modo escuro</Text>
+      <SettingsToggleItem
+        label="Modo escuro"
+        value={isDark}
+        onValueChange={toggleTheme}
+        isDark={isDark}
+      />
 
-        <Switch value={isDark} onValueChange={toggleTheme} />
-      </View>
-
-      <View style={styles.item}>
-        <Text style={styles.text}>Notificações</Text>
-
-        <Switch value={notifications} onValueChange={setNotifications} />
-      </View>
+      <SettingsToggleItem
+        label="Notificações"
+        value={notifications}
+        onValueChange={setNotifications}
+        isDark={isDark}
+      />
 
       {ConfigsOptionsList.map((item) => (
         <ConfigButton
           key={item.text}
           text={item.text}
           onPress={() => router.replace(item.router)}
+          isDark={isDark}
         />
       ))}
 
-      <TouchableOpacity
+      <SettingsActionButton
+        label="Excluir conta"
+        isDark={isDark}
+        variant="danger"
         onPress={() => setDeleteModalVisible(true)}
-        style={[styles.button, styles.logout]}
-      >
-        <Text style={styles.logoutText}>Excluir conta</Text>
-      </TouchableOpacity>
+      />
 
-      <TouchableOpacity
+      <SettingsActionButton
+        label="Sair"
+        isDark={isDark}
+        variant="danger"
         onPress={handleLogout}
-        style={[styles.button, styles.logout]}
-      >
-        <Text style={styles.logoutText}>Sair</Text>
-      </TouchableOpacity>
+      />
 
       <DeleteAccountModal
         visible={deleteModalVisible}

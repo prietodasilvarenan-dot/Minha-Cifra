@@ -23,9 +23,9 @@ function App() {
 
   return (
     <NavigationThemeProvider value={isDark ? DarkTheme : DefaultTheme}>
-      <Stack screenOptions={{ headerShown: false }}>
+      <Stack initialRouteName="modal" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(auth)" />
-        {/**<Stack.Screen name="modal" options={{ presentation: "modal" }} />*/}
+        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
       </Stack>
 
       <StatusBar style={isDark ? "light" : "dark"} />
