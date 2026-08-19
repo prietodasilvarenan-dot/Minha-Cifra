@@ -1,6 +1,7 @@
 import React from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
+import Photo from "@/src/components/profile/Photo";
 import { getProfileStyles } from "@/src/components/styles/stylesProfile";
 import { UserData } from "@/src/context/UserContext";
 
@@ -21,18 +22,14 @@ export default function ProfileCard({
 
   return (
     <View style={styles.profileCard}>
-      <TouchableOpacity onPress={onPickImage}>
-        {user?.profileImage ? (
-          <Image
-            source={{ uri: user.profileImage }}
-            style={{ width: 100, height: 100, borderRadius: 50 }}
-          />
-        ) : (
-          <View style={styles.photo}>
-            <Text style={styles.photoText}>Adicionar foto</Text>
-          </View>
-        )}
-      </TouchableOpacity>
+      <Photo
+        isDark={isDark}
+        user={user}
+        onPickImage={onPickImage}
+        size={100}
+        showPlaceholderLabel={true}
+        placeholderLabel="Adicionar foto"
+      />
 
       <Text style={styles.name}>{user?.name ?? "Usuário"}</Text>
       <Text style={styles.email}>{user?.email}</Text>
