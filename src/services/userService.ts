@@ -1,6 +1,7 @@
 import { router } from "expo-router";
 import User from "../model/User";
 import { api } from "./api";
+import { saveAuthToken, saveUserData } from "./authService";
 
 export const registerUser = async (user: User) => {
   try {
@@ -24,6 +25,20 @@ export const loginUser = async (user: User) => {
       email: user.getEmail(),
       password: user.getPassword(),
     });
+
+    if (response.status === 200) {
+      if (response.data.token) {
+        await saveAuthToken(response.data.token);
+      }
+
+      const userData = {
+        id: String(response.data.user.id),
+        email: response.data.user.email,
+        name: response.data.user.name || user.getEmail().split("@")[0],
+        profileImage: response.data.user.profileImage || undefined,
+      };
+      await saveUserData(userData);
+    }
 
     return response;
   } catch (error: any) {
