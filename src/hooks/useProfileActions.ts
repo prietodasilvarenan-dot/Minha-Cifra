@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
 
@@ -8,13 +9,19 @@ export function useProfileActions() {
   const { updateProfileImage } = useUser();
 
   const handlePickImageAsync = useCallback(async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    // 1. Solicita permissão para acessar a galeria
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    if (status !== "granted") {
-      alert("É necessária a permissão para acessar suas fotos!");
+    if (!permissionResult.granted) {
+      Alert.alert(
+        "Permissão necessária",
+        "É preciso permitir o acesso à galeria para alterar a foto de perfil.",
+      );
       return;
     }
 
+    // 2. Abre o seletor de imagens
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -22,7 +29,8 @@ export function useProfileActions() {
       quality: 1,
     });
 
-    if (!result.canceled && result.assets && result.assets.length > 0) {
+    // 3. Atualiza se a seleção não foi cancelada
+    if (!result.canceled && result.assets?.[0]?.uri) {
       updateProfileImage(result.assets[0].uri);
     }
   }, [updateProfileImage]);

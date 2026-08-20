@@ -15,16 +15,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function EditPasswordScreen() {
   const { isDark } = useTheme();
-  const { user, updateUser } = useUser();
+  const { user } = useUser();
   const styles = getEditFieldStyles(isDark);
   const [password, setPassword] = useState("");
-
-  const handleSave = () => {
-    if (user) {
-      updateUser({ ...user, password });
-    }
-    router.back();
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -48,7 +41,7 @@ export default function EditPasswordScreen() {
             Sua senha será atualizada após confirmar.
           </Text>
 
-          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+          <TouchableOpacity style={styles.saveButton}>
             <Text style={styles.saveButtonText}>Salvar</Text>
           </TouchableOpacity>
         </View>

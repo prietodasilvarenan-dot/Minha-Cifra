@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   StyleProp,
@@ -38,13 +38,24 @@ export default function Photo({
   placeholderLabel = "Adicionar foto",
 }: PhotoProps) {
   const styles = getProfileStyles(isDark);
+  const [imageLoadError, setImageLoadError] = useState(false);
+
+  useEffect(() => {
+    setImageLoadError(false);
+  }, [user?.profileImage]);
+
+  const handleImageError = () => {
+    console.warn("Erro ao carregar a imagem");
+    setImageLoadError(true);
+  };
 
   return (
     <TouchableOpacity onPress={onPickImage} style={containerStyle}>
-      {user?.profileImage ? (
+      {user?.profileImage && !imageLoadError ? (
         <Image
           source={{ uri: user.profileImage }}
           style={{ width: size, height: size, borderRadius: size / 2 }}
+          onError={handleImageError}
         />
       ) : (
         <View style={placeholderStyle ?? styles.photo}>

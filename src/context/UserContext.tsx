@@ -32,7 +32,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         email: response.data.user.email,
         name:
           response.data.user.name || userCredentials.getEmail().split("@")[0],
-        profileImage: undefined,
+        profileImage: response.data.user.profileImage || undefined, // Corrigido aqui
       });
     }
   };
