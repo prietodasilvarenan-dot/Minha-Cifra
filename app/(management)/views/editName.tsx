@@ -2,6 +2,7 @@ import { ArrowBackHeader } from "@/src/components/common/arrowBackHeader";
 import { getEditFieldStyles } from "@/src/components/styles/stylesEditField";
 import { useTheme } from "@/src/context/ThemeContext";
 import { useUser } from "@/src/context/UserContext";
+import { updateUserName } from "@/src/services/userService";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -19,11 +20,26 @@ export default function EditNameScreen() {
   const styles = getEditFieldStyles(isDark);
   const [name, setName] = useState(user?.name ?? "");
 
-  const handleSave = () => {
-    if (user) {
-      updateUser({ ...user, name });
+  const handleSave = async () => {
+    const trimmedName = name.trim();
+
+    if (!trimmedName) {
+      alert("Digite seu nome antes de salvar.");
+      return;
     }
-    router.back();
+
+    if (!user?.id) {
+      alert("Não foi possível identificar o usuário.");
+      return;
+    }
+
+    try {
+      await updateUserName(user.id, trimmedName);
+      await updateUser({ ...user, name: trimmedName });
+      router.back();
+    } catch (error: any) {
+      alert(error?.response?.data?.error || "Erro ao salvar o nome.");
+    }
   };
 
   return (

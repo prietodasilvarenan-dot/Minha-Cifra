@@ -18,18 +18,8 @@ export default function EditProfileScreen() {
   const editOptions = [
     {
       label: "Nome",
-      value: user?.name ?? "Adicionar nome",
+      value: user?.name ?? "Editar nome",
       route: "/(management)/views/editName" as const,
-    },
-    {
-      label: "Email",
-      value: user?.email ?? "Adicionar e-mail",
-      route: "/(management)/views/editEmail" as const,
-    },
-    {
-      label: "Senha",
-      value: "********",
-      route: "/(management)/views/editPassword" as const,
     },
   ];
 

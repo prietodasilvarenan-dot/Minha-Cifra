@@ -19,7 +19,6 @@ export default function SettingsScreen() {
   const { isDark, toggleTheme } = useTheme();
   const styles = getConfigStyles(isDark);
 
-  const [notifications, setNotifications] = useState(true);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deletingAccount, setDeletingAccount] = useState(false);
 
@@ -63,13 +62,6 @@ export default function SettingsScreen() {
         label="Modo escuro"
         value={isDark}
         onValueChange={toggleTheme}
-        isDark={isDark}
-      />
-
-      <SettingsToggleItem
-        label="Notificações"
-        value={notifications}
-        onValueChange={setNotifications}
         isDark={isDark}
       />
 

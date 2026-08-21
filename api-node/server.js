@@ -77,6 +77,47 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.put("/user/:id", async (req, res) => {
+  const { id } = req.params;
+  const { name } = req.body;
+  const trimmedName = typeof name === "string" ? name.trim() : "";
+
+  if (!trimmedName) {
+    return res.status(400).json({ error: "Nome obrigatório." });
+  }
+
+  if (!id || id === "undefined") {
+    return res.status(400).json({
+      error: "ID do usuário não informado.",
+    });
+  }
+
+  try {
+    db.query(
+      "UPDATE Users SET name = ? WHERE pk_users_id = ?",
+      [trimmedName, id],
+      (err, result) => {
+        if (err) {
+          console.error("Erro ao atualizar nome:", err);
+          return res.status(500).json({ error: "Erro ao atualizar nome." });
+        }
+
+        if (result.affectedRows === 0) {
+          return res.status(404).json({ error: "Usuário não encontrado." });
+        }
+
+        return res.status(200).json({
+          message: "Nome atualizado com sucesso!",
+          user: { id, name: trimmedName },
+        });
+      }
+    );
+  } catch (error) {
+    console.error("Erro na rota de atualização do nome:", error);
+    return res.status(500).json({ error: "Erro interno no servidor." });
+  }
+});
+
 app.delete("/user/:id", async (req, res) => {
   const { id } = req.params;
   const { password } = req.body;

@@ -11,6 +11,7 @@ import {
   isAuthenticated,
   getUserData,
   clearAuthData,
+  saveUserData,
 } from "@/src/services/authService";
 
 export interface UserData {
@@ -26,7 +27,7 @@ interface UserContextType {
   signIn: (userCredentials: User) => Promise<void>;
   signOut: () => Promise<void>;
   updateProfileImage: (imageUri: string) => void;
-  updateUser: (updatedUser: UserData) => void;
+  updateUser: (updatedUser: UserData) => Promise<void>;
   isUserAuthenticated: () => Promise<boolean>;
   isLoading: boolean;
 }
@@ -90,8 +91,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const updateUser = (updatedUser: UserData) => {
+  const updateUser = async (updatedUser: UserData) => {
     setUser(updatedUser);
+    await saveUserData(updatedUser);
   };
 
   const isUserAuthenticated = async () => {

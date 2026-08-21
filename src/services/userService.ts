@@ -46,6 +46,15 @@ export const loginUser = async (user: User) => {
   }
 };
 
+export const updateUserName = async (userId: string, name: string) => {
+  try {
+    const response = await api.put(`/user/${userId}`, { name });
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const deleteUser = async (userId: string, password: string) => {
   try {
     const response = await api.delete(`/user/${userId}`, {
