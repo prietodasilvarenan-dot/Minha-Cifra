@@ -23,6 +23,7 @@ export default function NewReleaseScreen() {
   const [title, setTitle] = useState("");
   const [value, setValue] = useState("");
   const [selectedTag, setSelectedTag] = useState("");
+  const [rate, setRate] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const currentTags =
@@ -37,10 +38,12 @@ export default function NewReleaseScreen() {
     title,
     value,
     selectedTag,
+    rate,
     setType,
     setTitle,
     setValue,
     setSelectedTag,
+    setRate,
     setIsModalVisible,
   });
 
@@ -65,6 +68,8 @@ export default function NewReleaseScreen() {
             currentTags={currentTags}
             onChangeTitle={setTitle}
             onChangeValue={setValue}
+            rate={rate}
+            onChangeRate={setRate}
             onSelectTag={setSelectedTag}
             onOpenAddTag={() => setIsModalVisible(true)}
             onSave={handleSave}

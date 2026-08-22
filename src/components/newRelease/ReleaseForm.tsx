@@ -13,6 +13,8 @@ type ReleaseFormProps = {
   currentTags: string[];
   onChangeTitle: (value: string) => void;
   onChangeValue: (value: string) => void;
+  rate: string;
+  onChangeRate: (value: string) => void;
   onSelectTag: (tag: string) => void;
   onOpenAddTag: () => void;
   onSave: () => void;
@@ -30,6 +32,8 @@ export default function ReleaseForm({
   onSelectTag,
   onOpenAddTag,
   onSave,
+  rate,
+  onChangeRate,
 }: ReleaseFormProps) {
   const styles = getNewReleaseStyles(isDark);
 
@@ -53,6 +57,20 @@ export default function ReleaseForm({
         value={value}
         onChangeText={onChangeValue}
       />
+
+      {type === "investiments" && (
+        <>
+          <Text style={styles.label}>Porcentagem de Retorno (%)</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Ex: 5"
+            placeholderTextColor={isDark ? "#888" : "#999"}
+            keyboardType="numeric"
+            value={rate}
+            onChangeText={onChangeRate}
+          />
+        </>
+      )}
 
       <Text style={styles.label}>Selecione uma Tag</Text>
 

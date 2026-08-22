@@ -11,10 +11,12 @@ interface UseNewReleaseActionsParams {
   title: string;
   value: string;
   selectedTag: string;
+  rate: string;
   setType: (type: ReleaseType) => void;
   setTitle: (value: string) => void;
   setValue: (value: string) => void;
   setSelectedTag: (value: string) => void;
+  setRate: (value: string) => void;
   setIsModalVisible: (value: boolean) => void;
 }
 
@@ -23,10 +25,12 @@ export function useNewReleaseActions({
   title,
   value,
   selectedTag,
+  rate,
   setType,
   setTitle,
   setValue,
   setSelectedTag,
+  setRate,
   setIsModalVisible,
 }: UseNewReleaseActionsParams) {
   const router = useRouter();
@@ -58,16 +62,32 @@ export function useNewReleaseActions({
       return;
     }
 
-    const item = {
+    let item: any = {
       title: title.trim(),
       value: numericValue,
       tag: selectedTag,
     };
 
-    if (type === "earn") {
-      addEarn(item);
-    } else if (type === "investiments") {
+    if (type === "investiments") {
+      if (!rate.trim()) {
+        Alert.alert(
+          "Atenção",
+          "Informe a porcentagem de retorno para investimentos.",
+        );
+        return;
+      }
+
+      const numericRate = parseFloat(rate.replace(",", "."));
+
+      if (isNaN(numericRate) || numericRate < 0) {
+        Alert.alert("Atenção", "Informe uma porcentagem válida.");
+        return;
+      }
+
+      item.rate = numericRate;
       addInvestments(item);
+    } else if (type === "earn") {
+      addEarn(item);
     } else {
       addLost(item);
     }
@@ -75,6 +95,7 @@ export function useNewReleaseActions({
     setSelectedTag("");
     setTitle("");
     setValue("");
+    setRate("");
 
     Alert.alert("Sucesso", "Lançamento adicionado com sucesso!", [
       {
@@ -91,6 +112,7 @@ export function useNewReleaseActions({
     setSelectedTag,
     setTitle,
     setValue,
+    setRate,
     title,
     type,
     value,
@@ -129,8 +151,9 @@ export function useNewReleaseActions({
       setSelectedTag("");
       setTitle("");
       setValue("");
+      setRate("");
     },
-    [setSelectedTag, setTitle, setType, setValue],
+    [setSelectedTag, setTitle, setType, setValue, setRate],
   );
 
   return {

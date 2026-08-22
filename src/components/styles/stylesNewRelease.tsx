@@ -10,9 +10,8 @@ export const getNewReleaseStyles = (isDark: boolean) =>
       width: "100%",
       backgroundColor: isDark ? "#101E36" : "#F7F9FC",
       borderRadius: 24,
-      paddingHorizontal: 20,
-      paddingVertical: 20,
-      marginBottom: 14,
+      paddingHorizontal: 10,
+      paddingVertical: 10,
     },
 
     header: {

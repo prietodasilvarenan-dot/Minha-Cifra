@@ -23,12 +23,14 @@ export interface ItemFinance {
 
   year: number;
   month: string;
+  rate?: number; // porcentagem de retorno para investimentos (ex: 5 => 5%)
 }
 
 interface NewItemFinance {
   title: string | null;
   value: number;
   tag: string;
+  rate?: number;
 }
 
 interface FinanceContextData {

@@ -18,21 +18,20 @@ export default function HomeScreen() {
   const router = useRouter();
 
   const {
-  itemsEarn,
-  totalEarn,
-  itemsInvestments,
-  totalInvestments,
-  itemsLost,
-  totalLost,
-  balance,
-  addEarn,
-  addInvestments,
-  addLost,
-  addTagEarn,
-  addTagInvestments,
-  addTagLost,
-} = useFinance();
-
+    itemsEarn,
+    totalEarn,
+    itemsInvestments,
+    totalInvestments,
+    itemsLost,
+    totalLost,
+    balance,
+    addEarn,
+    addInvestments,
+    addLost,
+    addTagEarn,
+    addTagInvestments,
+    addTagLost,
+  } = useFinance();
 
   const [modalEarn, setModalEarn] = useState(false);
   const [modalInvestments, setModalInvestments] = useState(false);
@@ -59,8 +58,8 @@ export default function HomeScreen() {
           title="Carteira de Ganhos"
           total={totalEarn}
           items={itemsEarn}
+          type="earn"
           hidden={hideValues}
-          isDark={isDark}
           styles={styles}
           onToggle={toggleHideValues}
           button={
@@ -79,8 +78,8 @@ export default function HomeScreen() {
           title="Carteira de Investimentos"
           total={totalInvestments}
           items={itemsInvestments}
+          type="investments"
           hidden={hideValues}
-          isDark={isDark}
           styles={styles}
           onToggle={toggleHideValues}
           button={
@@ -89,7 +88,7 @@ export default function HomeScreen() {
               modal={modalInvestments}
             />
           }
-          modal={modalEarn}
+          modal={modalInvestments}
           setModal={setModalInvestments}
           onAddItem={addInvestments}
           onAddTag={addTagInvestments}
@@ -99,8 +98,8 @@ export default function HomeScreen() {
           title="Carteira de Gastos"
           total={totalLost}
           items={itemsLost}
+          type="lost"
           hidden={hideValues}
-          isDark={isDark}
           styles={styles}
           onToggle={toggleHideValues}
           button={
