@@ -1,5 +1,6 @@
 import { ThemedText } from "@/src/components/expo/themed-text";
-import { pizza, useGraphicFilter } from "@/src/hooks/useGraphicFilter";
+import { useFinance } from "@/src/context/FinanceContext";
+import { useGraphicFilter } from "@/src/hooks/useGraphicFilter";
 import React from "react";
 import { Alert, StyleSheet, View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
@@ -8,13 +9,20 @@ const radius = 35;
 const circumference = 2 * Math.PI * radius;
 
 const Graph = () => {
-  const {
-    currentMonthLabel,
-    currentYearLabel,
-    filteredGraphic,
-    nextMonth,
-    prevMonth,
-  } = useGraphicFilter(pizza);
+  const { currentMonthLabel, currentYearLabel } = useGraphicFilter();
+  const { itemsLost } = useFinance();
+
+  const filteredGraphic: Array<{ id: string; title: string; value: number }> =
+    itemsLost
+      .filter(
+        (item) =>
+          item.month === currentMonthLabel && item.year === currentYearLabel,
+      )
+      .map((item) => ({
+        id: item.id,
+        title: item.tag,
+        value: item.value,
+      }));
 
   const colors = [
     "#FF3B30",
